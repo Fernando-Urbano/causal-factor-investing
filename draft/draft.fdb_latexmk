@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1732084999.19099 "/Users/fernandorochacorreaurbano/Desktop/causal-machine-learning/causal-factor-investing/draft/draft.tex" "draft.pdf" "draft" 1732085001.57683 0
-  "/Users/fernandorochacorreaurbano/Desktop/causal-machine-learning/causal-factor-investing/draft/draft.tex" 1732084999.07965 25292 1af59f981ec0e1c139069e3ecfac364d ""
+["pdflatex"] 1732126545.30685 "/Users/fernandorochacorreaurbano/Desktop/causal-machine-learning/causal-factor-investing/draft/draft.tex" "draft.pdf" "draft" 1732126547.82424 0
+  "/Users/fernandorochacorreaurbano/Desktop/causal-machine-learning/causal-factor-investing/draft/draft.tex" 1732126542.47328 27388 f1b5ed629c846432333d7d6e6912e5e0 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
@@ -117,8 +117,10 @@
   "draft-photos/backdoor_adjustment_explanation.png" 1731990383.48791 466481 39884915496fa5996eced3aeebbbd370 ""
   "draft-photos/backdoor_adjustment_explanation2.png" 1731990438.04263 260470 11be72d144a47bd23de2f6d6dacc6ccf ""
   "draft-photos/confounder_variable.png" 1731536244.54764 13111 c11412ede3ad24603e67f19ffbfa2a0f ""
+  "draft-photos/dnn-for-estimation/dnn_corollary_1.png" 1732122577.22606 143244 144c93eb5a240fe6c7e9f8b0ca7a7624 ""
   "draft-photos/dnn-for-estimation/dnn_m_condition.png" 1732084557.74284 281336 2e6812ef517e2975ab24f3e2554df4c2 ""
   "draft-photos/dnn-for-estimation/dnn_theorem_1.png" 1732084977.76184 196914 5423d380ca7bfc40000dc883926a3207 ""
+  "draft-photos/dnn-for-estimation/dnn_theorem_2.png" 1732121512.17263 189517 32cd948928778f1d07dc95d7cd39d9c9 ""
   "draft-photos/dnn-for-estimation/feed_forward_dnn.png" 1732082801.26462 81010 02bff3eeca28b38b93c3835c0290a398 ""
   "draft-photos/frontdoor_adjustment.png" 1731985706.48681 40287 e9f6ce90f5bf4f408851cd28541beac3 ""
   "draft-photos/frontdoor_adjustment_explained.png" 1731990928.57293 64156 3829c1e6da444674aeb0894496d6b0df ""
@@ -132,9 +134,9 @@
   "draft-photos/instrumental_variable_explanation4.png" 1732080885.27953 70718 23d3f767090e4b68cba34296df9c5039 ""
   "draft-photos/instrumental_variable_explanation5.png" 1732080997.02154 109508 56a98f2b930c713794eaeee76340a87b ""
   "draft-photos/instrumental_variables.png" 1732031278.00926 49981 3e7d6dcdc466c538c8c2749bb8e5a85c ""
-  "draft.aux" 1732085001.4834 7960 bec813c6e0c6253477c47509f54fb03a "pdflatex"
-  "draft.out" 1732085001.48452 3981 31116e2be6fc4c3218d9a326e6e5a2a2 "pdflatex"
-  "draft.tex" 1732084999.07965 25292 1af59f981ec0e1c139069e3ecfac364d ""
+  "draft.aux" 1732126547.75617 8398 7491d2543bb3ce13a8498628350da04b "pdflatex"
+  "draft.out" 1732126547.75708 3981 31116e2be6fc4c3218d9a326e6e5a2a2 "pdflatex"
+  "draft.tex" 1732126542.47328 27388 f1b5ed629c846432333d7d6e6912e5e0 ""
   (generated)
   "draft.aux"
   "draft.log"

@@ -618,4 +618,33 @@ Assumptions:
   \label{fig:dnn_theorem_1}
 \end{figure}
 
+In this paper proof they use scale sensitive localization theory. This has the benefit of:
+\begin{itemize}
+  \item not restrict the class of networks architectures to have bounded weights for each unit.
+  \item richer set of approximation possibilities.
+\end{itemize}
+
+They are able to aattain a faster rate on the second term of the bound, order $n{-1}$. This upper bounds inform the trade offs between $H$ and $L$, and the approximation power, and may point toward optimal architectures for statistical inference.
+
+They note that as is standard in nonparametrics, this result relies on choosing $H$ appropriately given the smoothness of $\beta$ appearing in $H$.
+
+Theorem 1 covers only one specific architecture, albeit the most important one for current practice. However, given that this field is rapidly evolving, it is important to consider other possible architectures which may be beneficial in some cases.
+
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=250px]{draft-photos/dnn-for-estimation/dnn_theorem_2.png}
+  \caption{Feed Forward Architecture}
+  \label{fig:dnn_theorem_2}
+\end{figure}
+
+This result is more general than Theorem 1, covering the general deep ReLU network problem deﬁned in (2.4), general feedforward architectures, and the general class of losses deﬁned by (2.1). The same comments as were made following Theorem 1 apply here as well: the same localization argument is used with the same beneﬁts. We explicitly use this in the next two corollaries, where we exploit the allowed ﬂexibility in controlling DNN by stating results for particular architectures. The bound here is not directly applicable without specifying the network structure, which will determine both the variance portion (through $W$, $L$, and $U$) and the approximation error. With these set, the bound becomes operational upon choosing $\gamma$, which can be optimized as desired.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=250px]{draft-photos/dnn-for-estimation/dnn_corollary_1.png}
+  \caption{Feed Forward Architecture}
+  \label{fig:dnn_corollary_1}
+\end{figure}
+
 \end{document}
