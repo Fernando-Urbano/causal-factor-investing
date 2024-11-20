@@ -424,5 +424,198 @@ Thus:
   \label{fig:frontdoor_adjustment_explanation4}
 \end{figure}
 
+\subsubsection{Instrumental Variables}
+The front-door adjustment controls for latent confounders when a mediator exists.
+
+In the absence of a mediator, the instrumental variables method allows to control for a latent confounder $Z$, as long as they can find $W$ that turns $X$ into a collider, thus blocking the backdoor path through $Z$.
+
+A variable $W$ satisfies the instrumental variable criterion relative to the treatment $X$ and outcome $Y$ if:
+\begin{itemize}
+  \item there is an arrow $W$ → $X$;
+  \item the causal effect of $W$ on $Y$ is fully mediated by $X$;
+  \item there is no backdoor path between $W$ and $Y$
+\end{itemize}
+
+Intuitively, the first and second condition ensure that $W$ can be used as proxy for $X$, whereas condition three prevents the need for an additional backdoor adjustment to de-confound the effect of $W$ on $Y$.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=250px]{draft-photos/instrumental_variables.png}
+  \caption{Instrumental Variable}
+  \label{fig:instrumental_variables}
+\end{figure}
+
+\subsubsection{Front-Door Adjustment: Another Explanation}
+
+When we have unobserved confounding, we have to deal with it in other manner.
+
+If we have the frontdoor adjustment, we can use the frontdoor.
+
+Here, we use $Z$ as the instrumental variable:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=250px]{draft-photos/instrumental_variable_explanation.png}
+  \caption{Instrumental Variable}
+  \label{fig:instrumental_variable_explanation}
+\end{figure}
+
+We consider an instrument $Z$ a variable that has a causal effect on the treatment $T$.
+
+Furthermore, the causal effect of the $Z$ on $Y$ is fully mediated by the treatment $T$.
+
+We must have a graph where the edge between $Z$ and $Y$ is removed:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=250px]{draft-photos/instrumental_variable_explanation2.png}
+  \caption{Instrumental Variable}
+  \label{fig:instrumental_variable_explanation2}
+\end{figure}
+
+Meaning that we are adding an assumption that we are excluding $Z$ from the causal mechanism that generates $Y$.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=250px]{draft-photos/instrumental_variable_explanation3.png}
+  \caption{Instrumental Variable}
+  \label{fig:instrumental_variable_explanation3}
+\end{figure}
+
+The last assumption for $Z$ to be an instrument is that there is no backdoor path from $Z$ to $Y$.
+
+Meaning that must be no direct path between $U$ and $Z$:
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=250px]{draft-photos/instrumental_variable_explanation4.png}
+  \caption{Instrumental Variable}
+  \label{fig:instrumental_variable_explanation4}
+\end{figure}
+
+If there is backdoor path between $Y$ and $Z$, but this backdoor path is observed, we can condition on the backdoor path. In this new case, the backdoor path is the $W$. If that is the case, $Z$ is called a conditional instrument.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=250px]{draft-photos/instrumental_variable_explanation5.png}
+  \caption{Instrumental Variable}
+  \label{fig:instrumental_variable_explanation5}
+\end{figure}
+
+This gives a slightly weaker version of assumption 3, meaning that we unconfoundedness after conditioning on observed variables.
+
+\section{Deep Neural Networks for Estimation and Inference}
+
+In the 1990s, shallow neural networks with smooth activation functions were shown to have many good theoretical properties.
+
+Stochastic optimization techniques ad more computing power changed the focus from shallow to deep networks and from smooth sigmoid-type activation to rectified linear units (ReLU).
+
+Our bounds immediately yield empirical and population L2 convergence rates.
+
+We follow our main results by applying our nonasymptotic high probability bounds to
+deliver valid inference on ﬁnite-dimensional parameters following ﬁrst-step estimation using deep learning.
+
+Our work contributes directly to this area of research by showing that deep nets are a valid and useful ﬁrst-step estimator for semiparametric inference in general. Further, we show that inference after deep learning may not require sample splitting or cross-ﬁtting.
+
+\subsection{Nonasymptotic Bounds for DNN Estimation}
+Estimate $f_* (x)$ that relates to the covariates $X \in \mathbb{R}^d$ and $Y \in \mathbb{R}$.
+
+$$
+f_* = \text{argmin}_f \mathbb{E}[\ell (f, Z)]
+$$
+
+Where $Z$ is $(Y, X) \in \mathbb{R}^{d+1}$
+
+We allow any loss function that is Lipschitz in $f$.
+
+Two leading examples of the applications for causal inference are:
+
+\begin{itemize}
+  \item Least squares:
+  $$
+  f_* (x) := \mathbb{E}[Y | X = x],
+  \quad
+  \ell(f, z) = \frac{1}{2}(y - f(x))^2
+  $$
+  \item Logistic Regression:
+  $$
+  f_* (x) := \log \left(
+    \frac{\mathbb{E}[Y | X = x]}{1 - \mathbb{E}[Y | X = x]},
+  \right)
+  \quad
+  \ell(f, z) = -y f(x) + \log(1 + e^{f(x)})
+  $$
+\end{itemize}
+
+We call the specific choice of the neural network architecture as $\mathcal{F}_{\text{DNN}}$.
+
+We focus on feedforward neural networks.
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=250px]{draft-photos/dnn-for-estimation/feed_forward_dnn.png}
+  \caption{Feed Forward Architecture}
+  \label{fig:feed_forward_dnn}
+\end{figure}
+
+In it, we have $X \in \mathbb{R}^d$ in the input and $Y$ in the outcome. $U$ hidden units are present in between, grouped in a sequence of $L$ layers.
+
+The width of the network at a given layer is denoted $H_l$, meaning the number of neurons in that layer.
+
+The networks is completed with the choice of an activation function $\sigma: \mathbb{R} \mapsto \mathbb{R}$.
+
+An important commonly used subclass of neural networks is a fully connected one. This architecture is known as multilayer perceptron (MLP). We defone it as $\mathcal{F}_{\text{MLP}}$.
+
+We will assume that all the width of all layers share a common asumptotic order $H$, implying that for this class $U simeq LH$.
+
+We find a suboptimal rate for MLP case, but our upper bound is still sufficient for semiparametric inference.
+
+The total number of parameters in the network is:
+
+$$
+W = (d + 1) H + (L - 1) (H^2 + H) + H + 1
+$$
+
+Where $d$ is the number of covariates.
+
+For neural networls, the architecture as a whole are the smoothing parameters while the width and depth play the role of tuning parameters.
+
+Just as for classical nonparametrics, for a ﬁxed architecture it is the tuning parameters that determine the rate of convergence (ﬁxing smoothness of $f_*$ ). The recent wave of theoretical study of deep learning is still in its infancy. As such, there is no understanding of optimal architectures or tuning parameters. These choices can be difﬁcult and only preliminary research has been done (see, e.g., Daniely (2017), Telgarsky (2016) and references therein). However, it is interesting that in some cases, results can be obtained even with a ﬁxed width H, provided the network is deep enough; see Corollary 2.
+
+
+In $\mathcal{F}_{\text{DNN}}$ we have to choose:
+\begin{itemize}
+  \item $U$
+  \item $L$
+  \item $W$
+  \item graph structure
+  \item $\sigma(\cdot)$
+\end{itemize}
+
+Why does $M$ need to be bounded? What is $M$?
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=250px]{draft-photos/dnn-for-estimation/dnn_m_condition.png}
+  \caption{Feed Forward Architecture}
+  \label{fig:dnn_m_condition}
+\end{figure}
+
+Explicit regularization may improve empirical performance in low signal-to-noise ratio problems.
+
+\subsubsection{The Nonasymptotic Bonds}
+Assumptions:
+\begin{itemize}
+  \item We use mild assumptions
+  \item The difference is that we also assume that the outcome is bounded.
+  \item Only continous covariates. Discrete covariates would probably show a lower convergence rate. In practice, NN show great performance with discrete covariates.
+\end{itemize}
+
+\begin{figure}[H]
+  \centering
+  \includegraphics[width=250px]{draft-photos/dnn-for-estimation/dnn_theorem_1.png}
+  \caption{Feed Forward Architecture}
+  \label{fig:dnn_theorem_1}
+\end{figure}
 
 \end{document}

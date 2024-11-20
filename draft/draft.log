@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.9.20)  18 NOV 2024 23:10
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.9.20)  20 NOV 2024 00:43
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -426,7 +426,7 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 92.
  (/usr/local/texlive/2024/texmf-dist/tex/latex/amsfonts/umsb.fd
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 )
-<draft-photos/confounder_variable.png, id=60, 285.065pt x 168.63pt>
+<draft-photos/confounder_variable.png, id=80, 285.065pt x 168.63pt>
 File: draft-photos/confounder_variable.png Graphic file (type png)
 <use draft-photos/confounder_variable.png>
 Package pdftex.def Info: draft-photos/confounder_variable.png  used on input line 133.
@@ -434,47 +434,47 @@ Package pdftex.def Info: draft-photos/confounder_variable.png  used on input lin
  [1
 
 {/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] [2 <./draft-photos/confounder_variable.png>] [3{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] [4]
-<draft-photos/backdoor_adjustment.png, id=93, 847.165pt x 273.02pt>
+<draft-photos/backdoor_adjustment.png, id=113, 847.165pt x 273.02pt>
 File: draft-photos/backdoor_adjustment.png Graphic file (type png)
 <use draft-photos/backdoor_adjustment.png>
 Package pdftex.def Info: draft-photos/backdoor_adjustment.png  used on input line 267.
 (pdftex.def)             Requested size: 250.93842pt x 80.86931pt.
-<draft-photos/backdoor_adjustment_explained.png, id=95, 303.1325pt x 356.33125pt>
+<draft-photos/backdoor_adjustment_explained.png, id=115, 303.1325pt x 356.33125pt>
 File: draft-photos/backdoor_adjustment_explained.png Graphic file (type png)
 <use draft-photos/backdoor_adjustment_explained.png>
 Package pdftex.def Info: draft-photos/backdoor_adjustment_explained.png  used on input line 280.
 (pdftex.def)             Requested size: 250.93842pt x 294.98277pt.
  [5 <./draft-photos/backdoor_adjustment.png>]
-<draft-photos/backdoor_adjustment_explained_goal.png, id=106, 293.095pt x 342.27875pt>
+<draft-photos/backdoor_adjustment_explained_goal.png, id=126, 293.095pt x 342.27875pt>
 File: draft-photos/backdoor_adjustment_explained_goal.png Graphic file (type png)
 <use draft-photos/backdoor_adjustment_explained_goal.png>
 Package pdftex.def Info: draft-photos/backdoor_adjustment_explained_goal.png  used on input line 289.
 (pdftex.def)             Requested size: 250.93842pt x 293.04828pt.
  [6 <./draft-photos/backdoor_adjustment_explained.png>]
-<draft-photos/backdoor_adjustment_explained_solution.png, id=113, 283.0575pt x 342.27875pt>
+<draft-photos/backdoor_adjustment_explained_solution.png, id=133, 283.0575pt x 342.27875pt>
 File: draft-photos/backdoor_adjustment_explained_solution.png Graphic file (type png)
 <use draft-photos/backdoor_adjustment_explained_solution.png>
 Package pdftex.def Info: draft-photos/backdoor_adjustment_explained_solution.png  used on input line 300.
 (pdftex.def)             Requested size: 250.93842pt x 303.44676pt.
  [7 <./draft-photos/backdoor_adjustment_explained_goal.png>]
-<draft-photos/backdoor_adjustment_explanation.png, id=121, 873.2625pt x 457.71pt>
+<draft-photos/backdoor_adjustment_explanation.png, id=141, 873.2625pt x 457.71pt>
 File: draft-photos/backdoor_adjustment_explanation.png Graphic file (type png)
 <use draft-photos/backdoor_adjustment_explanation.png>
 Package pdftex.def Info: draft-photos/backdoor_adjustment_explanation.png  used on input line 307.
 (pdftex.def)             Requested size: 250.93842pt x 131.52425pt.
-<draft-photos/backdoor_adjustment_explanation2.png, id=122, 703.62875pt x 476.78125pt>
+<draft-photos/backdoor_adjustment_explanation2.png, id=142, 703.62875pt x 476.78125pt>
 File: draft-photos/backdoor_adjustment_explanation2.png Graphic file (type png)
 <use draft-photos/backdoor_adjustment_explanation2.png>
 Package pdftex.def Info: draft-photos/backdoor_adjustment_explanation2.png  used on input line 314.
 (pdftex.def)             Requested size: 250.93842pt x 170.03331pt.
  [8 <./draft-photos/backdoor_adjustment_explained_solution.png> <./draft-photos/backdoor_adjustment_explanation.png>]
-<draft-photos/frontdoor_adjustment.png, id=131, 853.1875pt x 314.17375pt>
+<draft-photos/frontdoor_adjustment.png, id=151, 853.1875pt x 314.17375pt>
 File: draft-photos/frontdoor_adjustment.png Graphic file (type png)
 <use draft-photos/frontdoor_adjustment.png>
 Package pdftex.def Info: draft-photos/frontdoor_adjustment.png  used on input line 347.
 (pdftex.def)             Requested size: 250.93842pt x 92.4024pt.
  [9 <./draft-photos/backdoor_adjustment_explanation2.png>]
-<draft-photos/frontdoor_adjustment_explained.png, id=138, 336.25626pt x 228.855pt>
+<draft-photos/frontdoor_adjustment_explained.png, id=158, 336.25626pt x 228.855pt>
 File: draft-photos/frontdoor_adjustment_explained.png Graphic file (type png)
 <use draft-photos/frontdoor_adjustment_explained.png>
 Package pdftex.def Info: draft-photos/frontdoor_adjustment_explained.png  used on input line 367.
@@ -484,48 +484,98 @@ File: draft-photos/frontdoor_adjustment_explained.png Graphic file (type png)
 Package pdftex.def Info: draft-photos/frontdoor_adjustment_explained.png  used on input line 378.
 (pdftex.def)             Requested size: 250.93842pt x 170.78876pt.
  [10 <./draft-photos/frontdoor_adjustment.png> <./draft-photos/frontdoor_adjustment_explained.png>]
-<draft-photos/frontdoor_adjustment_explanation.png, id=149, 866.23625pt x 505.89pt>
+<draft-photos/frontdoor_adjustment_explanation.png, id=169, 866.23625pt x 505.89pt>
 File: draft-photos/frontdoor_adjustment_explanation.png Graphic file (type png)
 <use draft-photos/frontdoor_adjustment_explanation.png>
 Package pdftex.def Info: draft-photos/frontdoor_adjustment_explanation.png  used on input line 387.
 (pdftex.def)             Requested size: 250.93842pt x 146.54994pt.
-<draft-photos/frontdoor_adjustment_explanation2.png, id=150, 1060.96375pt x 568.1225pt>
+<draft-photos/frontdoor_adjustment_explanation2.png, id=170, 1060.96375pt x 568.1225pt>
 File: draft-photos/frontdoor_adjustment_explanation2.png Graphic file (type png)
 <use draft-photos/frontdoor_adjustment_explanation2.png>
 Package pdftex.def Info: draft-photos/frontdoor_adjustment_explanation2.png  used on input line 396.
 (pdftex.def)             Requested size: 250.93842pt x 134.367pt.
  [11 <./draft-photos/frontdoor_adjustment_explanation.png>]
-<draft-photos/frontdoor_adjustment_explanation3.png, id=158, 1329.96875pt x 699.61375pt>
+<draft-photos/frontdoor_adjustment_explanation3.png, id=179, 1329.96875pt x 699.61375pt>
 File: draft-photos/frontdoor_adjustment_explanation3.png Graphic file (type png)
 <use draft-photos/frontdoor_adjustment_explanation3.png>
 Package pdftex.def Info: draft-photos/frontdoor_adjustment_explanation3.png  used on input line 415.
 (pdftex.def)             Requested size: 250.93842pt x 131.99924pt.
-<draft-photos/frontdoor_adjustment_explanation4.png, id=159, 868.24374pt x 459.7175pt>
+<draft-photos/frontdoor_adjustment_explanation4.png, id=180, 868.24374pt x 459.7175pt>
 File: draft-photos/frontdoor_adjustment_explanation4.png Graphic file (type png)
 <use draft-photos/frontdoor_adjustment_explanation4.png>
 Package pdftex.def Info: draft-photos/frontdoor_adjustment_explanation4.png  used on input line 422.
 (pdftex.def)             Requested size: 250.93842pt x 132.8657pt.
- [12 <./draft-photos/frontdoor_adjustment_explanation2.png> <./draft-photos/frontdoor_adjustment_explanation3.png>] [13 <./draft-photos/frontdoor_adjustment_explanation4.png>] (./draft.aux)
+ [12 <./draft-photos/frontdoor_adjustment_explanation2.png> <./draft-photos/frontdoor_adjustment_explanation3.png>]
+<draft-photos/instrumental_variables.png, id=189, 721.69624pt x 407.5225pt>
+File: draft-photos/instrumental_variables.png Graphic file (type png)
+<use draft-photos/instrumental_variables.png>
+Package pdftex.def Info: draft-photos/instrumental_variables.png  used on input line 443.
+(pdftex.def)             Requested size: 250.93842pt x 141.69604pt.
+ [13 <./draft-photos/frontdoor_adjustment_explanation4.png> <./draft-photos/instrumental_variables.png>]
+<draft-photos/instrumental_variable_explanation.png, id=199, 307.1475pt x 179.67125pt>
+File: draft-photos/instrumental_variable_explanation.png Graphic file (type png)
+<use draft-photos/instrumental_variable_explanation.png>
+Package pdftex.def Info: draft-photos/instrumental_variable_explanation.png  used on input line 458.
+(pdftex.def)             Requested size: 250.93842pt x 146.79128pt.
+<draft-photos/instrumental_variable_explanation2.png, id=200, 368.37625pt x 243.91125pt>
+File: draft-photos/instrumental_variable_explanation2.png Graphic file (type png)
+<use draft-photos/instrumental_variable_explanation2.png>
+Package pdftex.def Info: draft-photos/instrumental_variable_explanation2.png  used on input line 471.
+(pdftex.def)             Requested size: 250.93842pt x 166.15146pt.
+<draft-photos/instrumental_variable_explanation3.png, id=201, 347.2975pt x 224.84pt>
+File: draft-photos/instrumental_variable_explanation3.png Graphic file (type png)
+<use draft-photos/instrumental_variable_explanation3.png>
+Package pdftex.def Info: draft-photos/instrumental_variable_explanation3.png  used on input line 480.
+(pdftex.def)             Requested size: 250.93842pt x 162.46104pt.
+ [14 <./draft-photos/instrumental_variable_explanation.png> <./draft-photos/instrumental_variable_explanation2.png>]
+<draft-photos/instrumental_variable_explanation4.png, id=210, 368.37625pt x 260.975pt>
+File: draft-photos/instrumental_variable_explanation4.png Graphic file (type png)
+<use draft-photos/instrumental_variable_explanation4.png>
+Package pdftex.def Info: draft-photos/instrumental_variable_explanation4.png  used on input line 491.
+(pdftex.def)             Requested size: 250.93842pt x 177.77524pt.
+<draft-photos/instrumental_variable_explanation5.png, id=211, 369.38pt x 360.34625pt>
+File: draft-photos/instrumental_variable_explanation5.png Graphic file (type png)
+<use draft-photos/instrumental_variable_explanation5.png>
+Package pdftex.def Info: draft-photos/instrumental_variable_explanation5.png  used on input line 500.
+(pdftex.def)             Requested size: 250.93842pt x 244.80127pt.
+ [15 <./draft-photos/instrumental_variable_explanation3.png> <./draft-photos/instrumental_variable_explanation4.png>] [16 <./draft-photos/instrumental_variable_explanation5.png>]
+<draft-photos/dnn-for-estimation/feed_forward_dnn.png, id=226, 586.19pt x 177.66376pt>
+File: draft-photos/dnn-for-estimation/feed_forward_dnn.png Graphic file (type png)
+<use draft-photos/dnn-for-estimation/feed_forward_dnn.png>
+Package pdftex.def Info: draft-photos/dnn-for-estimation/feed_forward_dnn.png  used on input line 556.
+(pdftex.def)             Requested size: 250.93842pt x 76.05505pt.
+ [17 <./draft-photos/dnn-for-estimation/feed_forward_dnn.png>]
+<draft-photos/dnn-for-estimation/dnn_m_condition.png, id=233, 553.06625pt x 276.03125pt>
+File: draft-photos/dnn-for-estimation/dnn_m_condition.png Graphic file (type png)
+<use draft-photos/dnn-for-estimation/dnn_m_condition.png>
+Package pdftex.def Info: draft-photos/dnn-for-estimation/dnn_m_condition.png  used on input line 599.
+(pdftex.def)             Requested size: 250.93842pt x 125.2406pt.
+<draft-photos/dnn-for-estimation/dnn_theorem_1.png, id=234, 675.52374pt x 183.68625pt>
+File: draft-photos/dnn-for-estimation/dnn_theorem_1.png Graphic file (type png)
+<use draft-photos/dnn-for-estimation/dnn_theorem_1.png>
+Package pdftex.def Info: draft-photos/dnn-for-estimation/dnn_theorem_1.png  used on input line 616.
+(pdftex.def)             Requested size: 250.93842pt x 68.23471pt.
+ [18 <./draft-photos/dnn-for-estimation/dnn_m_condition.png>] [19 <./draft-photos/dnn-for-estimation/dnn_theorem_1.png>] (./draft.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
  ***********
 Package rerunfilecheck Info: File `draft.out' has not changed.
-(rerunfilecheck)             Checksum: E06E9276E84F010ADFE42BDD8886CE44;2752.
+(rerunfilecheck)             Checksum: 31116E2BE6FC4C3218D9A326E6E5A2A2;3981.
  ) 
 Here is how much of TeX's memory you used:
- 12984 strings out of 474116
- 201753 string characters out of 5743682
+ 13082 strings out of 474116
+ 205900 string characters out of 5743682
  1936187 words of memory out of 5000000
- 35135 multiletter control sequences out of 15000+600000
+ 35213 multiletter control sequences out of 15000+600000
  566435 words of font info for 69 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  75i,12n,79p,882b,446s stack positions out of 10000i,1000n,20000p,200000b,200000s
 </usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on draft.pdf (13 pages, 2798769 bytes).
+Output written on draft.pdf (19 pages, 3674061 bytes).
 PDF statistics:
- 253 PDF objects out of 1000 (max. 8388607)
- 180 compressed objects within 2 object streams
- 45 named destinations out of 1000 (max. 500000)
- 178 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 329 PDF objects out of 1000 (max. 8388607)
+ 231 compressed objects within 3 object streams
+ 65 named destinations out of 1000 (max. 500000)
+ 263 words of extra memory for PDF output out of 10000 (max. 10000000)
 
