@@ -13,6 +13,8 @@
 \usepackage{fancyhdr}
 \pagestyle{fancy}
 
+\numberwithin{equation}{section}
+
 % Define the header
 \fancyfoot[R]{Fernando Urbano}
 \renewcommand{\footrulewidth}{0.2pt}
@@ -330,6 +332,30 @@ DAG~\ref{fig:dag_backdoor_path} illustrates the backdoor path involving the conf
     \caption{DAG of Backdoor Path}
 \end{figure}
 
+\subsubsection{Backdoor Adjustment Scenario in DML}
+
+In Backdoor Adjustment with DML, the ideal $m(X_i) = \mathbb{E}[Y_i | X_i]$ and $g(X_i) = \mathbb{E}[T_i | X_i]$ from Equations \eqref{eq:m_x_for_target} and \eqref{eq:g_x_for_treatment} are:
+
+\begin{align}
+    & m_{\text{BA}}(C_i) = \mathbb{E}[Y_i | C_i],
+    \label{eq:m_x_for_target_backdoor_adjustment}
+    \\
+    & g_{\text{BA}}(C_i) = \mathbb{E}[T_i | C_i],
+    \label{eq:g_x_for_treatment_backdoor_adjustment}
+\end{align}
+
+In our simulations we also test the habilit of the ML models to estimate ATE under:
+
+\begin{align}
+    & m_{\text{BA}}^{\text{w}_1}(C_i, X_{a, i}) = \mathbb{E}[Y_i | C_i, X_{a, i}],
+    \label{eq:m_x_for_target_backdoor_adjustment_wrong_1}
+    \\
+    & g_{\text{BA}}^{\text{w}_1}(C_i, X_{a, i}) = \mathbb{E}[T_i | C_i, X_{a, i}],
+    \label{eq:g_x_for_treatment_backdoor_adjustment_wrong_1}
+\end{align}
+
+Equations \eqref{eq:m_x_for_target_backdoor_adjustment_wrong_1} and \eqref{eq:g_x_for_treatment_backdoor_adjustment_wrong_1} represent a scenario in which one would not be aware that $X_a$ does not cause $T$ and $Y$.
+
 \subsection{Frontdoor Adjustment}
 
 Frontdoor adjustment is a method used to estimate the causal effect of treatment $T$ on outcome $Y$ when there is unmeasured confounding that cannot be addressed using backdoor adjustment. It leverages a mediator $M$ that lies on the causal path from $T$ to $Y$.
@@ -340,6 +366,12 @@ The causal effect of $T$ on $Y$ can be expressed using the frontdoor adjustment 
 \mathbb{P}[Y(t)] = \sum_M \mathbb{P}[M \mid T=t] \sum_{t’} \mathbb{P}[Y \mid M, T=t’] \mathbb{P}[T=t’].
 \end{equation}
 
+For instance, the average treatment effect in case $M, T \in \{0, 1\}$:
+
+\begin{equation}
+\tau = \left[ P(M = 1 \mid T = 1) - P(M = 1 \mid T = 0) \right] \times \left[ E[Y \mid M = 1] - E[Y \mid M = 0] \right]
+\end{equation}
+
 For the frontdoor adjustment to be valid, the following conditions must be satisfied:
 
 \begin{enumerate}
@@ -348,7 +380,7 @@ For the frontdoor adjustment to be valid, the following conditions must be satis
 \item All backdoor paths from $M$ to $Y$ are blocked by $T$ (i.e., there are no unmeasured confounders between $M$ and $Y$ that are not affected by $T$).
 \end{enumerate}
 
-DAG~\ref{fig:dag_frontdoor_path} illustrates the frontdoor adjustment involving the confounder $C$, treatment $T$, mediator $M$, outcome $Y$, and features with non-causal association $X_a$, which are included due to their relevance in the proposed simulations.
+DAG~\ref{fig:dag_frontdoor_path} illustrates the frontdoor adjustment involving the treatment $T$, mediator $M$, outcome $Y$, observed confounders $C$ and features with no causal association $X_a$. $C$ and $X_a$ would not be present in a typical frontdoor adjustment DAG, but are included due to their relevance in the proposed simulations.
 
 \begin{figure}[H]
     \centering
@@ -376,20 +408,167 @@ DAG~\ref{fig:dag_frontdoor_path} illustrates the frontdoor adjustment involving 
     \caption{DAG of Frontdoor Path}
 \end{figure}
 
-\subsection{Instrumental Variable}
+\subsubsection{Frontdoor Adjustment Scenario in DML}
 
-Instrumental variable (IV) estimation is a method used to estimate the causal effect of a treatment  T  on an outcome  Y  when there is unmeasured confounding that cannot be addressed using backdoor or frontdoor adjustments. This method leverages an instrument  Z , which influences the treatment  T  but has no direct effect on the outcome  Y  except through  T , and is independent of any unmeasured confounders  U  affecting both  T  and  Y .
+In our simulations, we use a binary mediator $M_i \in \{0, 1\}$, similar to the binary treatment $T_i$.
 
-The causal effect of  T  on  Y  can be estimated using the instrumental variable formula:
+In the Frontdoor Adjustment scenario with DML, we need to account for the mediator $M_i$ when estimating the ATE. The identification of the causal effect involves modeling the relationships between $T_i$, $M_i$, and $Y_i$.
+
+The ideal nuisance functions for DML in this scenario are:
+
+\begin{align}
+    & m_{\text{FA}}(M_i, C_i) = \mathbb{E}[Y_i \mid M_i, C_i],
+    \label{eq:m_x_for_target_frontdoor_adjustment} \\
+    & h_{\text{FA}}(T_i) = \mathbb{E}(M_i \mid T_i),
+    \label{eq:h_x_for_mediator_frontdoor_adjustment} \\
+    & g_{\text{FA}}(C_i) = \mathbb{E}(T_i \mid C_i),
+    \label{eq:g_x_for_treatment_frontdoor_adjustment}
+\end{align}
+
+Here $h_{\text{FA}}(M_i, T_i, C_i)$ is the mediator model, representing the probability of the mediator given treatment.
+
+To adapt the orthogonal score function in the presence of the mediator, we modify Equation~\eqref{eq:orthogonal_score} to incorporate the mediator's effect. The adapted orthogonal score function is:
 
 \begin{equation}
-\text{Causal Effect} = \frac{\text{Cov}(Z, Y)}{\text{Cov}(Z, T)}.
+\psi(Y_i, T_i, M_i, C_i; \eta) = \left( \frac{T_i - g_{\text{FA}}(C_i)}{g_{\text{FA}}(C_i)(1 - g_{\text{FA}}(C_i))} \right) \left( M_i - h_{\text{FA}}(T_i) \right) \left( Y_i - m_{\text{FA}}(M_i, C_i) \right) + \delta_M \delta_Y(C_i) - \tau
+\label{eq:orthogonal_score_frontdoor_adjusted}
 \end{equation}
 
-Alternatively, in terms of expectations for a binary instrument  Z :
+where:
+
+\begin{align}
+    \delta_M & = h_{\text{FA}}(T_i = 1) - h_{\text{FA}}(T_i = 0),
+    \label{eq:delta_M_Ci} \\
+    \delta_Y(C_i) & = m_{\text{FA}}(M_i = 1, C_i) - m_{\text{FA}}(M_i = 0, C_i),
+    \label{eq:delta_Y_Ci}
+\end{align}
+
+and $\eta$ represents the collection of nuisance functions.
+
+In this score function:
+
+\begin{itemize}
+    \item The first term adjusts for the treatment assignment, similar to the original score function, but now includes the mediator.
+    \item The product $\left( M_i - h_{\text{FA}}(T_i) \right) \left( Y_i - m_{\text{FA}}(M_i, C_i) \right)$ captures the interaction between the mediator and the outcome.
+    \item The term $\delta_M \delta_Y(C_i)$ represents the estimated causal effect based on the mediator and outcome models.
+\end{itemize}
+
+In our simulations we also test the hability of the ML models to estimate ATE under the following scenario.
+
+\subsubsection*{Inclusion of $C_i$ and $X_{a, i}$ on every nuisance function}
+
+\begin{align}
+    & m_{\text{FA}}^{\text{w}_1}(M_i, C_i, X_{a, i}) = \mathbb{E}[Y_i \mid M_i, C_i, X_{a, i}],
+    \label{eq:m_x_for_target_frontdoor_adjustment_wrong_1} \\
+    & h_{\text{FA}}^{\text{w}_1}(T_i, C_i, X_{a, i}) = \mathbb{E}(M_i \mid C_i, X_{a, i}),
+    \label{eq:h_x_for_mediator_frontdoor_adjustment_wrong_1} \\
+    & g_{\text{FA}}^{\text{w}_1}(C_i, X_{a, i}) = \mathbb{E}(T_i \mid C_i, X_{a, i}),
+    \label{eq:g_x_for_treatment_frontdoor_adjustment_wrong_1}
+\end{align}
+
+Equations \eqref{eq:m_x_for_target_frontdoor_adjustment_wrong_1}, \eqref{eq:h_x_for_mediator_frontdoor_adjustment_wrong_1}, and \eqref{eq:g_x_for_treatment_frontdoor_adjustment_wrong_1} represent a scenario where one is unaware that $X_{a, i}$ has no causal relation to $T_i$, $M_i$, or $Y_i$. Equation \eqref{eq:h_x_for_mediator_frontdoor_adjustment_wrong_1} represents scenarion where one is unaware that $C$ has no causal relation to $M_i$.
+
+\subsubsection*{Ignoring the mediator $M_i$}
+
+\begin{align}
+    & m_{\text{FA}}^{\text{w}_2}(C_i, X_{a, i}) = \mathbb{E}[Y_i \mid C_i, X_{a, i}],
+    \label{eq:m_x_for_target_frontdoor_adjustment_wrong_2} \\
+    & g_{\text{FA}}^{\text{w}_2}(C_i, X_{a, i}) = \mathbb{E}[T_i \mid C_i, X_{a, i}],
+    \label{eq:g_x_for_treatment_frontdoor_adjustment_wrong_2}
+\end{align}
+
+Equations \eqref{eq:m_x_for_target_frontdoor_adjustment_wrong_2} and \eqref{eq:g_x_for_treatment_frontdoor_adjustment_wrong_2} represent a scenario where the mediator $M_i$ is unavailable or ignored and one is unaware that $X_{a, i}$ has no causal relationship to $T$ or $Y$. In this case, the orthogonal score function is the same as in Equation~\eqref{eq:orthogonal_score}.
+
+\subsubsection*{Considering the mediator $M_i$ as a normal covariate}
+
+\begin{align}
+    & m_{\text{FA}}^{\text{w}_3}(C_i, M_i, X_{a, i}) = \mathbb{E}[Y_i \mid C_i, M_i, X_{a, i}],
+    \label{eq:m_x_for_target_frontdoor_adjustment_wrong_3} \\
+    & g_{\text{FA}}^{\text{w}_3}(C_i, M_i, X_{a, i}) = \mathbb{E}[T_i \mid C_i, M_i, X_{a, i}],
+    \label{eq:g_x_for_treatment_frontdoor_adjustment_wrong_3}
+\end{align}
+
+Equations \eqref{eq:m_x_for_target_frontdoor_adjustment_wrong_3} to \eqref{eq:g_x_for_treatment_frontdoor_adjustment_wrong_3} also represent scenarios where one is unaware that $X_{a, i}$ has no causal relation to $T_i$ or $Y_i$, and the scenario where $M_i$ is available but not recognized as a mediator. In this case, the orthogonal score function is the same as in Equation~\eqref{eq:orthogonal_score}.
+
+% The estimation procedure involves:
+
+% \begin{enumerate}
+%     \item \textbf{Estimate Nuisance Functions}: Use flexible machine learning methods to estimate $\hat{m}_{\text{FA}}(M_i, C_i)$, $\hat{p}_{\text{FA}}(M_i \mid T_i, C_i)$, and $\hat{g}_{\text{FA}}(C_i)$.
+    
+%     \item \textbf{Compute $\delta_M(C_i)$ and $\delta_Y(C_i)$}:
+%     \begin{align}
+%         \delta_M(C_i) & = \hat{p}_{\text{FA}}(1 \mid T_i = 1, C_i) - \hat{p}_{\text{FA}}(1 \mid T_i = 0, C_i),
+%         \label{eq:delta_M_hat_Ci} \\
+%         \delta_Y(C_i) & = \hat{m}_{\text{FA}}(1, C_i) - \hat{m}_{\text{FA}}(0, C_i).
+%         \label{eq:delta_Y_hat_Ci}
+%     \end{align}
+    
+%     \item \textbf{Implement Cross-Fitting}: Split the data into folds, estimate the nuisance functions on training folds, and predict on validation folds to avoid overfitting biases.
+    
+%     \item \textbf{Compute the Orthogonal Score}: Evaluate $\psi(Y_i, T_i, M_i, C_i; \hat{\eta})$ for each observation using the estimated nuisance functions.
+    
+%     \item \textbf{Estimate $\tau$}: Solve the empirical moment condition:
+%     \begin{equation}
+%     \frac{1}{n} \sum_{i=1}^n \psi(Y_i, T_i, M_i, C_i; \hat{\eta}) = 0,
+%     \label{eq:moment_condition_frontdoor_adjustment}
+%     \end{equation}
+%     which yields the estimator $\hat{\tau}$.
+% \end{enumerate}
+
+% \subsubsection{Frontdoor Adjustment Scenario in DML}
+
+% In our simulations, we use a binary mediator $M \in \{0, 1\}$, similar to $T$.
+
+% In Frontdoor Adjustment with DML, the ideal $m(X_i) = \mathbb{E}[Y_i | X_i]$ and $g(X_i) = \mathbb{E}[T_i | X_i]$ from Equations \eqref{eq:m_x_for_target} and \eqref{eq:g_x_for_treatment} are:
+
+% \begin{align}
+%     & m_{\text{FA}}(C_i, M_i) = \mathbb{E}[Y_i | C_i, M_i],
+%     \label{eq:m_x_for_target_frontdoor_adjustment}
+%     \\
+%     & g_{\text{FA}}(C_i) = \mathbb{E}[T_i | C_i],
+%     \label{eq:g_x_for_treatment_frontdoor_adjustment}
+% \end{align}
+
+% In our simulations we also test the habilit of the ML models to estimate ATE under:
+
+% \begin{align}
+%     & m_{\text{FA}}^{\text{w}_1}(C_i, M_i, X_{a, i}) = \mathbb{E}[Y_i | C_i, M_i, X_{a, i}],
+%     \label{eq:m_x_for_target_frontdoor_adjustment_wrong_1}
+%     \\
+%     & g_{\text{FA}}^{\text{w}_1}(C_i, M_i, X_{a, i}) = \mathbb{E}[T_i | C_i, M_i, X_{a, i}],
+%     \label{eq:g_x_for_treatment_frontdoor_adjustment_wrong_1}
+% \end{align}
+
+% Equation~\eqref{eq:g_x_for_treatment_frontdoor_adjustment_wrong_1} represents a scenario in which one would not be aware that the $T$ causes $M$ but the opposite is not true.
+
+% And under:
+
+% \begin{align}
+%     & m_{\text{FA}}^{\text{w}_2}(C_i, X_{a, i}) = \mathbb{E}[Y_i | C_i, X_{a, i}],
+%     \label{eq:m_x_for_target_frontdoor_adjustment_wrong_2}
+%     \\
+%     & g_{\text{FA}}^{\text{w}_2}(C_i, X_{a, i}) = \mathbb{E}[T_i | C_i, X_{a, i}],
+%     \label{eq:g_x_for_treatment_frontdoor_adjustment_wrong_2}
+% \end{align}
+
+% Equation~\eqref{eq:m_x_for_target_frontdoor_adjustment_wrong_2} represents a scenario in which one would not be aware of the existance of the mediator $M$.
+
+% Equations \eqref{eq:m_x_for_target_frontdoor_adjustment_wrong_1}, \eqref{eq:g_x_for_treatment_frontdoor_adjustment_wrong_1}, \eqref{eq:m_x_for_target_frontdoor_adjustment_wrong_2}, and \eqref{eq:g_x_for_treatment_frontdoor_adjustment_wrong_2} also represent scenarios in which one would not be aware that $X_a$ has no causal relation to $T$ and $Y$.
+
+\subsection{Instrumental Variable}
+
+Instrumental variable (IV) estimation is a method used to estimate the causal effect of a treatment $T$ on an outcome $Y$ when there is unmeasured confounding that cannot be addressed using backdoor or frontdoor adjustments. This method leverages an instrument $Z$, which influences the treatment $T$ but has no direct effect on the outcome $Y$  except through $T$, and is independent of any unmeasured confounders $U$ affecting both $T$ and $Y$.
+
+The causal effect of $T$ on $Y$ can be estimated using the instrumental variable formula:
 
 \begin{equation}
-\text{Causal Effect} = \frac{\mathbb{E}[Y \mid Z = 1] - \mathbb{E}[Y \mid Z = 0]}{\mathbb{E}[T \mid Z = 1] - \mathbb{E}[T \mid Z = 0]}.
+\hat{\tau} = \frac{\text{Cov}(Z, Y)}{\text{Cov}(Z, T)}.
+\end{equation}
+
+Alternatively, in terms of expectations for a binary instrument $Z$:
+
+\begin{equation}
+\hat{\tau} = \frac{\mathbb{E}[Y \mid Z = 1] - \mathbb{E}[Y \mid Z = 0]}{\mathbb{E}[T \mid Z = 1] - \mathbb{E}[T \mid Z = 0]}.
 \end{equation}
 
 For the instrumental variable method to be valid, the following conditions must be satisfied:
@@ -400,7 +579,7 @@ For the instrumental variable method to be valid, the following conditions must 
 \item Independence (Ignorability): The instrument $Z$ is independent of any unmeasured confounders $U$ that affect both $T$ and $Y$ $(i.e.,  Z \perp\!\!\!\perp U )$.
 \end{enumerate}
 
-DAG~\ref{fig:dag_instrumental_variable} illustrates the instrumental variable setup involving the unobserved confounder $U$, instrument $Z$, treatment $T$, outcome $Y$, observed confounder $C$, and features with non-causal associations $X_a$, which are included due to their relevance in the proposed simulations.
+DAG~\ref{fig:dag_instrumental_variable} illustrates the instrumental variable setup involving the unobserved confounder $U$, instrument $Z$, treatment $T$, outcome $Y$, observed confounder $C$, and features with non-causal associations $X_a$. Again, the last two would not be present in a typical instrumental variable DAG, but are included due to their relevance in the proposed simulations.
 
 \begin{figure}[H]
     \centering
@@ -430,5 +609,109 @@ DAG~\ref{fig:dag_instrumental_variable} illustrates the instrumental variable se
     \label{fig:dag_instrumental_variable}
     \caption{DAG of Instrumental Variable}
 \end{figure}
+    
+\subsubsection{Instrumental Variable Scenario in DML}
+
+In Instrumental Variable Scenario with DML, the ideal $m(X_i) = \mathbb{E}[Y_i | X_i]$ and $g(X_i) = \mathbb{E}[T_i | X_i]$ from Equations \eqref{eq:m_x_for_target} and \eqref{eq:g_x_for_treatment} are:
+
+\begin{align}
+    & m_{\text{IV}}(C_i) = \mathbb{E}[Y_i | C_i],
+    \label{eq:m_x_for_target_instrumental_variable}
+    \\
+    & g_{\text{IV}}(C_i, Z_i) = \mathbb{E}[T_i | C_i, Z_i],
+    \label{eq:g_x_for_treatment_instrumental_variable}
+\end{align}
+
+In our simulations we also test the habilit of the ML models to estimate ATE under:
+
+\begin{align}
+    & m_{\text{IV}}^{\text{w}}(C_i, Z_i, X_{a, i}) = \mathbb{E}[Y_i | C_i, Z_i, X_{a, i}],
+    \label{eq:m_x_for_target_instrumental_variable_wrong}
+    \\
+    & g_{\text{IV}}^{\text{w}}(C_i, Z_i, X_{a, i}) = \mathbb{E}[T_i | C_i, Z_i, X_{a, i}],
+    \label{eq:g_x_for_treatment_instrumental_variable_wrong}
+\end{align}
+
+Equation~\eqref{eq:m_x_for_target_instrumental_variable_wrong} represents a scenario in which one would not be aware that the the instrument $Z$ only has a causal relation to $T$. Equations \eqref{eq:m_x_for_target_instrumental_variable_wrong} and \eqref{eq:g_x_for_treatment_instrumental_variable_wrong} represent a scenario in which one would not be aware that $X_a$ has no causal relation to $T$ and $Y$.
+
+\subsubsection{Instrumental Variable Scenario in DML}
+
+In the Instrumental Variable (IV) scenario with DML, we aim to estimate the causal effect of the treatment $T_i$ on the outcome $Y_i$ using an instrument $Z_i$ that affects $T_i$ but has no direct effect on $Y_i$ except through $T_i$. The presence of unobserved confounders $U_i$ that affect both $T_i$ and $Y_i$ violates the Conditional Independence Assumption, necessitating the use of instrumental variables.
+
+To adapt the DML framework to the IV setting, we need to define appropriate nuisance functions and construct an orthogonal score function suitable for the IV context.
+
+The ideal nuisance functions in this scenario are:
+
+\begin{align}
+    & m_{\text{IV}}(X_i) = \mathbb{E}[Y_i \mid X_i],
+    \label{eq:m_x_for_target_instrumental_variable} \\
+    & q_{\text{IV}}(Z_i, X_i) = \mathbb{E}[T_i \mid Z_i, X_i],
+    \label{eq:q_z_for_instrument_instrumental_variable} \\
+    & g_{\text{IV}}(X_i) = \mathbb{E}[T_i \mid X_i],
+    \label{eq:g_x_for_treatment_instrumental_variable}
+\end{align}
+
+Here:
+
+- $m_{\text{IV}}(X_i)$ is the outcome model, capturing the expected outcome given covariates.
+- $q_{\text{IV}}(Z_i, X_i)$ is the instrument propensity score, representing the expected treatment given the instrument and covariates.
+- $g_{\text{IV}}(X_i)$ is the treatment model, representing the expected treatment given covariates.
+
+The orthogonal score function for the IV scenario is different from the standard DML orthogonal score function. An appropriate orthogonal score function in the linear IV context is:
+
+\begin{equation}
+    \psi_{\text{IV}}(W_i; \theta, \eta) = \left( Y_i - m_{\text{IV}}(X_i) - \theta [T_i - g_{\text{IV}}(X_i)] \right) \left( q_{\text{IV}}(Z_i, X_i) - g_{\text{IV}}(X_i) \right),
+    \label{eq:orthogonal_score_iv}
+\end{equation}
+
+where:
+
+- $W_i = (Y_i, T_i, Z_i, X_i)$.
+- $\theta$ is the parameter of interest (the causal effect of $T_i$ on $Y_i$).
+- $\eta$ represents the collection of nuisance functions.
+
+This score function leverages the variation in $T_i$ induced by the instrument $Z_i$ while controlling for $X_i$. It satisfies the Neyman orthogonality condition, making it robust to estimation errors in the nuisance functions.
+
+The estimation procedure involves:
+
+\begin{enumerate}
+    \item \textbf{Estimate Nuisance Functions}: Use flexible machine learning methods to estimate $\hat{m}_{\text{IV}}(X_i)$, $\hat{q}_{\text{IV}}(Z_i, X_i)$, and $\hat{g}_{\text{IV}}(X_i)$.
+    
+    \item \textbf{Implement Cross-Fitting}: Split the data into folds, estimate the nuisance functions on training folds, and predict on validation folds to mitigate overfitting biases.
+    
+    \item \textbf{Compute the Orthogonal Score}: Evaluate $\psi_{\text{IV}}(W_i; \theta, \hat{\eta})$ for each observation using the estimated nuisance functions.
+    
+    \item \textbf{Estimate $\theta$}: Solve the empirical moment condition:
+    \begin{equation}
+        \frac{1}{n} \sum_{i=1}^n \psi_{\text{IV}}(W_i; \hat{\theta}, \hat{\eta}) = 0,
+        \label{eq:moment_condition_iv}
+    \end{equation}
+    which yields the estimator $\hat{\theta}$.
+\end{enumerate}
+
+In our simulations, we also test the ability of the ML models to estimate the causal effect under different scenarios:
+
+\begin{align}
+    & m_{\text{IV}}^{\text{w}}(X_i, Z_i, X_{a,i}) = \mathbb{E}[Y_i \mid X_i, Z_i, X_{a,i}],
+    \label{eq:m_x_for_target_instrumental_variable_wrong} \\
+    & q_{\text{IV}}^{\text{w}}(Z_i, X_i, X_{a,i}) = \mathbb{E}[T_i \mid Z_i, X_i, X_{a,i}],
+    \label{eq:q_z_for_instrument_instrumental_variable_wrong} \\
+    & g_{\text{IV}}^{\text{w}}(X_i, X_{a,i}) = \mathbb{E}[T_i \mid X_i, X_{a,i}],
+    \label{eq:g_x_for_treatment_instrumental_variable_wrong}
+\end{align}
+
+These equations represent scenarios where irrelevant variables $X_{a,i}$, which have no causal relation to $T_i$ or $Y_i$, are included in the models. Equation~\eqref{eq:m_x_for_target_instrumental_variable_wrong} also represents a scenario where one incorrectly includes the instrument $Z_i$ in the outcome model, violating the exclusion restriction.
+
+For the instrumental variable method to be valid, the following conditions must be satisfied:
+
+\begin{enumerate}
+    \item \textbf{Relevance}: The instrument $Z_i$ is associated with the treatment $T_i$ (i.e., $\mathbb{E}[T_i \mid Z_i, X_i] \neq \mathbb{E}[T_i \mid X_i]$).
+    
+    \item \textbf{Exclusion Restriction}: The instrument $Z_i$ affects the outcome $Y_i$ only through its effect on the treatment $T_i$, and not directly or through any other pathways.
+    
+    \item \textbf{Independence (Ignorability)}: The instrument $Z_i$ is independent of any unmeasured confounders $U_i$ that affect both $T_i$ and $Y_i$, conditional on covariates $X_i$.
+\end{enumerate}
+
+By appropriately specifying and estimating the nuisance functions, and constructing the orthogonal score function as in Equation~\eqref{eq:orthogonal_score_iv}, the DML framework can provide consistent and asymptotically normal estimates of the causal effect in the IV scenario, even in the presence of high-dimensional covariates and complex relationships among variables.
 
 \end{document}
