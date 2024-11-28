@@ -612,6 +612,8 @@ DAG~\ref{fig:dag_instrumental_variable} illustrates the instrumental variable se
     
 \subsubsection{Instrumental Variable Scenario in DML}
 
+This formulation adjusts for the binary nature of $T_i$ and incorporates the propensity scores directly.
+
 In Instrumental Variable Scenario with DML, the ideal $m(X_i) = \mathbb{E}[Y_i | X_i]$ and $g(X_i) = \mathbb{E}[T_i | X_i]$ from Equations \eqref{eq:m_x_for_target} and \eqref{eq:g_x_for_treatment} are:
 
 \begin{align}
@@ -621,6 +623,13 @@ In Instrumental Variable Scenario with DML, the ideal $m(X_i) = \mathbb{E}[Y_i |
     & g_{\text{IV}}(C_i, Z_i) = \mathbb{E}[T_i | C_i, Z_i],
     \label{eq:g_x_for_treatment_instrumental_variable}
 \end{align}
+
+The orthogonal score function from \eqref{eq:orthogonal_score} becomes:
+
+\begin{equation}
+    \psi_{\text{IV}}(Y_i, T_i, Z_i, X_i; \theta, \eta) = \left( \frac{T_i - g(X_i)}{g(X_i)(1 - g(X_i))} \right) \left( Y_i - m(X_i) - \tau [T_i - g(X_i)] \right) \cdot [g(Z_i, X_i) - g(X_i)].
+\label{eq:orthogonal_score_iv_binary}
+\end{equation}
 
 In our simulations we also test the habilit of the ML models to estimate ATE under:
 
