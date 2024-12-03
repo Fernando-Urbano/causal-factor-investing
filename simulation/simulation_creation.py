@@ -1,18 +1,32 @@
 import numpy as np
+import sqlite3
 import pandas as pd
 from doubleml import DoubleMLData, DoubleMLPLR
 from sklearn.datasets import make_spd_matrix, make_sparse_spd_matrix
 from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 from sklearn.compose import ColumnTransformer
+from sklearn.neural_network import MLPRegressor, MLPClassifier
 from sklearn.pipeline import Pipeline
 from doubleml import DoubleMLData, DoubleMLPLR
 from sklearn.ensemble import RandomForestRegressor
 from sklearn.model_selection import GridSearchCV
-from sklearn.neural_network import MLPRegressor
-from sklearn.linear_model import LassoCV
+from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
+from sklearn.linear_model import LassoCV, LogisticRegressionCV, ElasticNetCV
 import datetime
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
+import random
 
+SEED_MODEL = 42
+
+
+SCHEMA_COLUMNS = [
+    "scenario_name", "seed_data", "n_samples", "d_c", "d_a", "timestamp_data_generation",
+    "noise_level", "alpha_corr_covariates", "true_ate", "avg_corr_covariates",
+    "l_model", "m_model", "cv_loss_regression", "cv_loss_classification",
+    "specification", "target_covariates_relationship_type",
+    "treatment_target_relationship_type", "estimated_ate", "std_error",
+    "ci_2_5_pct", "ci_97_5_pct"
+]
 
 NON_LINEAR_TRANSFORMATIONS = {
     "linear": lambda t: t,
@@ -47,31 +61,63 @@ PARAM_GRID = {
             (32,)
         ],
         'model__alpha': [.001, .01, .1, .2, .5, 1],  # Ridge regularization
-        'model__learning_rate': ['constant', 'adaptive']
     }
 }
 
-PIPELINES_DNN_LASSO = {"Lasso": [
-        ('poly_features', PolynomialFeatures(degree=2, include_bias=False)),
-        ('scaler', StandardScaler()),
-        ('lasso', LassoCV(cv=5, random_state=42))
-    ],
-    "DNN": [
-        ('scaler', StandardScaler()),
-        ('model', MLPRegressor(max_iter=1000, random_state=42, activation='relu'))
-    ]
-}
 
 NORMAL_PIPELINES = {
     "classification": {
-        PIPELINES_DNN_LASSO.update({
-            "RandomForestClassifier": [('model', RandomForestClassifier(random_state=42))]
-        })
+        "LASSO": [
+            ('poly_features', PolynomialFeatures(degree=2, include_bias=False)),
+            ('scaler', StandardScaler()),
+            ('model', LogisticRegressionCV(
+                cv=5,
+                penalty='l1',
+                solver='saga',
+                random_state=SEED_MODEL,
+                max_iter=10000
+            ))
+        ],
+        "EN": [
+            ('poly_features', PolynomialFeatures(degree=2, include_bias=False)),
+            ('scaler', StandardScaler()),
+            ('model', LogisticRegressionCV(
+                cv=5,
+                penalty='elasticnet',
+                solver='saga',
+                l1_ratios=[0.1, 0.5, 0.7, 0.9, 1.0],
+                random_state=SEED_MODEL,
+                max_iter=10000
+            ))
+        ],
+        "RF": [('model', RandomForestClassifier(random_state=SEED_MODEL))],
+        "DNN": [
+            ('scaler', StandardScaler()),
+            ('model', MLPRegressor(max_iter=1000, random_state=SEED_MODEL, activation='relu', learning_rate='adaptive'))
+        ]
     },
     "regression": {
-        PIPELINES_DNN_LASSO.update({
-            "RandomForestRegressor": [('model', RandomForestRegressor(random_state=42))],
-        })
+        "LASSO": [
+            ('poly_features', PolynomialFeatures(degree=2, include_bias=False)),
+            ('scaler', StandardScaler()),
+            ('model', LassoCV(cv=5, random_state=SEED_MODEL))
+        ],
+        "EN": [
+            ('poly_features', PolynomialFeatures(degree=2, include_bias=False)),
+            ('scaler', StandardScaler()),
+            ('model', ElasticNetCV(
+                cv=5,
+                l1_ratio=[0.1, 0.5, 0.7, 0.9, 1.0],
+                random_state=SEED_MODEL
+            ))
+        ],
+        "RF": [
+            ('model', RandomForestRegressor(random_state=SEED_MODEL))
+        ],
+        "DNN": [
+            ('scaler', StandardScaler()),
+            ('model', MLPClassifier(max_iter=1000, random_state=SEED_MODEL, activation='relu', learning_rate='adaptive'))
+        ]
     }
 }
 
@@ -131,7 +177,7 @@ def generate_non_linear_relationship(X, relationship_type="random", random_seed=
     - y (np.ndarray): Target values with non-linear relationship.
     """
     if random_seed is not None:
-        np.random.seed(random_seed)
+        np.random.seed(SEED_MODEL)
 
     n_features = X.shape[1]
 
@@ -169,6 +215,7 @@ def modify_treatment_effect_and_compute_ate(treatment, relationship_type="random
         - "step" (piecewise constant)
         - "piecewise_linear"
         - "interaction" (interacts with a covariate)
+        # TODO: Add possibility to interact with covariates
         - "exponential"
         - "logarithmic"
         - "random" (randomly selects one of the above)
@@ -179,7 +226,7 @@ def modify_treatment_effect_and_compute_ate(treatment, relationship_type="random
     - true_ate (float): True average treatment effect.
     """
     if random_seed is not None:
-        np.random.seed(random_seed)
+        np.random.seed(SEED_MODEL)
 
     if relationship_type == "random":
         relationship_type = np.random.choice(list(NON_LINEAR_TRANSFORMATIONS.keys()))
@@ -202,15 +249,19 @@ def modify_treatment_effect_and_compute_ate(treatment, relationship_type="random
 
 
 class CausalScenario:
+    db_path = "database/causal_scenarios.db"
+
     def __init__(
             self,
             n_samples: int, d_c: int, d_a: int,
             noise_level: float,
             alpha_corr_covariates: float,
-            model: str = None,
+            l_model: str = None,
+            m_model: str = None,
             cv_loss_regression: str = CV_DEFAULT_LOSS_REGRESSION,
             cv_loss_classification: str = CV_DEFAULT_LOSS_CLASSIFICATION,
-            specification: str = 'correct'
+            specification: str = 'correct',
+            seed_data: int = 42
         ):
         self.n_samples = n_samples
         self.d_c = d_c
@@ -224,13 +275,22 @@ class CausalScenario:
         self.target = None
         self.treatment = None
         self.avg_corr_covariates = None
-        self.model = model
+        self.l_model = l_model
+        self.m_model = m_model
         self.cv_loss_regression = cv_loss_regression
         self.cv_loss_classification = cv_loss_classification
         self.specification = specification
         self.treatment_target_relationship_type = "random"
         self.target_covariates_relationship_type = "random"
         self.summary = None
+        self.seed_data = seed_data
+
+        np.random.seed(self.seed_data)
+        random.seed(self.seed_data)
+
+    @classmethod
+    def save_in_test_db(cls):
+        cls.db_path = "database/test_causal_scenarios.db"
 
     def generate_data(self):
         self._set_generate_data_timestamp()
@@ -269,40 +329,52 @@ class CausalScenario:
 
     def _build_summary(self) -> bool:
         if self.dml_plr is None:
-            raise ValueError('dml_plr is None')
-        
+            raise ValueError("dml_plr is None")
+
         summary = self.dml_plr.summary
         summary.reset_index(drop=True, inplace=True)
         summary.rename({
-            'coef': 'estimated_ate', 'std err': 'std_error',
-            '2.5 %': 'ci_2_5_pct', '97.5 %': 'ci_97_5_pct'
+            "coef": "estimated_ate",
+            "std err": "std_error",
+            "2.5 %": "ci_2_5_pct",
+            "97.5 %": "ci_97_5_pct"
         }, axis=1, inplace=True)
-        model_information = pd.DataFrame({
-            "n_samples": self.n_samples,
-            "d_c": self.d_c,
-            "d_a": self.d_a,
-            "timestamp_data_generation": self.timestamp_data_generation,
-            "noise_level": self.noise_level,
-            "alpha_corr_covariates": self.alpha_corr_covariates,
-            "true_ate": self.true_ate,
-            "avg_corr_covariates": self.avg_corr_covariates,
-            "model": self.model,
-            "cv_loss_regression ": self.cv_loss_regression ,
-            "cv_loss_classification": self.cv_loss_classification,
-            "specification": self.specification,
-            "target_covariates_relationship_type": self.target_covariates_relationship_type,
-            "treatment_target_relationship_type": self.treatment_target_relationship_type,
-        }, index=[0])
-        self.summary = pd.concat([summary, model_information], axis=1)
+
+        model_information = {}
+        for column in SCHEMA_COLUMNS:
+            if column == "scenario_name":
+                model_information[column] = self.__class__.__name__
+            elif hasattr(self, column):
+                model_information[column] = getattr(self, column)
+            else:
+                model_information[column] = pd.NA
+                
+        self.summary = pd.concat([
+            summary, pd.DataFrame([model_information])
+        ], axis=1)
+
+        return True
+
 
     def get_summary(self) -> pd.DataFrame:
         self._build_summary()
         return self.summary
     
     def save_summary(self) -> bool:
+        """
+        Saves the summary of the current scenario to an SQLite database.
+        """
         self._build_summary()
-        # TODO
+        self.summary["scenario_name"] = self.__class__.__name__
+        with sqlite3.connect(self.__class__.db_path) as conn:
+            self.summary.to_sql(
+                name='database/scenario_summary',
+                con=conn,
+                if_exists='append',
+                index=False
+            )
         return True
+
 
 
 class BackdoorAdjustmentScenario(CausalScenario):
@@ -321,13 +393,13 @@ class BackdoorAdjustmentScenario(CausalScenario):
             X = np.matrix()
         dml_data = DoubleMLData.from_arrays(x=X, y=self.target, t=self.treatment)
 
-        pipeline_l = Pipeline(NORMAL_PIPELINES['regression'][self.model])
-        pipeline_g = Pipeline(NORMAL_PIPELINES['classification'][self.model])
+        pipeline_l = Pipeline(NORMAL_PIPELINES['regression'][self.l_model])
+        pipeline_m = Pipeline(NORMAL_PIPELINES['classification'][self.m_model])
 
-        ml_l = add_grid_search(pipeline=pipeline_l, model=self.model, scoring=self.cv_loss_regression)
-        ml_g = add_grid_search(pipeline=pipeline_g, model=self.model, scoring=self.cv_loss_classification)
+        ml_l = add_grid_search(pipeline=pipeline_l, model=self.l_model, scoring=self.cv_loss_regression)
+        ml_m = add_grid_search(pipeline=pipeline_m, model=self.m_model, scoring=self.cv_loss_classification)
 
-        self.dml_plr = DoubleMLPLR(dml_data, ml_l=ml_l, ml_m=ml_g, n_folds=5)
+        self.dml_plr = DoubleMLPLR(dml_data, ml_l=ml_l, ml_m=ml_m, n_folds=5)
 
         return True
 
