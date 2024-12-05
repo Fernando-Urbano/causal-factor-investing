@@ -2,10 +2,12 @@
 \usepackage{amsmath}
 \usepackage{tikz}
 \usepackage{mathtools}
+\usepackage{enumitem}
 \usepackage[a4paper, total={6in, 8in}]{geometry}
 \usepackage{amssymb}
 \usepackage{color}
 \usepackage{lscape}
+\usepackage{ifthen}
 \usepackage{listings}
 \usepackage{xcolor}
 \usepackage{float}
@@ -63,6 +65,12 @@
 \definecolor{codepurple}{rgb}{0.58,0,0.82}
 \definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
+\newboolean{bool:showfrontdooradjustment}
+\newboolean{bool:showquestions}
+
+\setboolean{bool:showfrontdooradjustment}{false}
+\setboolean{bool:showquestions}{false}
+
 % Setup the listings package
 \lstdefinestyle{Python}{
     backgroundcolor=\color{backcolour},   
@@ -85,6 +93,7 @@
 
 \newenvironment{colorparagraph}[1]{\par\color{#1}}{\par}
 \definecolor{questioncolor}{RGB}{20, 40, 150}
+\definecolor{annotation}{RGB}{20, 200, 20}
 \definecolor{tacolor}{RGB}{200, 0, 0}
 % \documentclass[tikz,border=2mm]{standalone}
 % \lstset{style=mystyle}
@@ -95,11 +104,24 @@
 
 \maketitle
 
+\begin{colorparagraph}{annotation}
+\section*{Which questions can we answer?}
+\begin{itemize}
+    \item Which model performs better for different ratio between $d_c$ and $d_a$? Meaning the amount of covariates that are relevant and irrelevant.
+    \item Which model performs better in general?
+    \item Which model has the best convergence rate (different sample sizes)?
+    \item Which model performs better for different noise levels?
+    \item Which models performs better for different levels of sparsity (amount of non-causal covariates)?
+    \item Is the order of performance the same in terms of bias and variance?
+    \item Which model performs better when there is mispecification?
+\end{itemize}
+\end{colorparagraph}
+
 \section{Goal}
 
 The goal of this project is to evaluate the performance of different Double Machine Learning (DML) models in recovering the Average Treatment Effect (ATE) across various causal inference scenarios addressed in simulations.
 
-The desired broader impact of the project is to provide actionable recommendations for selecting the most appropriate DML method based on the causal scenario, data structure, noise levels, and sample size. Additionally, we aim to create a benchmarking framework that practitioners can use to evaluate and compare causal inference estimates derived from the tested methods in different scenarios.
+Ideally, the project should provide actionable recommendations for selecting the most appropriate DML method based on the causal scenario, data structure, noise levels, and sample size, sparsity of important covariates. Additionally, we aim to create a benchmarking framework that practitioners can use to evaluate and compare causal inference estimates derived from the tested methods in different scenarios.
 
 The DML methods compared in this study are:
 \begin{itemize}
@@ -132,7 +154,7 @@ For each of the scenario combinations, we show which of LASSO, Random Forest and
     \item MSE (Mean Squared Error).
 \end{itemize}
 
-\section{Methodology}
+\section{Double Machine Learning}
 
 \subsection{Problem Setup}
 
@@ -140,7 +162,7 @@ Consider a random sample ${(Y_i, T_i, X_i)}_{i=1}^n$, where:
 \begin{itemize}
 \item $Y_i \in \mathbb{R}$ is the outcome variable.
 \item $T_i \in {0,1}$ is a binary treatment indicator.
-\item $X_i \in \mathbb{R}^p$ is a vector of covariates.
+\item $X_i \in \mathbb{R}^d$ is a vector of covariates.
 \end{itemize}
 
 Our goal is to estimate the Average Treatment Effect (ATE), defined as:
@@ -159,7 +181,7 @@ Under the Conditional Independence Assumption (CIA) and overlap conditions, the 
 \end{equation}
 where $\mu_t(X_i) = \mathbb{E}[Y_i | T_i = t, X_i]$ is the conditional expectation of the outcome given treatment and covariates.
 
-\subsection{Double Machine Learning (DML) Estimator}
+\subsection{DML Estimator}
 
 The DML framework aims to estimate $\tau$ while controlling for high-dimensional or complex relationships between $Y_i$, $T_i$, and $X_i$. The key idea is to use machine learning methods to estimate the nuisance parameters and then construct an estimator for $\tau$ that is robust to estimation errors in these nuisance parameters.
 
@@ -179,7 +201,7 @@ We define the following nuisance functions:
 
 These functions can be estimated using flexible machine learning methods such as LASSO, Random Forests, or Neural Networks.
 
-Under mild regularity conditions and appropriate rates of convergence for the nuisance estimators, the DML estimator is root-n consistent and asymptotically normal. It provides valid confidence intervals and hypothesis tests even when using complex machine learning methods for $\hat{m}(X)$ and $\hat{g}(X)$.
+Under mild regularity conditions and appropriate rates of convergence for the nuisance estimators, the DML estimator is root-n consistent and asymptotically normal (we make the regularity conditions explicity in Appendix~\ref{subsec:appendix_mild_regularity_conditions_for_dml}). It provides valid confidence intervals and hypothesis tests even when using complex machine learning methods for $\hat{m}(X)$ and $\hat{g}(X)$.
 
 \subsubsection{Orthogonal Score Function}
 
@@ -191,18 +213,13 @@ A common choice for the orthogonal score is:
 \label{eq:orthogonal_score}
 \end{equation}
 
-where $g(X_i) = \pi(X_i)$ in case of binary treatment and:
-
-\begin{equation}
-m_t(X_i) = \mathbb{E}[Y_i | T_i = t, X_i]  \quad \text{for} \ t \in \{0,1\}
-\label{eq:orthogonal_score_m_t}
-\end{equation}
+where $g(X_i) = \pi(X_i)$ in case of binary treatment and $m_t(X_i) = \mathbb{E}[Y_i | T_i = t, X_i]$ for $t \in \{0,1\}$.
 
 \subsubsection{Estimation Procedure}
 
 The estimation proceeds in several steps:
 \begin{enumerate}
-\item Estimate Nuisance Functions: Use one of the three outline ML models to obtain estimators $\hat{m}(X_i)$ and $\hat{g}(X_i)$ for the nuisance functions.
+\item Estimate Nuisance Functions: Use one of the outlined ML models to obtain estimators $\hat{m}(X_i)$ and $\hat{g}(X_i)$ for the nuisance functions.
 
 \item Compute the Score Function: Evaluate the orthogonal score $\psi(Y_i, T_i, X_i; \hat{\eta})$ using the estimated nuisance parameters.
 
@@ -344,7 +361,9 @@ In Backdoor Adjustment with DML, the ideal $m(X_i) = \mathbb{E}[Y_i | X_i]$ and 
     \label{eq:g_x_for_treatment_backdoor_adjustment}
 \end{align}
 
-In our simulations we also test the habilit of the ML models to estimate ATE under:
+In our simulations we also test the habilit of the ML models to estimate ATE under the following scenarios. In these scenarios, the superscript $\text{w}_i$ on the nuisance functions denotes the i-th scenario which involves misspecifications of the nuisance functions.
+
+\paragraph{Inclusion of $C_i$ and $X_{a, i}$ on every nuisance function}
 
 \begin{align}
     & m_{\text{BA}}^{\text{w}_1}(C_i, X_{a, i}) = \mathbb{E}[Y_i | C_i, X_{a, i}],
@@ -356,6 +375,21 @@ In our simulations we also test the habilit of the ML models to estimate ATE und
 
 Equations \eqref{eq:m_x_for_target_backdoor_adjustment_wrong_1} and \eqref{eq:g_x_for_treatment_backdoor_adjustment_wrong_1} represent a scenario in which one would not be aware that $X_a$ does not cause $T$ and $Y$.
 
+\paragraph{Only partial inclusion of $C_i$ and inclusion of $X_{a, i}$ on every nuisance function}
+\label{par:backdoor_adjustment_wrong_2}
+
+\begin{align}
+    & m_{\text{BA}}^{\text{w}_2}(C^{p}_i, X_{a, i}) = \mathbb{E}[Y_i | C^{p}_i, X_{a, i}],
+    \label{eq:m_x_for_target_backdoor_adjustment_wrong_2}
+    \\
+    & g_{\text{BA}}^{\text{w}_2}(C^{p}_i, X_{a, i}) = \mathbb{E}[T_i | C^{p}_i, X_{a, i}],
+    \label{eq:g_x_for_treatment_backdoor_adjustment_wrong_2}
+\end{align}
+
+Equations \eqref{eq:m_x_for_target_backdoor_adjustment_wrong_2} and \eqref{eq:g_x_for_treatment_backdoor_adjustment_wrong_2} also represent a scenario in which one would not be aware that $X_a$ does not cause $T$ and $Y$ and also does not include all causal cofounders. $C^{p}_i$ is subset of $C_i$ included, where $C_i \in \mathbb{R}^{d_c}$ and $C^{p}_i \in \mathbb{R}^{d_{cp}}$ and $d_c > d_{cp}$.
+
+\ifthenelse{\boolean{bool:showfrontdooradjustment}}{
+\begin{colorparagraph}{annotation}
 \subsection{Frontdoor Adjustment}
 
 Frontdoor adjustment is a method used to estimate the causal effect of treatment $T$ on outcome $Y$ when there is unmeasured confounding that cannot be addressed using backdoor adjustment. It leverages a mediator $M$ that lies on the causal path from $T$ to $Y$.
@@ -369,7 +403,7 @@ The causal effect of $T$ on $Y$ can be expressed using the frontdoor adjustment 
 For instance, the average treatment effect in case $M, T \in \{0, 1\}$:
 
 \begin{equation}
-\tau = \left[ P(M = 1 \mid T = 1) - P(M = 1 \mid T = 0) \right] \times \left[ E[Y \mid M = 1] - E[Y \mid M = 0] \right]
+\tau = \left[ \mathbb{P}(M = 1 \mid T = 1) - \mathbb{P}(M = 1 \mid T = 0) \right] \times \left[ \mathbb{E}[Y \mid M = 1] - \mathbb{E}[Y \mid M = 0] \right]
 \end{equation}
 
 For the frontdoor adjustment to be valid, the following conditions must be satisfied:
@@ -392,13 +426,14 @@ DAG~\ref{fig:dag_frontdoor_path} illustrates the frontdoor adjustment involving 
     ]
     
     \node (T) {T};
-    \node (M) [right=of T, xshift=-0.5cm] {M};
-    \node (Y) [right=of M, xshift=-0.5cm] {Y};
-    \node (XA) [below=of M, xshift=-1cm] {$\text{X}_a$};
-    \node (XC) [below=of M, xshift=1cm] {C};
+    \node (M) [right=of T, xshift=-0.5cm, yshift=1.75cm] {M};
+    \node (Y) [right=of M, xshift=-0.5cm, yshift=-1.75cm] {Y};
+    \node (XA) [below=of M, xshift=-1cm, yshift=-1cm] {$\text{X}_a$};
+    \node (XC) [below=of M, xshift=1cm, yshift=-1cm] {C};
     
     \draw[->] (T) -- (M);
     \draw[->] (M) -- (Y);
+    \draw[->] (T) -- (Y);
     \draw[->] (XC) -- (T);
     \draw[->] (XC) -- (Y);
     \draw[dotted] (XA) -- (T);
@@ -453,9 +488,81 @@ In this score function:
     \item The term $\delta_M \delta_Y(C_i)$ represents the estimated causal effect based on the mediator and outcome models.
 \end{itemize}
 
+\begin{figure}[H]
+    \centering
+    \fbox{
+        \begin{minipage}{0.99\textwidth}
+            
+        There are doubts about the orthogonal score function for the frontdoor adjustment.
+
+        We are not sure if the score function should be the one presented in Equation~\eqref{eq:orthogonal_score_frontdoor_adjusted} or if it should be presented as the following:
+        
+        \vspace{0.3cm}
+        \begin{align}
+            & m_{\text{FA}}(M_i, C_i) = \mathbb{E}[Y_i \mid M_i, C_i],
+            \label{eq:m_x_for_target_frontdoor_adjustment} \\
+            & h_{\text{FA}}(T_i) = \mathbb{E}(M_i \mid T_i),
+            \label{eq:h_x_for_mediator_frontdoor_adjustment} \\
+            & g_{\text{FA}}(C_i) = \mathbb{E}(T_i \mid C_i),
+            \label{eq:g_x_for_treatment_frontdoor_adjustment}
+        \end{align}
+
+        \begin{equation}
+            \psi(Y_i, T_i, M_i, C_i; \eta) = \left(
+                \left( \frac{M_i - h_{\text{FA}}(T_i)}{h_{\text{FA}}(T_i)(1 - h_{\text{FA}}(T_i))} \right) (Y_i - m_{\text{FA}}(M_i, C_i))
+            \right) - \tau 
+        \end{equation}
+
+        \begin{equation}
+            \begin{split}
+                \psi(Y_i, T_i, M_i, C_i; \eta) = \\ \left(
+                \left(
+                    \frac{M_i - h_{\text{FA}}(T_i)}{h_{\text{FA}}(T_i)(1 - h_{\text{FA}}(T_i))}
+                \right) (Y_i - m_{\text{FA}}(M_i, C_i))
+                \right)
+                \cdot \left(
+                    h_{\text{FA}}(T_i = 1) - h_{\text{FA}}(T_i = 0)
+                \right)
+                - \tau
+            \end{split}
+        \end{equation}
+
+        Furthermore, in the frontdoor adjustment, I am not entirely sure if $T$ should have a direct influence on $Y$. If $T$ also has a direct influence on $Y$, the DAG would look like the following:
+
+        \begin{figure}[H]
+            \centering
+            \begin{tikzpicture}[
+                >={Stealth[round]},
+                every node/.style={draw, circle, minimum size=1cm},
+                every edge/.style={draw, ->, thick},
+                node distance=2cm
+            ]
+            
+            \node (T) {T};
+            \node (M) [right=of T, xshift=-0.5cm, yshift=1.75cm] {M};
+            \node (Y) [right=of M, xshift=-0.5cm, yshift=-1.75cm] {Y};
+            \node (XA) [below=of M, xshift=-1cm, yshift=-1cm] {$\text{X}_a$};
+            \node (XC) [below=of M, xshift=1cm, yshift=-1cm] {C};
+            
+            \draw[->] (T) -- (M);
+            \draw[->] (M) -- (Y);
+            \draw[->] (T) -- (Y);
+            \draw[->] (XC) -- (T);
+            \draw[->] (XC) -- (Y);
+            \draw[dotted] (XA) -- (T);
+            \draw[dotted] (XA) -- (Y);
+            \end{tikzpicture}
+            \label{fig:dag_frontdoor_path}
+            \caption{DAG of Frontdoor Path}
+        \end{figure}
+        \vspace{0.3cm}
+    \end{minipage}
+    }
+\end{figure}
+
 In our simulations we also test the hability of the ML models to estimate ATE under the following scenario.
 
-\subsubsection*{Inclusion of $C_i$ and $X_{a, i}$ on every nuisance function}
+\paragraph{Inclusion of $C_i$ and $X_{a, i}$ on every nuisance function}
 
 \begin{align}
     & m_{\text{FA}}^{\text{w}_1}(M_i, C_i, X_{a, i}) = \mathbb{E}[Y_i \mid M_i, C_i, X_{a, i}],
@@ -468,7 +575,7 @@ In our simulations we also test the hability of the ML models to estimate ATE un
 
 Equations \eqref{eq:m_x_for_target_frontdoor_adjustment_wrong_1}, \eqref{eq:h_x_for_mediator_frontdoor_adjustment_wrong_1}, and \eqref{eq:g_x_for_treatment_frontdoor_adjustment_wrong_1} represent a scenario where one is unaware that $X_{a, i}$ has no causal relation to $T_i$, $M_i$, or $Y_i$. Equation \eqref{eq:h_x_for_mediator_frontdoor_adjustment_wrong_1} represents scenarion where one is unaware that $C$ has no causal relation to $M_i$.
 
-\subsubsection*{Ignoring the mediator $M_i$}
+\paragraph{Ignoring the mediator $M_i$}
 
 \begin{align}
     & m_{\text{FA}}^{\text{w}_2}(C_i, X_{a, i}) = \mathbb{E}[Y_i \mid C_i, X_{a, i}],
@@ -479,7 +586,7 @@ Equations \eqref{eq:m_x_for_target_frontdoor_adjustment_wrong_1}, \eqref{eq:h_x_
 
 Equations \eqref{eq:m_x_for_target_frontdoor_adjustment_wrong_2} and \eqref{eq:g_x_for_treatment_frontdoor_adjustment_wrong_2} represent a scenario where the mediator $M_i$ is unavailable or ignored and one is unaware that $X_{a, i}$ has no causal relationship to $T$ or $Y$. In this case, the orthogonal score function is the same as in Equation~\eqref{eq:orthogonal_score}.
 
-\subsubsection*{Considering the mediator $M_i$ as a normal covariate}
+\paragraph{Considering the mediator $M_i$ as a normal covariate}
 
 \begin{align}
     & m_{\text{FA}}^{\text{w}_3}(C_i, M_i, X_{a, i}) = \mathbb{E}[Y_i \mid C_i, M_i, X_{a, i}],
@@ -490,86 +597,12 @@ Equations \eqref{eq:m_x_for_target_frontdoor_adjustment_wrong_2} and \eqref{eq:g
 
 Equations \eqref{eq:m_x_for_target_frontdoor_adjustment_wrong_3} to \eqref{eq:g_x_for_treatment_frontdoor_adjustment_wrong_3} also represent scenarios where one is unaware that $X_{a, i}$ has no causal relation to $T_i$ or $Y_i$, and the scenario where $M_i$ is available but not recognized as a mediator. In this case, the orthogonal score function is the same as in Equation~\eqref{eq:orthogonal_score}.
 
-% The estimation procedure involves:
-
-% \begin{enumerate}
-%     \item \textbf{Estimate Nuisance Functions}: Use flexible machine learning methods to estimate $\hat{m}_{\text{FA}}(M_i, C_i)$, $\hat{p}_{\text{FA}}(M_i \mid T_i, C_i)$, and $\hat{g}_{\text{FA}}(C_i)$.
-    
-%     \item \textbf{Compute $\delta_M(C_i)$ and $\delta_Y(C_i)$}:
-%     \begin{align}
-%         \delta_M(C_i) & = \hat{p}_{\text{FA}}(1 \mid T_i = 1, C_i) - \hat{p}_{\text{FA}}(1 \mid T_i = 0, C_i),
-%         \label{eq:delta_M_hat_Ci} \\
-%         \delta_Y(C_i) & = \hat{m}_{\text{FA}}(1, C_i) - \hat{m}_{\text{FA}}(0, C_i).
-%         \label{eq:delta_Y_hat_Ci}
-%     \end{align}
-    
-%     \item \textbf{Implement Cross-Fitting}: Split the data into folds, estimate the nuisance functions on training folds, and predict on validation folds to avoid overfitting biases.
-    
-%     \item \textbf{Compute the Orthogonal Score}: Evaluate $\psi(Y_i, T_i, M_i, C_i; \hat{\eta})$ for each observation using the estimated nuisance functions.
-    
-%     \item \textbf{Estimate $\tau$}: Solve the empirical moment condition:
-%     \begin{equation}
-%     \frac{1}{n} \sum_{i=1}^n \psi(Y_i, T_i, M_i, C_i; \hat{\eta}) = 0,
-%     \label{eq:moment_condition_frontdoor_adjustment}
-%     \end{equation}
-%     which yields the estimator $\hat{\tau}$.
-% \end{enumerate}
-
-% \subsubsection{Frontdoor Adjustment Scenario in DML}
-
-% In our simulations, we use a binary mediator $M \in \{0, 1\}$, similar to $T$.
-
-% In Frontdoor Adjustment with DML, the ideal $m(X_i) = \mathbb{E}[Y_i | X_i]$ and $g(X_i) = \mathbb{E}[T_i | X_i]$ from Equations \eqref{eq:m_x_for_target} and \eqref{eq:g_x_for_treatment} are:
-
-% \begin{align}
-%     & m_{\text{FA}}(C_i, M_i) = \mathbb{E}[Y_i | C_i, M_i],
-%     \label{eq:m_x_for_target_frontdoor_adjustment}
-%     \\
-%     & g_{\text{FA}}(C_i) = \mathbb{E}[T_i | C_i],
-%     \label{eq:g_x_for_treatment_frontdoor_adjustment}
-% \end{align}
-
-% In our simulations we also test the habilit of the ML models to estimate ATE under:
-
-% \begin{align}
-%     & m_{\text{FA}}^{\text{w}_1}(C_i, M_i, X_{a, i}) = \mathbb{E}[Y_i | C_i, M_i, X_{a, i}],
-%     \label{eq:m_x_for_target_frontdoor_adjustment_wrong_1}
-%     \\
-%     & g_{\text{FA}}^{\text{w}_1}(C_i, M_i, X_{a, i}) = \mathbb{E}[T_i | C_i, M_i, X_{a, i}],
-%     \label{eq:g_x_for_treatment_frontdoor_adjustment_wrong_1}
-% \end{align}
-
-% Equation~\eqref{eq:g_x_for_treatment_frontdoor_adjustment_wrong_1} represents a scenario in which one would not be aware that the $T$ causes $M$ but the opposite is not true.
-
-% And under:
-
-% \begin{align}
-%     & m_{\text{FA}}^{\text{w}_2}(C_i, X_{a, i}) = \mathbb{E}[Y_i | C_i, X_{a, i}],
-%     \label{eq:m_x_for_target_frontdoor_adjustment_wrong_2}
-%     \\
-%     & g_{\text{FA}}^{\text{w}_2}(C_i, X_{a, i}) = \mathbb{E}[T_i | C_i, X_{a, i}],
-%     \label{eq:g_x_for_treatment_frontdoor_adjustment_wrong_2}
-% \end{align}
-
-% Equation~\eqref{eq:m_x_for_target_frontdoor_adjustment_wrong_2} represents a scenario in which one would not be aware of the existance of the mediator $M$.
-
-% Equations \eqref{eq:m_x_for_target_frontdoor_adjustment_wrong_1}, \eqref{eq:g_x_for_treatment_frontdoor_adjustment_wrong_1}, \eqref{eq:m_x_for_target_frontdoor_adjustment_wrong_2}, and \eqref{eq:g_x_for_treatment_frontdoor_adjustment_wrong_2} also represent scenarios in which one would not be aware that $X_a$ has no causal relation to $T$ and $Y$.
+\end{colorparagraph}
+}
 
 \subsection{Instrumental Variable}
 
-Instrumental variable (IV) estimation is a method used to estimate the causal effect of a treatment $T$ on an outcome $Y$ when there is unmeasured confounding that cannot be addressed using backdoor or frontdoor adjustments. This method leverages an instrument $Z$, which influences the treatment $T$ but has no direct effect on the outcome $Y$  except through $T$, and is independent of any unmeasured confounders $U$ affecting both $T$ and $Y$.
-
-The causal effect of $T$ on $Y$ can be estimated using the instrumental variable formula:
-
-\begin{equation}
-\hat{\tau} = \frac{\text{Cov}(Z, Y)}{\text{Cov}(Z, T)}.
-\end{equation}
-
-Alternatively, in terms of expectations for a binary instrument $Z$:
-
-\begin{equation}
-\hat{\tau} = \frac{\mathbb{E}[Y \mid Z = 1] - \mathbb{E}[Y \mid Z = 0]}{\mathbb{E}[T \mid Z = 1] - \mathbb{E}[T \mid Z = 0]}.
-\end{equation}
+Instrumental variable (IV) estimation is a method used to estimate the causal effect of a treatment $T_i$ on an outcome $Y_i$ when there is unmeasured confounding $U_i$ that cannot be addressed using backdoor or frontdoor adjustments. This method leverages an instrument $Z_i$, which influences the treatment $T_i$ but has no direct effect on the outcome $Y_i$  except through $T_i$, and is independent of any unmeasured confounders $U_i$ affecting both $T_i$ and $Y_i$.
 
 For the instrumental variable method to be valid, the following conditions must be satisfied:
 
@@ -593,8 +626,8 @@ DAG~\ref{fig:dag_instrumental_variable} illustrates the instrumental variable se
     \node (Z) {Z};
     \node (T) [right=of Z] {T};
     \node (U) [above=of T, xshift=2cm, yshift=-1cm, dashed] {U};
-    \node (XC) [below=of T, xshift=1cm] {$\text{C}$};
-    \node (XA) [below=of T, xshift=3cm] {$\text{X}_a$};
+    \node (XC) [below=of T, xshift=-1.5cm] {$\text{C}$};
+    \node (XA) [below=of T, xshift=1.5cm] {$\text{X}_a$};
     \node (Y) [right=of T, xshift=1cm] {Y};
     
     \draw[->] (Z) -- (T);
@@ -602,8 +635,10 @@ DAG~\ref{fig:dag_instrumental_variable} illustrates the instrumental variable se
     \draw[->] (U) -- (T);
     \draw[->] (U) -- (Y);
     \draw[->] (XC) -- (T);
+    \draw[->] (XC) -- (Z);
     \draw[->] (XC) -- (Y);
     \draw[dotted] (XA) -- (T);
+    \draw[dotted] (XA) -- (Z);
     \draw[dotted] (XA) -- (Y);
     \end{tikzpicture}
     \label{fig:dag_instrumental_variable}
@@ -612,115 +647,229 @@ DAG~\ref{fig:dag_instrumental_variable} illustrates the instrumental variable se
     
 \subsubsection{Instrumental Variable Scenario in DML}
 
-This formulation adjusts for the binary nature of $T_i$ and incorporates the propensity scores directly.
-
-In Instrumental Variable Scenario with DML, the ideal $m(X_i) = \mathbb{E}[Y_i | X_i]$ and $g(X_i) = \mathbb{E}[T_i | X_i]$ from Equations \eqref{eq:m_x_for_target} and \eqref{eq:g_x_for_treatment} are:
-
-\begin{align}
-    & m_{\text{IV}}(C_i) = \mathbb{E}[Y_i | C_i],
-    \label{eq:m_x_for_target_instrumental_variable}
-    \\
-    & g_{\text{IV}}(C_i, Z_i) = \mathbb{E}[T_i | C_i, Z_i],
-    \label{eq:g_x_for_treatment_instrumental_variable}
-\end{align}
-
-The orthogonal score function from \eqref{eq:orthogonal_score} becomes:
-
-\begin{equation}
-    \psi_{\text{IV}}(Y_i, T_i, Z_i, X_i; \theta, \eta) = \left( \frac{T_i - g(X_i)}{g(X_i)(1 - g(X_i))} \right) \left( Y_i - m(X_i) - \tau [T_i - g(X_i)] \right) \cdot [g(Z_i, X_i) - g(X_i)].
-\label{eq:orthogonal_score_iv_binary}
-\end{equation}
-
-In our simulations we also test the habilit of the ML models to estimate ATE under:
-
-\begin{align}
-    & m_{\text{IV}}^{\text{w}}(C_i, Z_i, X_{a, i}) = \mathbb{E}[Y_i | C_i, Z_i, X_{a, i}],
-    \label{eq:m_x_for_target_instrumental_variable_wrong}
-    \\
-    & g_{\text{IV}}^{\text{w}}(C_i, Z_i, X_{a, i}) = \mathbb{E}[T_i | C_i, Z_i, X_{a, i}],
-    \label{eq:g_x_for_treatment_instrumental_variable_wrong}
-\end{align}
-
-Equation~\eqref{eq:m_x_for_target_instrumental_variable_wrong} represents a scenario in which one would not be aware that the the instrument $Z$ only has a causal relation to $T$. Equations \eqref{eq:m_x_for_target_instrumental_variable_wrong} and \eqref{eq:g_x_for_treatment_instrumental_variable_wrong} represent a scenario in which one would not be aware that $X_a$ has no causal relation to $T$ and $Y$.
-
-\subsubsection{Instrumental Variable Scenario in DML}
-
-In the Instrumental Variable (IV) scenario with DML, we aim to estimate the causal effect of the treatment $T_i$ on the outcome $Y_i$ using an instrument $Z_i$ that affects $T_i$ but has no direct effect on $Y_i$ except through $T_i$. The presence of unobserved confounders $U_i$ that affect both $T_i$ and $Y_i$ violates the Conditional Independence Assumption, necessitating the use of instrumental variables.
-
 To adapt the DML framework to the IV setting, we need to define appropriate nuisance functions and construct an orthogonal score function suitable for the IV context.
 
 The ideal nuisance functions in this scenario are:
 
 \begin{align}
-    & m_{\text{IV}}(X_i) = \mathbb{E}[Y_i \mid X_i],
+    & m_{\text{IV}}(C_i) = \mathbb{E}[Y_i \mid C_i],
     \label{eq:m_x_for_target_instrumental_variable} \\
-    & q_{\text{IV}}(Z_i, X_i) = \mathbb{E}[T_i \mid Z_i, X_i],
+    & q_{\text{IV}}(C_i) = \mathbb{E}[Z_i \mid C_i],
     \label{eq:q_z_for_instrument_instrumental_variable} \\
-    & g_{\text{IV}}(X_i) = \mathbb{E}[T_i \mid X_i],
+    & g_{\text{IV}}(C_i) = \mathbb{E}[T_i \mid C_i],
     \label{eq:g_x_for_treatment_instrumental_variable}
 \end{align}
 
-Here:
-
-- $m_{\text{IV}}(X_i)$ is the outcome model, capturing the expected outcome given covariates.
-- $q_{\text{IV}}(Z_i, X_i)$ is the instrument propensity score, representing the expected treatment given the instrument and covariates.
-- $g_{\text{IV}}(X_i)$ is the treatment model, representing the expected treatment given covariates.
+Where $m_{\text{IV}}(C_i)$ is the outcome model, capturing the expected outcome given covariates, $q_{\text{IV}}(Z_i, C_i)$ is the instrument propensity score, representing the expected treatment given the instrument and covariates, and $g_{\text{IV}}(C_i)$ is the treatment model, representing the expected treatment given covariates.
 
 The orthogonal score function for the IV scenario is different from the standard DML orthogonal score function. An appropriate orthogonal score function in the linear IV context is:
 
 \begin{equation}
-    \psi_{\text{IV}}(W_i; \theta, \eta) = \left( Y_i - m_{\text{IV}}(X_i) - \theta [T_i - g_{\text{IV}}(X_i)] \right) \left( q_{\text{IV}}(Z_i, X_i) - g_{\text{IV}}(X_i) \right),
+    \psi_{\text{IV}}(W_i; \tau, \eta) = \left( Y_i - m_{\text{IV}}(C_i) - \tau [T_i - g_{\text{IV}}(C_i)] \right) \left( Z_i - q_{\text{IV}}(C_i) \right),
     \label{eq:orthogonal_score_iv}
 \end{equation}
 
-where:
+\ifthenelse{\boolean{bool:showfrontdooradjustment}}{
+\begin{colorparagraph}{tacolor}
+    Is this orthogonal score function correct? I was not able to find another one that made more sense, but I would have thought that the variance of the propensity score should be dividing some of the parts of the orthogonal score function.
+\end{colorparagraph}
+}
 
-- $W_i = (Y_i, T_i, Z_i, X_i)$.
-- $\theta$ is the parameter of interest (the causal effect of $T_i$ on $Y_i$).
-- $\eta$ represents the collection of nuisance functions.
+In our simulations we also test the habilit of the ML models to estimate ATE under the following scenarios. In these scenarios, the superscript $\text{w}_i$ on the nuisance functions denotes the i-th scenario which involves misspecifications of the nuisance functions.
 
-This score function leverages the variation in $T_i$ induced by the instrument $Z_i$ while controlling for $X_i$. It satisfies the Neyman orthogonality condition, making it robust to estimation errors in the nuisance functions.
-
-The estimation procedure involves:
-
-\begin{enumerate}
-    \item \textbf{Estimate Nuisance Functions}: Use flexible machine learning methods to estimate $\hat{m}_{\text{IV}}(X_i)$, $\hat{q}_{\text{IV}}(Z_i, X_i)$, and $\hat{g}_{\text{IV}}(X_i)$.
-    
-    \item \textbf{Implement Cross-Fitting}: Split the data into folds, estimate the nuisance functions on training folds, and predict on validation folds to mitigate overfitting biases.
-    
-    \item \textbf{Compute the Orthogonal Score}: Evaluate $\psi_{\text{IV}}(W_i; \theta, \hat{\eta})$ for each observation using the estimated nuisance functions.
-    
-    \item \textbf{Estimate $\theta$}: Solve the empirical moment condition:
-    \begin{equation}
-        \frac{1}{n} \sum_{i=1}^n \psi_{\text{IV}}(W_i; \hat{\theta}, \hat{\eta}) = 0,
-        \label{eq:moment_condition_iv}
-    \end{equation}
-    which yields the estimator $\hat{\theta}$.
-\end{enumerate}
-
-In our simulations, we also test the ability of the ML models to estimate the causal effect under different scenarios:
+\paragraph{Inclusion of $C_i$ and $X_{a, i}$ on every nuisance function}
 
 \begin{align}
-    & m_{\text{IV}}^{\text{w}}(X_i, Z_i, X_{a,i}) = \mathbb{E}[Y_i \mid X_i, Z_i, X_{a,i}],
-    \label{eq:m_x_for_target_instrumental_variable_wrong} \\
-    & q_{\text{IV}}^{\text{w}}(Z_i, X_i, X_{a,i}) = \mathbb{E}[T_i \mid Z_i, X_i, X_{a,i}],
-    \label{eq:q_z_for_instrument_instrumental_variable_wrong} \\
-    & g_{\text{IV}}^{\text{w}}(X_i, X_{a,i}) = \mathbb{E}[T_i \mid X_i, X_{a,i}],
-    \label{eq:g_x_for_treatment_instrumental_variable_wrong}
+    & m_{\text{IV}}^{\text{w}_1}(C_i) = \mathbb{E}[Y_i \mid C_i, X_{a, i}],
+    \label{eq:m_x_for_target_instrumental_variable_wrong_1} \\
+    & q_{\text{IV}}^{\text{w}_1}(C_i) = \mathbb{E}[Z_i \mid C_i, X_{a, i}],
+    \label{eq:q_z_for_instrument_instrumental_variable_wrong_1} \\
+    & g_{\text{IV}}^{\text{w}_1}(C_i) = \mathbb{E}[T_i \mid C_i, X_{a, i}],
+    \label{eq:g_x_for_treatment_instrumental_variable_wrong_1}
 \end{align}
 
-These equations represent scenarios where irrelevant variables $X_{a,i}$, which have no causal relation to $T_i$ or $Y_i$, are included in the models. Equation~\eqref{eq:m_x_for_target_instrumental_variable_wrong} also represents a scenario where one incorrectly includes the instrument $Z_i$ in the outcome model, violating the exclusion restriction.
+Equations \eqref{eq:m_x_for_target_instrumental_variable_wrong_1}, \eqref{eq:q_z_for_instrument_instrumental_variable_wrong_1}, and \eqref{eq:g_x_for_treatment_instrumental_variable_wrong_1} represent a scenario in which one would not be aware that $X_a$ does not cause $T$, $Z$ and $Y$.
 
-For the instrumental variable method to be valid, the following conditions must be satisfied:
+\paragraph{Only partial inclusion of $C_i$ and inclusion of $X_{a, i}$ on every nuisance function}
 
-\begin{enumerate}
-    \item \textbf{Relevance}: The instrument $Z_i$ is associated with the treatment $T_i$ (i.e., $\mathbb{E}[T_i \mid Z_i, X_i] \neq \mathbb{E}[T_i \mid X_i]$).
-    
-    \item \textbf{Exclusion Restriction}: The instrument $Z_i$ affects the outcome $Y_i$ only through its effect on the treatment $T_i$, and not directly or through any other pathways.
-    
-    \item \textbf{Independence (Ignorability)}: The instrument $Z_i$ is independent of any unmeasured confounders $U_i$ that affect both $T_i$ and $Y_i$, conditional on covariates $X_i$.
+\begin{align}
+    & m_{\text{IV}}^{\text{w}_2}(C_i^{p}, X_{a, i}) = \mathbb{E}[Y_i \mid C_i, X_{a, i}],
+    \label{eq:m_x_for_target_instrumental_variable_wrong_2} \\
+    & q_{\text{IV}}^{\text{w}_2}(C_i^{p}, X_{a, i}) = \mathbb{E}[Z_i \mid, C_i, X_{a, i}],
+    \label{eq:q_z_for_instrument_instrumental_variable_wrong_2} \\
+    & g_{\text{IV}}^{\text{w}_2}(C_i^{p}, X_{a, i}) = \mathbb{E}[T_i \mid C_i, X_{a, i}],
+    \label{eq:g_x_for_treatment_instrumental_variable_wrong_2}
+\end{align}
+
+Equations \eqref{eq:m_x_for_target_instrumental_variable_wrong_2}, \eqref{eq:q_z_for_instrument_instrumental_variable_wrong_2}, and \eqref{eq:g_x_for_treatment_backdoor_adjustment_wrong_2} also represent a scenario in which one would not be aware that $X_a$ does not cause $T$ and $Y$ and also does not include all causal cofounders. $C^{p}_i$ is subset of $C_i$ included, where $C_i \in \mathbb{R}^{d_c}$ and $C^{p}_i \in \mathbb{R}^{d_{cp}}$ and $d_c > d_{cp}$.
+
+\paragraph{$Z_i$ is treated as a normal cofounder}
+
+\begin{align}
+    & m_{\text{IV}}^{\text{w}_3}(C_i, Z_i) = \mathbb{E}[Y_i | C_i, Z_i],
+    \label{eq:m_x_for_target_instrumental_variable_wrong_3}
+    \\
+    & g_{\text{IV}}^{\text{w}_3}(C_i, Z_i) = \mathbb{E}[T_i | C_i, Z_i],
+    \label{eq:g_x_for_treatment_instrumental_variable_wrong_3}
+\end{align}
+
+Equations \eqref{eq:m_x_for_target_instrumental_variable_wrong_3} and \eqref{eq:g_x_for_treatment_instrumental_variable_wrong_3} represent a scenario in which one would treat $Z$ as a normal covariate. In this case, the orthogonal score function would be the same as in the backdoor adjustment scenario of \eqref{eq:orthogonal_score}.
+
+\paragraph{$Z_i$ is treated as a normal cofounder and inclusion of $X_{a, i}$ on every nuisance function}
+
+\begin{align}
+    & m_{\text{IV}}^{\text{w}_4}(C_i, Z_i, X_{a, i}) = \mathbb{E}[Y_i | C_i, Z_i, X_{a, i}],
+    \label{eq:m_x_for_target_instrumental_variable_wrong_3}
+    \\
+    & g_{\text{IV}}^{\text{w}_4}(C_i, Z_i, X_{a, i}) = \mathbb{E}[T_i | C_i, Z_i, X_{a, i}],
+    \label{eq:g_x_for_treatment_instrumental_variable_wrong_3}
+\end{align}
+
+Equations \eqref{eq:m_x_for_target_instrumental_variable_wrong_3} and \eqref{eq:g_x_for_treatment_instrumental_variable_wrong_3} represent a scenario in which one would treat $Z$ as a normal covariate and is not aware that $X_a$ does not cause $T$, $Z$ and $Y$. In this case, the orthogonal score function would also be the same as in the backdoor adjustment scenario of \eqref{eq:orthogonal_score}.
+
+\section{Simulation Methodology}
+
+\subsection{Data Generating Process}
+
+\subsubsection{Cofounders}
+
+The cofounders are generated with multivariate normal distribution using a sparse covariance matrix $\Sigma_d$ and a vector of means $\boldsymbol{\mu}_d = \bf{0}$.
+
+$\Sigma_d \in \mathbb{R}^{d \times d}$, where $d := d_a + d_c$. $d_a$ is the number of non-causal confounders previously represented as $X_a$ and $d_c$ is the number of causal confounders previously represented as $C$.
+
+\begin{equation}
+    X \sim \mathcal{N}_d(\boldsymbol{\mu}_d, \Sigma_d)
+\end{equation}
+
+The sparsity of the covariance matrix of the cofounders $\Sigma_d$ is determined by $\alpha_d$, which represents the probability that any covariance coefficient is zero. Larger $\alpha_d$'s result in sparser covariance matrices. To provide intuition on it, we report the average absolute correlation ${|\rho_d|}$ in the matrix.
+
+After generating the data from the multivariate normal distribution defined as $X \in \mathbb{R}^{n \times d}$ we randomly separate the features of $X$ in $X_a$ and $C$. Following the logic specified above, $X_a \in \mathbb{R}^{n \times d_a}$ and $C \in \mathbb{R}^{n \times d_c}$.
+
+In \eqref{eq:m_x_for_target_backdoor_adjustment_wrong_2} and \eqref{eq:g_x_for_treatment_backdoor_adjustment_wrong_2} ``Only partial inclusion of $C_i$ and inclusion of $X_{a, i}$ on every nuisance function'', after generating cofounders, treatment, and target, we select a subset of the causal confounders $C^{p}_i$ to be used in the nuisance functions. This would represent a scenario of unobserved confounders $U_i$. We define which causal confounders are not included in the nuisance function randomly, where we use $p_u$, which represents the percentage of causal confounders not included in the nuisance functions. Meaning that $C^{p}_i \in \mathbb{R}^{n \times d_{cp}}$, where $d_{cp} = d_c - \lceil p_u \cdot d_c \rceil$.
+
+\subsubsection{Treatment}
+
+The probability of treatment is generated from a logic:
+
+\begin{equation}
+    \mathbb{P}[T_i] = \frac{1}{1 + e^{(-f(C_i) + \varepsilon_{t, i})}}
+    \label{eq:probability_of_treatment}
+\end{equation}
+
+where $f(C_i)$ is a function of the causal confounders $C_i$ and $\varepsilon_{t, i}$ is a random error term generated from a normal distribution with mean 0 and variance $\sigma_{t}$.
+
+$f(C_i)$ is a generic non-linear function explained in Section~\ref{subsubsec:f_c_non_linear_relationships}.
+
+Treatment is later generated from a Bernoulli distribution with the probability of treatment from above in \eqref{eq:probability_of_treatment}.
+
+
+\begin{equation}
+    T_i \sim Bernoulli(\mathbb{P}[T_i])
+\end{equation}
+
+\subsubsection{Treatment Effect}
+
+The true treatment effect is generated from:
+
+\begin{equation}
+    \tau(C_i) = f(C_i)
+\end{equation}
+
+Again, $f(C_i)$ is a generic non-linear function explained in Section~\ref{subsubsec:f_c_non_linear_relationship}.
+
+Meaning that there is heterogeneity in the treatment effect across the causal confounders $C_i$.
+
+The true ATE (Average Treatment Effect) is the average of the treatment effect across the population:
+
+\begin{equation}
+    \tau = \mathbb{E}[\tau(C_i)] = \frac{1}{n} \sum_{i=1}^{n} \tau(C_i)
+\end{equation}
+
+\subsubsection{Outcome}
+
+The observed outcome is:
+
+\begin{equation}
+    Y_i = Y_{i, 0} + \tau(C_i) \cdot T_i + \varepsilon_{y, i}
+\end{equation}
+
+where $Y_{i, 0}$ is the potential outcome if the treatment $T_i$ was not applied, $\tau(C_i)$ is the treatment effect, and $\varepsilon_{y, i}$ is a random error term generated from a normal distribution with mean 0 and variance $\sigma_{y}$.
+
+\begin{equation}
+    Y_{i, 0} = f(C_i)
+\end{equation}
+
+Once more, $f(C_i)$ is a generic non-linear function explained in Section~\ref{subsubsec:f_c_non_linear_relationship}.
+
+The potential outcome for treatment and control are:
+
+\begin{equation}
+    Y_i(1) = Y_{i, 0} + \tau(C_i), \quad Y_i(0) = Y_{i, 0},
+    \label{eq:potential_outcomes}
+\end{equation}
+
+which can not be directly observed.
+
+\subsubsection{$f(C_i)$ Non-Linear Transformation}
+\label{subsubsec:f_c_non_linear_relationship}
+
+The function $f(C_i)$, used to calculate $Y_{i, 0}$ and $\mathbb{P}[T_i]$ is a generic function composed non-linear relationships.
+
+More specifically $f(C_i)$ is the weighted sum of of different ``$q$'' transformations in the causal confounders $C_i$:
+
+\begin{equation}
+    f(C) = \sum_{j=1}^{d_c} \left( \beta_{j} \cdot q_j(C_{j}) \right)
+\end{equation}
+
+Where $C_{j}$ is the the vector of the $j$-th causal confounder, $\beta_j$ is a random coefficient drawn from a uniform distribution $U(-1, 1)$, and $q_j(C_{j})$ is a random transformation of the $j$-th causal confounder. More specifically, the random transformation $q_j(C_{j})$ is drawn from the following set of possible transformations:
+
+\begin{figure}[H]
+\begin{enumerate}[label=\roman*.]
+    \item Linear: $q_j(C_{i, j}) = C_{i, j}$
+    \item Quadratic: $q_j(C_{i, j}) = C_{i, j}^2$
+    \item Cubic: $q_j(C_{i, j}) = C_{i, j}^3$
+    \item Logarithmic: $q_j(C_{i, j}) = \log(|C_{i, j}| + 1)$
+    \item Exponential: $q_j(C_{i, j}) = \exp(\frac{1}{5} C_{i, j})$
+    \item Sine: $q_j(C_{i, j}) = \sin(C_{i, j})$
+    \item Cosine: $q_j(C_{i, j}) = \cos(C_{i, j})$
+    \item Indicator: $q_j(C_{i, j}) = \mathbb{I}\{C_{i, j} > 0\} - \mathbb{I}\{C_{i, j} \leq 0\}$
+    \item Piecewise: $q_j(C_{i, j}) = 2 \mathbb{I}\{C_{i, j} < 0\} + \mathbb{I}\{0 \leq C_{i, j} < 1\} + \frac{1}{2} \mathbb{I}\{ C_{i, j} > 1\}$
 \end{enumerate}
+\end{figure}
 
-By appropriately specifying and estimating the nuisance functions, and constructing the orthogonal score function as in Equation~\eqref{eq:orthogonal_score_iv}, the DML framework can provide consistent and asymptotically normal estimates of the causal effect in the IV scenario, even in the presence of high-dimensional covariates and complex relationships among variables.
+\ifthenelse{\boolean{bool:showfrontdooradjustment}}{
+\begin{colorparagraph}{tacolor}
+    Should we keep the non-continuous transformations? I know that some of the theorems only apply for continuous functions.
+\end{colorparagraph}
+}
+
+For each simulation $f(C)$ is calculated with some of the specified transformation sets and $\beta$'s three times: one for the calculation of $Y_{i, 0}$, one for the calculation of $\mathbb{P}[T_i]$, and one for the calculation of $\tau(C_i)$.
+
+For some simulations, we only allow for linear transformations in $f(C)$, aiming to compare performance of the DML models in a simpler setting.
+
+\newpage
+
+\section{Appendix}
+
+\subsection{Mild Regularity Conditions for Double Machine Learning}
+\label{subsec:appendix_mild_regularity_conditions_for_dml}
+
+\begin{enumerate}[label=\roman*.]
+    \item Smoothness of the Target Function: The functions \( m(X) \) and \( g(X) \), representing the outcome and treatment models, should belong to a sufficiently smooth function class (e.g., Hölder class or Sobolev space). This ensures that they can be approximated well by machine learning methods.
+    \item Boundedness and Regularity: The outcome \( Y \), treatment \( T \), and covariates \( X \) should have bounded support or satisfy moment conditions, such as:  
+    \[
+    \mathbb{E}[|Y|^2] < \infty, \quad \mathbb{E}[|T|^2] < \infty.
+    \]  
+    Additionally, \( m(X) \) and \( g(X) \) should have bounded derivatives in some cases.
+    \item Sparsity or Complexity Control: The nuisance estimators \( \hat{m}(X) \) and \( \hat{g}(X) \) should satisfy complexity restrictions, such as sparsity in high-dimensional settings or controlled VC dimensions, to ensure valid estimation and inference.
+    \item Consistency and Rates of Convergence: The nuisance estimators \( \hat{m}(X) \) and \( \hat{g}(X) \) must converge to the true \( m(X) \) and \( g(X) \) at sufficiently fast rates (typically faster than \( n^{-1/4} \) in terms of mean squared error). 
+    \item Independence or Weak Dependence: Observations should be independent and identically distributed (i.i.d.) or satisfy weak dependence conditions, such as mixing properties for time-series data.
+    \item Overlap Condition (Positivity): The propensity score \( \pi(X) = \mathbb{P}(T=1|X) \) must be bounded away from 0 and 1:  
+    \[
+    0 < c \leq \pi(X) \leq 1 - c \quad \text{for some } c > 0.
+    \]
+    \item Orthogonality of the Moment Function: The estimating equation or moment function used in DML should satisfy a doubly-robust property, meaning that small estimation errors in \( \hat{m}(X) \) and \( \hat{g}(X) \) do not affect the asymptotic distribution of the estimator.
+    \item Cross-Fitting: Proper cross-fitting should be employed to ensure the orthogonality of the estimating equations and to avoid overfitting. This mitigates potential overfitting by using disjoint data splits for estimating nuisance parameters and evaluating the final moment function.
+\end{enumerate}
 
 \end{document}
