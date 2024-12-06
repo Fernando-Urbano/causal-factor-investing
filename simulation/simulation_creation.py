@@ -16,7 +16,7 @@ import random
 
 
 SEED_MODEL = 42
-USE_SPECIAL_CATE_CALCULATION = False
+USE_SPECIAL_ITE_CALCULATION = False
 
 
 DATA_GENERATION_SPECIFICATION = [
@@ -117,7 +117,7 @@ NORMAL_PIPELINES = {
             ('scaler', StandardScaler()),
             ('model', ElasticNetCV(
                 cv=5,
-                l1_ratio=[0.1, 0.5, 0.7, 0.9, 1.0],
+                l1_ratio=[0, 0.1, 0.5, 0.7, 0.9, 1.0],
                 random_state=SEED_MODEL
             ))
         ],
@@ -227,7 +227,7 @@ def modify_treatment_effect_and_compute_ate(
         treatment: np.array,
         relationship_type: str = "random",
         X_c: Union[np.ndarray, np.matrix] = None,
-        constant_cate : bool = False,
+        constant_ite : bool = False,
         random_seed: int = None
     ):
     """
@@ -255,28 +255,28 @@ def modify_treatment_effect_and_compute_ate(
             f"Must be one of {list(NON_LINEAR_TRANSFORMATIONS.keys())}."
         )
 
-    if X_c is None or constant_cate:
+    if X_c is None or constant_ite:
         true_ate = np.random.normal(loc=0, scale=1) + 2
-        true_cate = true_ate * np.ones(treatment.shape[0])
+        true_ite = true_ate * np.ones(treatment.shape[0])
     else:
-        if USE_SPECIAL_CATE_CALCULATION:
-            true_cate, relationship_types = calc_true_cate(X_c, relationship_type, 4)
+        if USE_SPECIAL_ITE_CALCULATION:
+            true_ite, relationship_types = calc_true_ite(X_c, relationship_type, 4)
         generate_non_linear_relationship(X_c, relationship_type)
-        true_ate = np.mean(true_cate)
+        true_ate = np.mean(true_ite)
 
-    treatment_effect = treatment * true_cate
+    treatment_effect = treatment * true_ite
 
     return treatment_effect, true_ate, tuple(relationship_types)
 
 
-def calc_true_cate(
+def calc_true_ite(
     X_c: Union[np.ndarray, np.matrix],
     relationship_type_interaction: str,
     n_subgroups: int = 4,
     pct_cols_in_subgroup: float = 0.6
 ) -> np.ndarray:
     """
-    Calculates the Conditional Average Treatment Effect (CATE) based on non-linear interactions with covariates.
+    Calculates the Individual Treatment Effect (ITE) based on non-linear interactions with covariates.
 
     Parameters:
     - X_c (Union[np.ndarray, np.matrix]): Covariate matrix (n_samples x n_features).
@@ -285,7 +285,7 @@ def calc_true_cate(
     - pct_cols_in_subgroup (float): Percentage of covariates to include in each subgroup.
 
     Returns:
-    - np.ndarray: True CATE for each individual.
+    - np.ndarray: True ITE for each individual.
     """
     if isinstance(X_c, np.matrix):
         X_c = np.array(X_c)
@@ -295,7 +295,7 @@ def calc_true_cate(
         n_covariates_subgroup = n_covariates
     else:
         n_covariates_subgroup = int(np.ceil(n_covariates * pct_cols_in_subgroup))
-    true_cate = np.zeros(X_c.shape[0])
+    true_ite = np.zeros(X_c.shape[0])
 
     relationship_types = []
 
@@ -313,9 +313,9 @@ def calc_true_cate(
         summed_covariates = X_c[:, covariates_cols_subgroup].sum(axis=1)
         interaction_effect = interaction_non_linear_function(summed_covariates)
         
-        true_cate += interaction_effect.squeeze()
+        true_ite += interaction_effect.squeeze()
 
-    return true_cate, relationship_types
+    return true_ite, relationship_types
 
 
 
@@ -333,7 +333,7 @@ class CausalScenario:
             cv_loss_regression: str = CV_DEFAULT_LOSS_REGRESSION,
             cv_loss_classification: str = CV_DEFAULT_LOSS_CLASSIFICATION,
             specification: str = 'correct',
-            constant_cate: bool = False,
+            constant_ite: bool = False,
             seed_data: int = 42,
         ):
         self.n_samples = n_samples
@@ -359,7 +359,7 @@ class CausalScenario:
         self.treatment_covariates_relationship_type = "random"
         self.summary = None
         self.seed_data = seed_data
-        self.constant_cate = constant_cate
+        self.constant_ite = constant_ite
 
         np.random.seed(self.seed_data)
         random.seed(self.seed_data)
@@ -401,7 +401,7 @@ class CausalScenario:
                 treatment=self.treatment,
                 relationship_type=self.treatment_covariates_relationship_type,
                 X_c=self.X_c,
-                constant_cate=False,
+                constant_ite=False,
                 random_seed=self.seed_data
             )
         )
@@ -495,7 +495,7 @@ class BackdoorAdjustmentScenario(CausalScenario):
             cv_loss_classification: str = CV_DEFAULT_LOSS_CLASSIFICATION,
             specification: str = 'Correct',
             pct_unobserved: float = 0.25,
-            constant_cate: bool = False,
+            constant_ite: bool = False,
             seed_data: int = 42,
     ):
         super().__init__(
@@ -510,7 +510,7 @@ class BackdoorAdjustmentScenario(CausalScenario):
             cv_loss_regression,
             cv_loss_classification,
             specification,
-            constant_cate,
+            constant_ite,
             seed_data
         )
         self.pct_unobserved = pct_unobserved if specification == 'Unobserved Confounders' else None
@@ -573,7 +573,7 @@ class InstrumentalVariableScenario(CausalScenario):
             cv_loss_regression: str = CV_DEFAULT_LOSS_REGRESSION,
             cv_loss_classification: str = CV_DEFAULT_LOSS_CLASSIFICATION,
             specification: str = 'Correct',
-            constant_cate: bool = False,
+            constant_ite: bool = False,
             seed_data: int = 42,
     ):
         super().__init__(
@@ -588,7 +588,7 @@ class InstrumentalVariableScenario(CausalScenario):
             cv_loss_regression,
             cv_loss_classification,
             specification,
-            constant_cate,
+            constant_ite,
             seed_data
         )
         self.noise_level_instrument = noise_level_instrument
@@ -601,7 +601,9 @@ class InstrumentalVariableScenario(CausalScenario):
         self.instrument_covariates_relationship_type = "random"
 
         if d_u > d_c:
-            raise ValueError("The number of unobserved covariates must be less or equal to the number of total causal covariates")
+            raise ValueError(
+                "The number of unobserved covariates must be less or equal to the number of total causal covariates"
+            )
 
     def generate_data(self):
         self._generate_X()
@@ -616,7 +618,10 @@ class InstrumentalVariableScenario(CausalScenario):
         noise_instrument = np.random.normal(scale=self.noise_level_instrument, size=self.n_samples)
 
         logits = (
-            generate_non_linear_relationship(self.X_c_ex_U, relationship_type=self.instrument_covariates_relationship_type)
+            generate_non_linear_relationship(
+                self.X_c_ex_U,
+                relationship_type=self.instrument_covariates_relationship_type
+            )
             + noise_instrument
         )
         if self.discrete_binary_instrument:
@@ -629,7 +634,10 @@ class InstrumentalVariableScenario(CausalScenario):
         self.X_c_and_Z = np.column_stack((self.X_c, self.Z))
 
         logits = (
-            generate_non_linear_relationship(self.X_c_and_Z, relationship_type=self.treatment_covariates_relationship_type)
+            generate_non_linear_relationship(
+                self.X_c_and_Z,
+                relationship_type=self.treatment_covariates_relationship_type
+            )
             + noise_treatment
         )
         prob_treatment = 1 / (1 + np.exp(-logits))
@@ -640,7 +648,7 @@ class InstrumentalVariableScenario(CausalScenario):
                 treatment=self.treatment,
                 relationship_type=self.treatment_covariates_relationship_type,
                 X_c=self.X_c,
-                constant_cate=False,
+                constant_ite=False,
                 random_seed=self.seed_data
             )
         )

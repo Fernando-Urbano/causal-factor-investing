@@ -18,11 +18,12 @@
 \numberwithin{equation}{section}
 
 % Define the header
+\fancyfoot[L]{ECMA 31380 - Causal Machine Learning}
 \fancyfoot[R]{Fernando Urbano}
 \renewcommand{\footrulewidth}{0.2pt}
-
-\fancyhead[L]{ECMA 31380 - Causal Machine Learning}
-\fancyhead[R]{Proposal Final Project}
+\fancyhead[L]{}
+\fancyhead[C]{Comparative Analysis of DML Methods Across Causal Inference Frameworks}
+\fancyhead[R]{}
 
 \usepackage{graphicx}
 \setlength{\parskip}{0.5em}
@@ -55,7 +56,7 @@
   language=R
 }
 
-\title{ECMA 31380 - Proposal Final Project}
+\title{Comparative Analysis of Double Machine Learning Methods Across Causal Inference Frameworks}
 \author{Fernando Rocha Urbano}
 \date{Autumn 2024}
 
@@ -67,9 +68,11 @@
 
 \newboolean{bool:showfrontdooradjustment}
 \newboolean{bool:showquestions}
+\newboolean{bool:showannotations}
 
 \setboolean{bool:showfrontdooradjustment}{false}
-\setboolean{bool:showquestions}{false}
+\setboolean{bool:showquestions}{true}
+\setboolean{bool:showannotations}{true}
 
 % Setup the listings package
 \lstdefinestyle{Python}{
@@ -93,7 +96,7 @@
 
 \newenvironment{colorparagraph}[1]{\par\color{#1}}{\par}
 \definecolor{questioncolor}{RGB}{20, 40, 150}
-\definecolor{annotation}{RGB}{20, 200, 20}
+\definecolor{annotationcolor}{RGB}{20, 200, 20}
 \definecolor{tacolor}{RGB}{200, 0, 0}
 % \documentclass[tikz,border=2mm]{standalone}
 % \lstset{style=mystyle}
@@ -104,66 +107,41 @@
 
 \maketitle
 
-\begin{colorparagraph}{annotation}
-\section*{Which questions can we answer?}
-\begin{itemize}
-    \item Which model performs better for different ratio between $d_c$ and $d_a$? Meaning the amount of covariates that are relevant and irrelevant.
-    \item Which model performs better in general?
-    \item Which model has the best convergence rate (different sample sizes)?
-    \item Which model performs better for different noise levels?
-    \item Which models performs better for different levels of sparsity (amount of non-causal covariates)?
-    \item Is the order of performance the same in terms of bias and variance?
-    \item Which model performs better when there is mispecification?
-\end{itemize}
-\end{colorparagraph}
-
 \section{Goal}
 
 The goal of this project is to evaluate the performance of different Double Machine Learning (DML) models in recovering the Average Treatment Effect (ATE) across various causal inference scenarios addressed in simulations.
 
-Ideally, the project should provide actionable recommendations for selecting the most appropriate DML method based on the causal scenario, data structure, noise levels, and sample size, sparsity of important covariates. Additionally, we aim to create a benchmarking framework that practitioners can use to evaluate and compare causal inference estimates derived from the tested methods in different scenarios.
+Ideally, the project should provide actionable recommendations for selecting the most appropriate DML method based on the causal scenario, data generating process (linear vs. non-linear), noise levels, sample size, sparsity of causal covariates, number of causal and non-causal covariates. Additionally, we aim to create a benchmarking framework that practitioners can use to evaluate and compare causal inference estimates derived from the tested methods in different scenarios.
 
-The DML methods compared in this study are:
-\begin{itemize}
-    \item LASSO.
-    \item Random Forest.
-    \item Neural Networks.
-\end{itemize}
+The main DML models used to evaluate are OLS, Random Forest, Neural Network, LASSO, and Elastic Net with correct and incorrect specifications. The causal scenario evaluated (which are based on different data generating processes) are Backdoor Path, Frontdoor Path, and Instrumental Variables. Covariates dimension, noise levels, and sample size are also varied to evaluate differences in performance for each combination of scenario, model, and specification.
 
-The causal inference scenarios are:
-\begin{itemize}
-    \item Backdoor adjustment.
-    \item Frontdoor adjustment with and without access to mediators.
-    \item Instrumental Variables with varying levels of instrument strength and correct vs. incorrect use of the IV.
-\end{itemize}
+The main metric evaluated is the capacity to recover the true Average Treatment Effect (ATE) in each scenario. In order to achieve this goal, we calculate bias, variance, mean squared error (MSE) and confidence interval coverage of the ATE estimates.
 
-We explore how each model implementation performs under varying conditions:
-\begin{itemize}
-    \item Relationships as linear and non-linear between covariates and treatment and between covariates and target $(g(\cdot) \ \text{and} \ m(\cdot))$.
-    \item Noise levels $(\varepsilon)$.
-    \item Sample size $(n)$.
-    \item Size of high-dimensional impactful covariates $(d_c)$.
-    \item Size of high-dimensional irrelevant covariates $(d_a)$.
-\end{itemize}
-
-For each of the scenario combinations, we show which of LASSO, Random Forest and Neural Networks provides more accurate ATE estimates based on the following metrics.
-\begin{itemize}
-    \item Bias of $\hat{\text{ATE}}$.
-    \item Variance of $\hat{\text{ATE}}$ across repeated simulations for a given scenario.
-    \item Analytical Variance of the $\hat{\text{ATE}}$.
-    \item MSE (Mean Squared Error).
-\end{itemize}
+Below, we highlight some of the questions we are able to answer with the proposed simulations:
+\begin{enumerate}[label=\arabic*.]
+    \item Which model performs better for different ratio of number of causal ($d_c$) and non-causal covariates ($d_a$)?
+    \item Which model performs better for high-dimensional data?
+    \item Which model performs better for each of the causal inference scenarios (Backdoor, Frontdoor, and IV)?
+    \item Which model performs better overall for the estimation of treatment, outcome, and instrument?
+    \item Which model has the best convergence rate?
+    \item Which model performs better for different noise levels ($\sigma_z$, $\sigma_t$, $\sigma_y$)?
+    \item Do bias, variance, MSE and confidence interval coverage metrics point to the same ranking of models?
+    \item Which model performs better for different levels of sparsity between covariates (level of correlation between covariates)?
+    \item Which model performs better when there is mispecification in the nuisance functions?
+    \item Which model performs better when there is unobserved confounders ($U_i$) not corrected by instrument (a type of mispecification)?
+\end{enumerate}
 
 \section{Double Machine Learning}
 
+\ifthenelse{\boolean{bool:showannotations}}{
+\begin{colorparagraph}{annotationcolor}
+    Brief introduction of DML history
+\end{colorparagraph}
+}
+
 \subsection{Problem Setup}
 
-Consider a random sample ${(Y_i, T_i, X_i)}_{i=1}^n$, where:
-\begin{itemize}
-\item $Y_i \in \mathbb{R}$ is the outcome variable.
-\item $T_i \in {0,1}$ is a binary treatment indicator.
-\item $X_i \in \mathbb{R}^d$ is a vector of covariates.
-\end{itemize}
+Consider a random sample ${(Y_i, T_i, X_i)}_{i=1}^n$, where $Y_i \in \mathbb{R}$ is the outcome variable, $T_i \in {0,1}$ is a binary treatment indicator, and $X_i \in \mathbb{R}^d$ is a vector of covariates.
 
 Our goal is to estimate the Average Treatment Effect (ATE), defined as:
 \begin{equation}
@@ -171,6 +149,12 @@ Our goal is to estimate the Average Treatment Effect (ATE), defined as:
 \label{eq:tau_hat_potential_outcome}
 \end{equation}
 where $Y_i(t)$ denotes the potential outcome for unit $i$ under treatment $T_i = t$.
+
+\ifthenelse{\boolean{bool:showannotations}}{
+\begin{colorparagraph}{annotationcolor}
+    Probably expand explanation on this section, specifically on the issues in achieving potential outcome estimates.
+\end{colorparagraph}
+}
 
 \subsection{Identification via Conditional Expectations}
 
@@ -184,6 +168,12 @@ where $\mu_t(X_i) = \mathbb{E}[Y_i | T_i = t, X_i]$ is the conditional expectati
 \subsection{DML Estimator}
 
 The DML framework aims to estimate $\tau$ while controlling for high-dimensional or complex relationships between $Y_i$, $T_i$, and $X_i$. The key idea is to use machine learning methods to estimate the nuisance parameters and then construct an estimator for $\tau$ that is robust to estimation errors in these nuisance parameters.
+
+\ifthenelse{\boolean{bool:showannotations}}{
+\begin{colorparagraph}{annotationcolor}
+    More explanation on what are nuisance functions.
+\end{colorparagraph}
+}
 
 \subsubsection{Nuisance Parameter Estimation}
 
@@ -201,7 +191,7 @@ We define the following nuisance functions:
 
 These functions can be estimated using flexible machine learning methods such as LASSO, Random Forests, or Neural Networks.
 
-Under mild regularity conditions and appropriate rates of convergence for the nuisance estimators, the DML estimator is root-n consistent and asymptotically normal (we make the regularity conditions explicity in Appendix~\ref{subsec:appendix_mild_regularity_conditions_for_dml}). It provides valid confidence intervals and hypothesis tests even when using complex machine learning methods for $\hat{m}(X)$ and $\hat{g}(X)$.
+Under mild regularity conditions and appropriate rates of convergence for the nuisance estimators, the DML estimator is root-n consistent and asymptotically normal (we make the regularity conditions explicity in Appendix~\ref{subsec:appendix_mild_regularity_conditions_for_dml}). DML provides valid confidence intervals and hypothesis tests even when using complex machine learning methods for $\hat{m}(X)$ and $\hat{g}(X)$.
 
 \subsubsection{Orthogonal Score Function}
 
@@ -217,8 +207,8 @@ where $g(X_i) = \pi(X_i)$ in case of binary treatment and $m_t(X_i) = \mathbb{E}
 
 \subsubsection{Estimation Procedure}
 
-The estimation proceeds in several steps:
-\begin{enumerate}
+The estimation of DML models contains several steps:
+\begin{enumerate}[label=\roman*.]
 \item Estimate Nuisance Functions: Use one of the outlined ML models to obtain estimators $\hat{m}(X_i)$ and $\hat{g}(X_i)$ for the nuisance functions.
 
 \item Compute the Score Function: Evaluate the orthogonal score $\psi(Y_i, T_i, X_i; \hat{\eta})$ using the estimated nuisance parameters.
@@ -389,7 +379,7 @@ Equations \eqref{eq:m_x_for_target_backdoor_adjustment_wrong_1} and \eqref{eq:g_
 Equations \eqref{eq:m_x_for_target_backdoor_adjustment_wrong_2} and \eqref{eq:g_x_for_treatment_backdoor_adjustment_wrong_2} also represent a scenario in which one would not be aware that $X_a$ does not cause $T$ and $Y$ and also does not include all causal cofounders. $C^{p}_i$ is subset of $C_i$ included, where $C_i \in \mathbb{R}^{d_c}$ and $C^{p}_i \in \mathbb{R}^{d_{cp}}$ and $d_c > d_{cp}$.
 
 \ifthenelse{\boolean{bool:showfrontdooradjustment}}{
-\begin{colorparagraph}{annotation}
+\begin{colorparagraph}{annotationcolor}
 \subsection{Frontdoor Adjustment}
 
 Frontdoor adjustment is a method used to estimate the causal effect of treatment $T$ on outcome $Y$ when there is unmeasured confounding that cannot be addressed using backdoor adjustment. It leverages a mediator $M$ that lies on the causal path from $T$ to $Y$.
@@ -660,7 +650,7 @@ The ideal nuisance functions in this scenario are:
     \label{eq:g_x_for_treatment_instrumental_variable}
 \end{align}
 
-Where $m_{\text{IV}}(C_i)$ is the outcome model, capturing the expected outcome given covariates, $q_{\text{IV}}(Z_i, C_i)$ is the instrument propensity score, representing the expected treatment given the instrument and covariates, and $g_{\text{IV}}(C_i)$ is the treatment model, representing the expected treatment given covariates.
+Where $m_{\text{IV}}(C_i)$ is the outcome model, capturing the expected outcome given covariates, $q_{\text{IV}}(C_i)$ is the instrument propensity score, representing the expected treatment given the instrument and covariates, and $g_{\text{IV}}(C_i)$ is the treatment model, representing the expected treatment given covariates.
 
 The orthogonal score function for the IV scenario is different from the standard DML orthogonal score function. An appropriate orthogonal score function in the linear IV context is:
 
@@ -731,6 +721,8 @@ Equations \eqref{eq:m_x_for_target_instrumental_variable_wrong_3} and \eqref{eq:
 
 \subsection{Data Generating Process}
 
+We define the the backdoor path scenario as the typical scenario. The frontdoor path and instrumental variable scenarios are variations of the typical scenario.
+
 \subsubsection{Cofounders}
 
 The cofounders are generated with multivariate normal distribution using a sparse covariance matrix $\Sigma_d$ and a vector of means $\boldsymbol{\mu}_d = \bf{0}$.
@@ -738,6 +730,7 @@ The cofounders are generated with multivariate normal distribution using a spars
 $\Sigma_d \in \mathbb{R}^{d \times d}$, where $d := d_a + d_c$. $d_a$ is the number of non-causal confounders previously represented as $X_a$ and $d_c$ is the number of causal confounders previously represented as $C$.
 
 \begin{equation}
+    \label{eq:cofounders_data_generating_process}
     X \sim \mathcal{N}_d(\boldsymbol{\mu}_d, \Sigma_d)
 \end{equation}
 
@@ -745,7 +738,7 @@ The sparsity of the covariance matrix of the cofounders $\Sigma_d$ is determined
 
 After generating the data from the multivariate normal distribution defined as $X \in \mathbb{R}^{n \times d}$ we randomly separate the features of $X$ in $X_a$ and $C$. Following the logic specified above, $X_a \in \mathbb{R}^{n \times d_a}$ and $C \in \mathbb{R}^{n \times d_c}$.
 
-In \eqref{eq:m_x_for_target_backdoor_adjustment_wrong_2} and \eqref{eq:g_x_for_treatment_backdoor_adjustment_wrong_2} ``Only partial inclusion of $C_i$ and inclusion of $X_{a, i}$ on every nuisance function'', after generating cofounders, treatment, and target, we select a subset of the causal confounders $C^{p}_i$ to be used in the nuisance functions. This would represent a scenario of unobserved confounders $U_i$. We define which causal confounders are not included in the nuisance function randomly, where we use $p_u$, which represents the percentage of causal confounders not included in the nuisance functions. Meaning that $C^{p}_i \in \mathbb{R}^{n \times d_{cp}}$, where $d_{cp} = d_c - \lceil p_u \cdot d_c \rceil$.
+In \eqref{eq:m_x_for_target_backdoor_adjustment_wrong_2} and \eqref{eq:g_x_for_treatment_backdoor_adjustment_wrong_2} ``Only partial inclusion of $C_i$ and inclusion of $X_{a, i}$ on every nuisance function'', after generating cofounders, treatment, and target, we select a subset of the causal confounders $C^{p}_i$ to be used in the nuisance functions. This would represent a scenario of unobserved confounders $U_i$. We define which causal confounders are not included in the nuisance function randomly, through the use of $p_u$, which represents the percentage of causal confounders not included in the nuisance functions. Meaning that $C^{p}_i \in \mathbb{R}^{n \times d_{cp}}$, where $d_{cp} = d_c - \lceil p_u \cdot d_c \rceil$.
 
 \subsubsection{Treatment}
 
@@ -758,21 +751,35 @@ The probability of treatment is generated from a logic:
 
 where $f(C_i)$ is a function of the causal confounders $C_i$ and $\varepsilon_{t, i}$ is a random error term generated from a normal distribution with mean 0 and variance $\sigma_{t}$.
 
-$f(C_i)$ is a generic non-linear function explained in Section~\ref{subsubsec:f_c_non_linear_relationships}.
+$f(C_i)$ is a generic non-linear function explained in Section~\ref{subsubsec:f_c_non_linear_relationship}.
 
 Treatment is later generated from a Bernoulli distribution with the probability of treatment from above in \eqref{eq:probability_of_treatment}.
-
 
 \begin{equation}
     T_i \sim Bernoulli(\mathbb{P}[T_i])
 \end{equation}
 
+\ifthenelse{\boolean{bool:showquestions}}{
+\begin{colorparagraph}{tacolor}
+    Should $T_i$ follow a Bernoulli or just be a 1 or 0 based on the probability of the treatment? The second case would be something like
+    \begin{equation*}
+        T_i = \begin{cases}
+            1 & \text{if } \mathbb{P}[Z_i] > 0.5 \\
+            0 & \text{otherwise}
+        \end{cases}
+    \end{equation*}
+
+    I believe Bernoulli is a better option.
+\end{colorparagraph}
+}
+
 \subsubsection{Treatment Effect}
 
-The true treatment effect is generated from:
+The true individual treatment effect is generated from:
 
 \begin{equation}
-    \tau(C_i) = f(C_i)
+    \tau_i(C_i) = f(C_i)
+    \label{eq:treatment_effect}
 \end{equation}
 
 Again, $f(C_i)$ is a generic non-linear function explained in Section~\ref{subsubsec:f_c_non_linear_relationship}.
@@ -782,21 +789,29 @@ Meaning that there is heterogeneity in the treatment effect across the causal co
 The true ATE (Average Treatment Effect) is the average of the treatment effect across the population:
 
 \begin{equation}
-    \tau = \mathbb{E}[\tau(C_i)] = \frac{1}{n} \sum_{i=1}^{n} \tau(C_i)
+    \tau = \mathbb{E}[\tau(C_i)] = \frac{1}{n} \sum_{i=1}^{n} \tau_i(C_i)
 \end{equation}
+
+\ifthenelse{\boolean{bool:showquestions}}{
+\begin{colorparagraph}{tacolor}
+    Should it be $\mathbb{E}[\tau_i(C_i)]$ or $\mathbb{E}[\tau(C_i)]$? Not very crucial, but must be checked.
+\end{colorparagraph}
+}
 
 \subsubsection{Outcome}
 
-The observed outcome is:
+The observed outcome for each individual is:
 
 \begin{equation}
-    Y_i = Y_{i, 0} + \tau(C_i) \cdot T_i + \varepsilon_{y, i}
+    Y_i = Y_{i, 0} + \tau_i(C_i) \cdot T_i + \varepsilon_{y, i}, \quad \varepsilon_{y, i} \sim \mathcal{N}(0, \sigma_{y})
+    \label{eq:observed_outcome}
 \end{equation}
 
-where $Y_{i, 0}$ is the potential outcome if the treatment $T_i$ was not applied, $\tau(C_i)$ is the treatment effect, and $\varepsilon_{y, i}$ is a random error term generated from a normal distribution with mean 0 and variance $\sigma_{y}$.
+where $Y_{i, 0}$ is the potential outcome if the treatment $T_i$ was not applied, $\tau_i(C_i)$ is the treatment effect, and $\varepsilon_{y, i}$ is a random error term generated from a normal distribution with mean 0 and variance $\sigma_{y}$.
 
 \begin{equation}
     Y_{i, 0} = f(C_i)
+    \label{eq:potential_outcome_no_treatment}
 \end{equation}
 
 Once more, $f(C_i)$ is a generic non-linear function explained in Section~\ref{subsubsec:f_c_non_linear_relationship}.
@@ -804,7 +819,7 @@ Once more, $f(C_i)$ is a generic non-linear function explained in Section~\ref{s
 The potential outcome for treatment and control are:
 
 \begin{equation}
-    Y_i(1) = Y_{i, 0} + \tau(C_i), \quad Y_i(0) = Y_{i, 0},
+    Y_i(1) = Y_{i, 0} + \tau_i(C_i), \quad Y_i(0) = Y_{i, 0},
     \label{eq:potential_outcomes}
 \end{equation}
 
@@ -821,7 +836,7 @@ More specifically $f(C_i)$ is the weighted sum of of different ``$q$'' transform
     f(C) = \sum_{j=1}^{d_c} \left( \beta_{j} \cdot q_j(C_{j}) \right)
 \end{equation}
 
-Where $C_{j}$ is the the vector of the $j$-th causal confounder, $\beta_j$ is a random coefficient drawn from a uniform distribution $U(-1, 1)$, and $q_j(C_{j})$ is a random transformation of the $j$-th causal confounder. More specifically, the random transformation $q_j(C_{j})$ is drawn from the following set of possible transformations:
+Where $C_{j}$ is the the vector of the $j$-th causal confounder, $\beta_j$ is a random coefficient drawn from a uniform distribution $U(-1, 1)$, and $q_j(C_{j})$ is a random transformation of the $j$-th causal confounder. More specifically, the chosen transformation $q_j(C_{j})$ is randomly chosen from the following set of possible transformations:
 
 \begin{figure}[H]
 \begin{enumerate}[label=\roman*.]
@@ -843,9 +858,118 @@ Where $C_{j}$ is the the vector of the $j$-th causal confounder, $\beta_j$ is a 
 \end{colorparagraph}
 }
 
-For each simulation $f(C)$ is calculated with some of the specified transformation sets and $\beta$'s three times: one for the calculation of $Y_{i, 0}$, one for the calculation of $\mathbb{P}[T_i]$, and one for the calculation of $\tau(C_i)$.
+For each simulation, $f(C)$ is calculated with some of the specified transformation sets and $\beta$'s three times: one for the calculation of $Y_{i, 0}$, one for the calculation of $\mathbb{P}[T_i]$, and one for the calculation of $\tau_i(C_i)$.
 
 For some simulations, we only allow for linear transformations in $f(C)$, aiming to compare performance of the DML models in a simpler setting.
+
+\subsubsection{Parameter Tuning in the Data Generating Process}
+
+The data generating process has some parameters that can be tuned to generate different scenarios. We present the following variations:
+
+\begin{enumerate}[label=\roman*.]
+    \item $f(C_i)$ for Treatment Probability: linear or non-linear transformations \eqref{eq:probability_of_treatment}.
+    \item $f(C_i)$ for Treatment Effect: linear or non-linear transformations \eqref{eq:treatment_effect}.
+    \item $f(C_i)$ for Outcome: linear or non-linear transformations \eqref{eq:potential_outcome_no_treatment}.
+    \item $d_c$: number of causal confounders.
+    \item $d_a$: number of non-causal confounders.
+    \item $p_u$: percentage of causal confounders not included in the nuisance functions in the backdoor adjustment scenario with wrong specification (\ref{eq:m_x_for_target_backdoor_adjustment_wrong_2}, \ref{eq:g_x_for_treatment_backdoor_adjustment_wrong_2}).
+    \item $n$: number of observations.
+    \item $\alpha_d$: sparsity of the covariance matrix of cofounders ($X$), which is a direct cause of average absolute correlation between cofounders ${|\rho_d|}$ \eqref{eq:cofounders_data_generating_process}.
+    \item $\sigma_t$: variance of the error term $\varepsilon_t$ in the treatment probability \eqref{eq:probability_of_treatment}.
+    \item $\sigma_y$: variance of the error term $\varepsilon_y$ in the outcome \eqref{eq:observed_outcome}.
+\end{enumerate}
+
+\subsection{Differences in Data Generating Process for Instrumental Variable Scenario}
+\label{subsec:differences_in_data_generating_process_for_instrumental_variable_scenario}
+
+The instrumental variable scenario provides some differences in the data generating process compared to the backdoor adjustment scenario, thus also allowing for more parameters variation.
+
+\subsubsection{Cofounders}
+
+The cofounders are again generated from a multivariate normal distribution using a sparse covariance matrix $\Sigma_d$ and a vector of means $\boldsymbol{\mu}_d = \bf{0}$, as described in \eqref{eq:cofounders_data_generating_process}.
+
+In this scenario, $X$ is divided in $X_a \in \mathbb{R}^{n \times d_a}$, $C \in \mathbb{R}^{n \times d_c}$, and $U \in \mathbb{R}^{n \times d_u}$, where $d := d_a + d_c + d_u$.
+
+$U_i$ is used to generate $\mathbb{P}[T_i]$, and $\tau_i(C_i, U_i)$, and is not included in the nuisance functions.
+
+\subsubsection{Instrument}
+
+We define the instrument in both discrete and continuous forms. In both cases, the instrument is generated from $C_i$ but not from $U_i$.
+
+In the discrete case:
+
+\begin{equation}
+    \mathbb{P}[Z_i] = \frac{1}{1 + e^{(-f(C_i) + \varepsilon_{z, i})}}, \quad \varepsilon_{z, i} \sim \mathcal{N}(0, \sigma_z)
+    \label{eq:probability_of_instrument}
+\end{equation}
+
+\begin{equation}
+    Z_i \sim Bernoulli(\mathbb{P}[Z_i])
+\end{equation}
+
+\ifthenelse{\boolean{bool:showquestions}}{
+\begin{colorparagraph}{tacolor}
+    Should $Z_i$ follow a Bernoulli or just be a 1 or 0 based on the probability of the instrument? The second case would be something like
+    \begin{equation*}
+        Z_i = \begin{cases}
+            1 & \text{if } \mathbb{P}[Z_i] > 0.5 \\
+            0 & \text{otherwise}
+        \end{cases}
+    \end{equation*}
+
+    I believe Bernoulli is a better option.
+\end{colorparagraph}
+}
+
+In the continuous case:
+
+\begin{equation}
+    Z_i = f(C_i) + \varepsilon_{z, i}, \quad \varepsilon_{z, i} \sim \mathcal{N}(0, \sigma_z)
+    \label{eq:continuous_instrument}
+\end{equation}
+
+\subsubsection{Treatment}
+
+The $\mathbb{P}[T_i]$ previously addressed in the backdoor adjustment scenario with \eqref{eq:probability_of_treatment} becomes:
+
+\begin{equation}
+    \mathbb{P}[T_i] = \frac{1}{1 + e^{(-f(C_i, U_i, Z_i) + \varepsilon_{t, i})}},
+    \quad \varepsilon_{t, i} \sim \mathcal{N}(0, \sigma_t)
+    \label{eq:probability_of_treatment_instrumental_variable}
+\end{equation}
+
+A similar procedure is done for the individual treatment effect from \eqref{eq:treatment_effect}:
+
+\begin{equation}
+    \tau_i(C_i, U_i) = f(C_i, U_i)
+    \label{eq:treatment_effect_instrumental_variable}
+\end{equation}
+
+\ifthenelse{\boolean{bool:showquestions}}{
+\begin{colorparagraph}{tacolor}
+    Should the $\tau_i$ be a function of $Z_i$ as well? I am almost sure that no. I give an explanation below:
+\end{colorparagraph}
+}
+
+In a standard instrumental variables (IV) framework, the key assumption is that the instrument $Z$ affects the outcome $Y$ only through its influence on the treatment $T$, thus influencing probability of treatment, but having no effect on the potential outcomes.
+
+\subsubsection{Outcome}
+
+Differently from the treatment, the data generating process of the outcome is not a function of the instrument $Z_i$. Nonetheless, it is influenced by the unobserved confounders $U_i$, thus still having a data generating process different from the backdoor adjustment scenario \eqref{eq:potential_outcome_no_treatment}.
+
+\begin{align}
+    Y_{i, 0} &= f(C_i, U_i) \\
+    Y_i &= Y_{i, 0} + \tau_i(C_i, U_i) \cdot T_i + \varepsilon_{y, i}, \quad \varepsilon_{y, i} \sim \mathcal{N}(0, \sigma_{y})
+\end{align}
+
+\subsubsection{Parameter Tuning in the Data Generating Process for Instrumental Variable Scenario}
+In the instrumental variable scenario, we have the possibility to tune all the previously mentioned parameters in \eqref{subsec:differences_in_data_generating_process_for_instrumental_variable_scenario} as well as:
+
+\begin{enumerate}[label=\roman*.]
+    \item $f(C_i)$ for Instrument: linear or non-linear transformations (\ref{eq:probability_of_instrument} and \ref{eq:continuous_instrument}).
+    \item $\sigma_z$: variance of the error term $\varepsilon_z$ in the instrument generation (\ref{eq:probability_of_instrument} and \ref{eq:continuous_instrument}).
+    \item $d_u$: number of unobserved confounders (which substitutes the percentage of causal confounders $p_u$ not included in the nuisance functions in the backdoor adjustment scenario with wrong specification).
+\end{enumerate}
 
 \newpage
 
