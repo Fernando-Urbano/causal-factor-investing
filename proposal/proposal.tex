@@ -31,40 +31,18 @@
 \renewcommand{\thesubsection}{\thesection.\arabic{subsection}}
 \newcommand{\divider}{\vspace{1em}\hrule\vspace{1em}}
 
-\definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
-
-\lstdefinestyle{Rstyle}{
-  backgroundcolor=\color{backcolour},   
-  commentstyle=\color{codegreen},
-  keywordstyle=\color{blue},
-  numberstyle=\tiny\color{codegray},
-  stringstyle=\color{codepurple},
-  basicstyle=\ttfamily\footnotesize,
-  breakatwhitespace=false,         
-  breaklines=true,                 
-  captionpos=b,                    
-  keepspaces=true,                 
-  numbers=left,                    
-  numbersep=5pt,                  
-  showspaces=false,                
-  showstringspaces=false,
-  showtabs=true,                  
-  tabsize=2,
-  language=R
-}
+\definecolor{codegreen}{rgb}{0, 0.6, 0}
+\definecolor{codegray}{rgb}{0.5, 0.5, 0.5}
+\definecolor{codepurple}{rgb}{0.58, 0, 0.82}
+\definecolor{backcolour}{rgb}{0.95, 0.95, 0.92}
+\newenvironment{colorparagraph}[1]{\par\color{#1}}{\par}
+\definecolor{questioncolor}{RGB}{20, 40, 150}
+\definecolor{annotationcolor}{RGB}{20, 200, 20}
+\definecolor{tacolor}{RGB}{200, 0, 0}
 
 \title{Comparative Analysis of Double Machine Learning Methods Across Causal Inference Frameworks}
 \author{Fernando Rocha Urbano}
 \date{Autumn 2024}
-
-% Define colors
-\definecolor{codegreen}{rgb}{0,0.6,0}
-\definecolor{codegray}{rgb}{0.5,0.5,0.5}
-\definecolor{codepurple}{rgb}{0.58,0,0.82}
-\definecolor{backcolour}{rgb}{0.95,0.95,0.92}
 
 \newboolean{bool:showfrontdooradjustment}
 \newboolean{bool:showquestions}
@@ -74,7 +52,6 @@
 \setboolean{bool:showquestions}{true}
 \setboolean{bool:showannotations}{true}
 
-% Setup the listings package
 \lstdefinestyle{Python}{
     backgroundcolor=\color{backcolour},   
     commentstyle=\color{codegreen},
@@ -94,14 +71,7 @@
     tabsize=2
 }
 
-\newenvironment{colorparagraph}[1]{\par\color{#1}}{\par}
-\definecolor{questioncolor}{RGB}{20, 40, 150}
-\definecolor{annotationcolor}{RGB}{20, 200, 20}
-\definecolor{tacolor}{RGB}{200, 0, 0}
-% \documentclass[tikz,border=2mm]{standalone}
-% \lstset{style=mystyle}
 \usetikzlibrary{arrows.meta, positioning}
-
 
 \begin{document}
 
@@ -127,8 +97,8 @@ Below, we highlight some of the questions we are able to answer with the propose
     \item Which model performs better for different noise levels ($\sigma_z$, $\sigma_t$, $\sigma_y$)?
     \item Do bias, variance, MSE and confidence interval coverage metrics point to the same ranking of models?
     \item Which model performs better for different levels of sparsity between covariates (level of correlation between covariates)?
-    \item Which model performs better when there is mispecification in the nuisance functions?
-    \item Which model performs better when there is unobserved confounders ($U_i$) not corrected by instrument (a type of mispecification)?
+    \item Which model performs better when there is misspecification in the nuisance functions?
+    \item Which model performs better when there is unobserved confounders ($U_i$) not corrected by instrument (a type of misspecification)?
 \end{enumerate}
 
 \section{Double Machine Learning}
@@ -283,8 +253,8 @@ It is composed of nodes (vertices) representing random variables or features and
     
     \draw[->] (T) -- (Y);
     \end{tikzpicture}
-    \label{fig:dag_example}
     \caption{DAG Example}
+    \label{fig:dag_example}
 \end{figure}
 
 The acyclic characterist is due to absence of directed cycles; that is, there is no path where you can start at a node $X$ and, by following directed edges, return to $X$.
@@ -335,8 +305,8 @@ DAG~\ref{fig:dag_backdoor_path} illustrates the backdoor path involving the conf
     \draw[dotted] (XA) -- (T);
     \draw[dotted] (XA) -- (Y);
     \end{tikzpicture}
-    \label{fig:dag_backdoor_path}
     \caption{DAG of Backdoor Path}
+    \label{fig:dag_backdoor_path}
 \end{figure}
 
 \subsubsection{Backdoor Adjustment Scenario in DML}
@@ -429,8 +399,8 @@ DAG~\ref{fig:dag_frontdoor_path} illustrates the frontdoor adjustment involving 
     \draw[dotted] (XA) -- (T);
     \draw[dotted] (XA) -- (Y);
     \end{tikzpicture}
-    \label{fig:dag_frontdoor_path}
     \caption{DAG of Frontdoor Path}
+    \label{fig:dag_frontdoor_path}
 \end{figure}
 
 \subsubsection{Frontdoor Adjustment Scenario in DML}
@@ -542,8 +512,8 @@ In this score function:
             \draw[dotted] (XA) -- (T);
             \draw[dotted] (XA) -- (Y);
             \end{tikzpicture}
-            \label{fig:dag_frontdoor_path}
             \caption{DAG of Frontdoor Path}
+            \label{fig:dag_frontdoor_path}
         \end{figure}
         \vspace{0.3cm}
     \end{minipage}
@@ -631,8 +601,8 @@ DAG~\ref{fig:dag_instrumental_variable} illustrates the instrumental variable se
     \draw[dotted] (XA) -- (Z);
     \draw[dotted] (XA) -- (Y);
     \end{tikzpicture}
-    \label{fig:dag_instrumental_variable}
     \caption{DAG of Instrumental Variable}
+    \label{fig:dag_instrumental_variable}
 \end{figure}
     
 \subsubsection{Instrumental Variable Scenario in DML}
@@ -659,7 +629,7 @@ The orthogonal score function for the IV scenario is different from the standard
     \label{eq:orthogonal_score_iv}
 \end{equation}
 
-\ifthenelse{\boolean{bool:showfrontdooradjustment}}{
+\ifthenelse{\boolean{bool:showannotations}}{
 \begin{colorparagraph}{tacolor}
     Is this orthogonal score function correct? I was not able to find another one that made more sense, but I would have thought that the variance of the propensity score should be dividing some of the parts of the orthogonal score function.
 \end{colorparagraph}

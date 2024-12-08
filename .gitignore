@@ -3,3 +3,10 @@ papers/*
 *.csv
 *.pptx
 *.xlsx
+.vscode
+.pytest_cache
+database/init/__pycache__
+scenarios/__pycache__
+test/__pycache__
+__pycache__
+scripts

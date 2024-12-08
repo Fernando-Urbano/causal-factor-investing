@@ -1,6 +1,6 @@
 # Fdb version 4
-["pdflatex"] 1733460875.77866 "/Users/fernandorochacorreaurbano/Desktop/causal-machine-learning/causal-factor-investing/proposal/proposal.tex" "proposal.pdf" "proposal" 1733460876.56752 0
-  "/Users/fernandorochacorreaurbano/Desktop/causal-machine-learning/causal-factor-investing/proposal/proposal.tex" 1733460875.58541 50923 403e0ce7209d58941bf159a3f246d037 ""
+["pdflatex"] 1733614791.87079 "/Users/fernandorochacorreaurbano/Desktop/causal-machine-learning/causal-factor-investing/proposal/proposal.tex" "proposal.pdf" "proposal" 1733614792.65443 0
+  "/Users/fernandorochacorreaurbano/Desktop/causal-machine-learning/causal-factor-investing/proposal/proposal.tex" 1733614790.86688 50061 7fdac0289bf44c1fb037b005013664a0 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1246382020 1120 1e8878807317373affa7f7bba4cf2f6a ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy7.tfm" 1246382020 1120 7f9f170e8aa57527ad6c49feafd45d54 ""
@@ -181,9 +181,9 @@
   "/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1726838998.69877 5467645 128b85b7cde5f5edc5cb7f1dd7ff8736 ""
   "/usr/local/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1726838976 8221424 454b2c53fe337be275f410895c638726 ""
   "/usr/local/texlive/2024/texmf.cnf" 1710266656 577 e590dabc9e28c5b61546e15f63eebcdf ""
-  "proposal.aux" 1733460876.49413 11093 3e79bb4e68256205c20225c93a8a161c "pdflatex"
-  "proposal.out" 1733460876.49514 5925 fc2368357ff34ffbdbf9e728bec8a8f5 "pdflatex"
-  "proposal.tex" 1733460875.58541 50923 403e0ce7209d58941bf159a3f246d037 ""
+  "proposal.aux" 1733614792.57924 11076 e2a2eafd1ac0dc83bb8eeacc5b815456 "pdflatex"
+  "proposal.out" 1733614792.58036 5925 fc2368357ff34ffbdbf9e728bec8a8f5 "pdflatex"
+  "proposal.tex" 1733614790.86688 50061 7fdac0289bf44c1fb037b005013664a0 ""
   (generated)
   "proposal.aux"
   "proposal.log"
