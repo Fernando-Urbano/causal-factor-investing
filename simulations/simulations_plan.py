@@ -54,14 +54,14 @@ def read_and_delete_second_line(file_path):
         return None
 
 
-N_SIMULATIONS_PER_SCENARIO = 25
+N_SIMULATIONS_PER_SCENARIO = 30
 
 
 
 
 simulations_config = {
     "BackdoorAdjustmentScenario": {
-        "n_samples": [100, 200, 500, 1000, 2000, 5000],
+        "n_samples": [100, 200, 500, 1000, 2000],
         "d_c": [5, 10, 20, 50, 100],
         "d_a": [5, 10, 20, 50, 100],
         "noise_level_treatment": [0.1, 0.2, 0.5],
@@ -116,8 +116,8 @@ def create_combinations(simulations_config, matches, n_simulations_per_scenario)
         combinations = (
             combinations
             .sort_values(
-                ["alpha_corr_covariates", "noise_level_treatment", "n_samples"],
-                ascending=[True, True, False, True]
+                ["n_samples", "noise_level_treatment"],
+                ascending=[True, False]
             )
         )
         combinations['simulation_id'] = i + 1
@@ -135,7 +135,7 @@ def create_combinations(simulations_config, matches, n_simulations_per_scenario)
 
 if __name__ == "__main__":
     os.makedirs("simulations/plans", exist_ok=True)
-    if os.path.exists("simulations/plans/backdoor_simulation_plan_c.txt"):
+    if os.path.exists("simulations/plans/backdoor_simulation_plan.txt"):
         input_overwrite = input("The backdoor_simulation_plan.txt file already exists. Do you want to overwrite it? (Yes/No) ")
     else:
         input_overwrite = "yes"
@@ -145,7 +145,7 @@ if __name__ == "__main__":
             matches['BackdoorAdjustmentScenario'],
             N_SIMULATIONS_PER_SCENARIO
         )
-        backdoor_simulation_plan.to_csv("simulations/plans/backdoor_simulation_plan_c.txt", index=False)
+        backdoor_simulation_plan.to_csv("simulations/plans/backdoor_simulation_plan.txt", index=False)
 
     if os.path.exists("simulations/plans/instrumental_simulation_plan.txt"):
         input_overwrite = input("The instrumental_simulation_plan.txt file already exists. Do you want to overwrite it? (Yes/No) ")
