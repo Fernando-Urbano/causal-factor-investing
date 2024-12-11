@@ -4,16 +4,21 @@ import os
 import sys
 import itertools
 import pandas as pd
+import portalocker
 
 # Adjust the path if needed
 sys.path.append(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+
 
 from scenarios.causal_scenarios import (
     BackdoorAdjustmentScenario,
     InstrumentalVariableScenario
 )
 
-import portalocker
+def keep_simulations():
+    with open("simulations/keep_simulations.txt", "r") as f:
+        keep_simulations = f.read().splitlines()
+    return keep_simulations[0] == "True"
 
 def read_and_delete_second_line(file_path):
     """
@@ -49,19 +54,19 @@ def read_and_delete_second_line(file_path):
         return None
 
 
-N_SIMULATIONS_PER_SCENARIO = 50
+N_SIMULATIONS_PER_SCENARIO = 25
 
 
 
 
 simulations_config = {
     "BackdoorAdjustmentScenario": {
-        "n_samples": [50, 100, 200, 500, 1000, 2000, 5000],
-        "d_c": [5, 10, 20, 50, 100, 300],
-        "d_a": [5, 10, 20, 50, 100, 300],
+        "n_samples": [100, 200, 500, 1000, 2000, 5000],
+        "d_c": [5, 10, 20, 50, 100],
+        "d_a": [5, 10, 20, 50, 100],
         "noise_level_treatment": [0.1, 0.2, 0.5],
         "noise_level_target": [0.1, 0.2, 0.5],
-        "alpha_corr_covariates": [0.2, 0.5, 0.8],
+        "alpha_corr_covariates": [0.3],
         "target_covariates_relationship_type": ["random"],
         "treatment_covariates_relationship_type": ["random"],
     },
@@ -108,6 +113,13 @@ def create_combinations(simulations_config, matches, n_simulations_per_scenario)
         combinations = combinations.loc[match]
     simulation_plan = pd.DataFrame()
     for i in range(n_simulations_per_scenario):
+        combinations = (
+            combinations
+            .sort_values(
+                ["alpha_corr_covariates", "noise_level_treatment", "n_samples"],
+                ascending=[True, True, False, True]
+            )
+        )
         combinations['simulation_id'] = i + 1
         simulation_plan = pd.concat([simulation_plan, combinations])
     simulation_plan['completed'] = False
@@ -115,13 +127,15 @@ def create_combinations(simulations_config, matches, n_simulations_per_scenario)
     return (
         simulation_plan
         .reset_index(drop=True)
-        .pipe(lambda df: pd.concat([df[['external_id']], df.drop('external_id', axis=1)], axis=1))
+        .pipe(lambda df: pd.concat(
+            [df[['external_id']], df.drop('external_id', axis=1)
+        ], axis=1))
     )
     
 
 if __name__ == "__main__":
     os.makedirs("simulations/plans", exist_ok=True)
-    if os.path.exists("simulations/plans/backdoor_simulation_plan.txt"):
+    if os.path.exists("simulations/plans/backdoor_simulation_plan_c.txt"):
         input_overwrite = input("The backdoor_simulation_plan.txt file already exists. Do you want to overwrite it? (Yes/No) ")
     else:
         input_overwrite = "yes"
@@ -131,7 +145,7 @@ if __name__ == "__main__":
             matches['BackdoorAdjustmentScenario'],
             N_SIMULATIONS_PER_SCENARIO
         )
-        backdoor_simulation_plan.to_csv("simulations/plans/backdoor_simulation_plan.txt", index=False)
+        backdoor_simulation_plan.to_csv("simulations/plans/backdoor_simulation_plan_c.txt", index=False)
 
     if os.path.exists("simulations/plans/instrumental_simulation_plan.txt"):
         input_overwrite = input("The instrumental_simulation_plan.txt file already exists. Do you want to overwrite it? (Yes/No) ")

@@ -57,4 +57,5 @@ if __name__ == "__main__":
     scripts_to_file("tests", "py", "Test files:", "scripts/tests", ignore_files=["__init__.py"])
     scripts_to_file("scenarios", "py", "Causal Scenario file:", "scripts/scenarios", ignore_files=["__init__.py"])
     scripts_to_file("database/init", ["py", "sql"], "Database initialization:", "scripts/database", ignore_files=["__init__.py"])
+    scripts_to_file("simulations", ["py"], "Simulations running:", "scripts/simulations", ignore_files=["__init__.py"])
     scripts_to_file("scripts", "txt", "All files", "scripts/all")

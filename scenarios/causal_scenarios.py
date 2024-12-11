@@ -22,7 +22,7 @@ SEED_MODEL = 42
 USE_SPECIAL_ITE_CALCULATION = False
 MIN_N_SAMPLES = 25
 MAX_ITER = 5000
-MAX_ITER_OLS = 10000
+MAX_ITER_OLS = 5000
 
 # warnings.filterwarnings("ignore", module="sklearn")
 
@@ -114,11 +114,21 @@ NORMAL_PIPELINES = {
                 cv=5,
                 penalty='l1',
                 solver='saga',
-                Cs=np.logspace(-2, 1, 5),
+                # Cs=np.logspace(-2, 1, 5),
                 random_state=SEED_MODEL,
                 max_iter=MAX_ITER_OLS
             ))
         ],
+        # "LGBM": [
+        #     ('scaler', StandardScaler()),  
+        #     ('model', LGBMClassifier(
+        #         boosting_type='gbdt',  
+        #         n_estimators=100,      
+        #         max_depth=-1,          
+        #         learning_rate=0.1,     
+        #         random_state=SEED_MODEL
+        #     ))
+        # ],
         "FS": [
             ('poly_features', PolynomialFeatures(degree=2, include_bias=False)),
             ('scaler', StandardScaler()),
@@ -138,7 +148,7 @@ NORMAL_PIPELINES = {
                 cv=5,
                 penalty='elasticnet',
                 solver='saga',
-                Cs=np.logspace(-2, 1, 5),
+                # Cs=np.logspace(-2, 1, 5),
                 l1_ratios=[0.25, 0.5, 0.75],
                 random_state=SEED_MODEL,
                 max_iter=MAX_ITER_OLS
@@ -156,6 +166,16 @@ NORMAL_PIPELINES = {
             ('scaler', StandardScaler()),
             ('model', LassoCV(cv=5, random_state=SEED_MODEL, max_iter=MAX_ITER_OLS))
         ],
+        # "LGBM": [
+        #     ('scaler', StandardScaler()),  
+        #     ('model', LGBMRegressor(
+        #         boosting_type='gbdt',  
+        #         n_estimators=100,      
+        #         max_depth=-1,          
+        #         learning_rate=0.1,     
+        #         random_state=SEED_MODEL
+        #     ))
+        # ],
         "FS": [
             ('poly_features', PolynomialFeatures(degree=2, include_bias=False)),
             ('scaler', StandardScaler()),
@@ -188,10 +208,13 @@ NORMAL_PIPELINES = {
     }
 }
 
-def get_all_pipeline_names():
+def get_all_pipeline_names(filter_models=None):
     classification = list(NORMAL_PIPELINES['classification'].keys())
     regression = list(NORMAL_PIPELINES['regression'].keys())
     assert set(classification) == set(regression), "Different models for classification and regression"
+    if filter_models is not None:
+        filter_models = [filter_models] if isinstance(filter_models, str) else filter_models
+        return [m for m in classification if m in filter_models]
     return classification
 
 

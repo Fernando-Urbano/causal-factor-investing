@@ -16,3 +16,19 @@ Install packages:
 ```
 pip install -r requirements.txt
 ```
+
+Run:
+
+```bash
+python database/init/database_initialization.py
+```
+
+```bash
+python simulations/simulations_plan.py
+```
+
+```bash
+python simulations/backdoor_simulations.py
+```
+
+
