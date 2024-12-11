@@ -1,7 +1,9 @@
 # Fdb version 4
-["pdflatex"] 1733614791.87079 "/Users/fernandorochacorreaurbano/Desktop/causal-machine-learning/causal-factor-investing/proposal/proposal.tex" "proposal.pdf" "proposal" 1733614792.65443 0
-  "/Users/fernandorochacorreaurbano/Desktop/causal-machine-learning/causal-factor-investing/proposal/proposal.tex" 1733614790.86688 50061 7fdac0289bf44c1fb037b005013664a0 ""
+["pdflatex"] 1733842461.21197 "/Users/fernandorochacorreaurbano/Desktop/causal-machine-learning/causal-factor-investing/proposal/proposal.tex" "proposal.pdf" "proposal" 1733842462.01204 0
+  "/Users/fernandorochacorreaurbano/Desktop/causal-machine-learning/causal-factor-investing/proposal/proposal.tex" 1733842459.94031 50060 83aa937d052fad450da5472b9bbcfd1b ""
+  "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
+  "/usr/local/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/tcrm1000.tfm" 1136768653 1536 e07581a4bb3136ece9eeb4c3ffab8233 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy5.tfm" 1246382020 1120 1e8878807317373affa7f7bba4cf2f6a ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmbsy7.tfm" 1246382020 1120 7f9f170e8aa57527ad6c49feafd45d54 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/public/amsfonts/cmextra/cmex7.tfm" 1246382020 1004 54797486969f23fa377b128694d548df ""
@@ -44,8 +46,10 @@
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb" 1248133631 31809 8670ca339bf94e56da1fc21c80635e2a ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb" 1248133631 32762 224316ccc9ad3ca0423a14971cfa7fc1 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb" 1248133631 32569 5e5ddc8df908dea60932f3c484a54c0d ""
+  "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb" 1248133631 32915 7bf7720c61a5b3a7ff25b0964421c9b6 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb" 1248133631 32716 08e384dc442464e7285e891af9f45947 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb" 1248133631 34694 ad62b13721ee8eda1dcc8993c8bd7041 ""
+  "/usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb" 1215737283 138258 6525c253f16cededa14c7fd0da7f67b2 ""
   "/usr/local/texlive/2024/texmf-dist/tex/context/base/mkii/supp-pdf.mkii" 1461363279 71627 94eb9990bed73c364d7f53f960cc8c5b ""
   "/usr/local/texlive/2024/texmf-dist/tex/generic/atbegshi/atbegshi.sty" 1575674566 24708 5584a51a7101caf7e6bbf1fc27d8f7b1 ""
   "/usr/local/texlive/2024/texmf-dist/tex/generic/bigintcalc/bigintcalc.sty" 1576625341 40635 c40361e206be584d448876bba8a64a3b ""
@@ -181,9 +185,9 @@
   "/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1726838998.69877 5467645 128b85b7cde5f5edc5cb7f1dd7ff8736 ""
   "/usr/local/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1726838976 8221424 454b2c53fe337be275f410895c638726 ""
   "/usr/local/texlive/2024/texmf.cnf" 1710266656 577 e590dabc9e28c5b61546e15f63eebcdf ""
-  "proposal.aux" 1733614792.57924 11076 e2a2eafd1ac0dc83bb8eeacc5b815456 "pdflatex"
-  "proposal.out" 1733614792.58036 5925 fc2368357ff34ffbdbf9e728bec8a8f5 "pdflatex"
-  "proposal.tex" 1733614790.86688 50061 7fdac0289bf44c1fb037b005013664a0 ""
+  "proposal.aux" 1733842461.93521 14175 84124339ebb0068cd463e3126ee0ea38 "pdflatex"
+  "proposal.out" 1733842461.93641 6346 9cf6dd026ed26bfa165acc267715f14b "pdflatex"
+  "proposal.tex" 1733842459.94031 50060 83aa937d052fad450da5472b9bbcfd1b ""
   (generated)
   "proposal.aux"
   "proposal.log"

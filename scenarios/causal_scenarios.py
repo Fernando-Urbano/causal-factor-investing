@@ -1,7 +1,9 @@
 import numpy as np
+from functools import reduce
 import json
 import sqlite3
 import pandas as pd
+import warnings
 from typing import Union
 from doubleml import DoubleMLData, DoubleMLPLR, DoubleMLPLIV, DoubleMLIIVM
 from doubleml.double_ml import DoubleML
@@ -10,24 +12,39 @@ from sklearn.ensemble import RandomForestRegressor, RandomForestClassifier
 from sklearn.neural_network import MLPRegressor, MLPClassifier
 from sklearn.pipeline import Pipeline
 from sklearn.model_selection import GridSearchCV
-from sklearn.linear_model import LassoCV, LogisticRegressionCV, ElasticNetCV
+from sklearn.linear_model import LassoCV, LogisticRegressionCV, ElasticNetCV, LinearRegression, LogisticRegression
 import datetime
 from sklearn.preprocessing import PolynomialFeatures, StandardScaler
 import random
-
+from sklearn.feature_selection import SequentialFeatureSelector
 
 SEED_MODEL = 42
 USE_SPECIAL_ITE_CALCULATION = False
+MIN_N_SAMPLES = 25
+MAX_ITER = 5000
+MAX_ITER_OLS = 10000
+
+# warnings.filterwarnings("ignore", module="sklearn")
 
 
-DATA_GENERATION_SPECIFICATION = [
-    'Correct',
-    'Inclusion of Non-Causal Cofounders',
-    'Unobserved Confounders',
-    'Extra Unobserved Confounders',
-    'Instrument treated as Cofounder',
-    'Instrument treated as Cofounder and Inclusion of Non-Causal Cofounders'
-]
+DATA_GENERATION_SPECIFICATION = {
+    "BackdoorAdjustmentScenario": [
+        "Correct",
+        "Inclusion of Non-Causal Cofounders",
+        "Unobserved Confounders"
+    ],
+    "InstrumentalVariableScenario": [
+        "Correct",
+        "Inclusion of Non-Causal Cofounders",
+        "Extra Unobserved Confounders",
+        "Instrument treated as Cofounder",
+        "Instrument treated as Cofounder and Inclusion of Non-Causal Cofounders"
+    ]
+}
+
+
+def get_all_data_generation_specifications():
+    return list(set(reduce(lambda x, y: x + y, list(DATA_GENERATION_SPECIFICATION.values()))))
 
 
 SCHEMA_COLUMNS = [
@@ -42,7 +59,8 @@ SCHEMA_COLUMNS = [
     "binary_instrument", "instrument_covariates_relationship_type",
     "target_covariates_relationship_type",
     "treatment_covariates_relationship_type",
-    "estimated_ate", "std_error", "ci_2_5_pct", "ci_97_5_pct"
+    "estimated_ate", "std_error", "ci_2_5_pct", "ci_97_5_pct",
+    'estimated_ate_p_value', 'estimated_ate_t_stat'
 ]
 
 
@@ -71,21 +89,18 @@ NON_LINEAR_TRANSFORMATIONS = {
 
 PARAM_GRID = {
     "RF": {
-        'model__n_estimators': [50, 100, 200, 500],
+        'model__n_estimators': [100, 500],
         'model__max_depth': [2, 3, 5, 10]
     },
     "DNN": {
         'model__hidden_layer_sizes': [
-            (64, 64, 64, 32, 16,),
             (32, 32, 32, 32, 32,),
-            (128, 64, 32, 16,),
             (64, 64, 64, 64),
             (128, 64, 32,),
             (32, 32, 32,),
             (32, 32,),
-            (32,)
         ],
-        'model__alpha': [.001, .01, .1, .2, .5, 1],  # Ridge regularization
+        'model__alpha': [.1, .2, .5, 1],  # Ridge regularization
     }
 }
 
@@ -99,9 +114,22 @@ NORMAL_PIPELINES = {
                 cv=5,
                 penalty='l1',
                 solver='saga',
+                Cs=np.logspace(-2, 1, 5),
                 random_state=SEED_MODEL,
-                max_iter=10000
+                max_iter=MAX_ITER_OLS
             ))
+        ],
+        "FS": [
+            ('poly_features', PolynomialFeatures(degree=2, include_bias=False)),
+            ('scaler', StandardScaler()),
+            ('forward_selection', SequentialFeatureSelector(
+                estimator=LogisticRegression(max_iter=MAX_ITER, random_state=SEED_MODEL),
+                n_features_to_select='auto',  # Automatically chooses based on cross-validation
+                direction='forward',  # Forward stepwise selection
+                scoring='accuracy',  # Scoring method for classification
+                cv=5  # Cross-validation
+            )),
+            ('model', LogisticRegression(max_iter=MAX_ITER, random_state=SEED_MODEL))  # Final classifier
         ],
         "EN": [
             ('poly_features', PolynomialFeatures(degree=2, include_bias=False)),
@@ -110,30 +138,44 @@ NORMAL_PIPELINES = {
                 cv=5,
                 penalty='elasticnet',
                 solver='saga',
-                l1_ratios=[0.001, 0.1, 0.5, 0.7, 0.9, 1.0],
+                Cs=np.logspace(-2, 1, 5),
+                l1_ratios=[0.25, 0.5, 0.75],
                 random_state=SEED_MODEL,
-                max_iter=10000
+                max_iter=MAX_ITER_OLS
             ))
         ],
         "RF": [('model', RandomForestClassifier(random_state=SEED_MODEL))],
         "DNN": [
             ('scaler', StandardScaler()),
-            ('model', MLPClassifier(max_iter=1000, random_state=SEED_MODEL, activation='relu', learning_rate='adaptive'))
+            ('model', MLPClassifier(max_iter=MAX_ITER, random_state=SEED_MODEL, activation='relu', learning_rate='adaptive'))
         ]
     },
     "regression": {
         "LASSO": [
             ('poly_features', PolynomialFeatures(degree=2, include_bias=False)),
             ('scaler', StandardScaler()),
-            ('model', LassoCV(cv=5, random_state=SEED_MODEL))
+            ('model', LassoCV(cv=5, random_state=SEED_MODEL, max_iter=MAX_ITER_OLS))
+        ],
+        "FS": [
+            ('poly_features', PolynomialFeatures(degree=2, include_bias=False)),
+            ('scaler', StandardScaler()),
+            ('forward_selection', SequentialFeatureSelector(
+                estimator=LinearRegression(),
+                n_features_to_select='auto',
+                direction='forward',
+                scoring='neg_mean_squared_error',
+                cv=5
+            )),
+            ('model', LinearRegression())
         ],
         "EN": [
             ('poly_features', PolynomialFeatures(degree=2, include_bias=False)),
             ('scaler', StandardScaler()),
             ('model', ElasticNetCV(
                 cv=5,
-                l1_ratio=[0.001, 0.1, 0.5, 0.7, 0.9, 1.0],
-                random_state=SEED_MODEL
+                l1_ratio=[0.25, 0.5, 0.75],
+                random_state=SEED_MODEL,
+                max_iter=MAX_ITER_OLS
             ))
         ],
         "RF": [
@@ -141,10 +183,16 @@ NORMAL_PIPELINES = {
         ],
         "DNN": [
             ('scaler', StandardScaler()),
-            ('model', MLPRegressor(max_iter=1000, random_state=SEED_MODEL, activation='relu', learning_rate='adaptive'))
+            ('model', MLPRegressor(max_iter=MAX_ITER, random_state=SEED_MODEL, activation='relu', learning_rate='adaptive'))
         ]
     }
 }
+
+def get_all_pipeline_names():
+    classification = list(NORMAL_PIPELINES['classification'].keys())
+    regression = list(NORMAL_PIPELINES['regression'].keys())
+    assert set(classification) == set(regression), "Different models for classification and regression"
+    return classification
 
 
 def add_grid_search(pipeline, model, scoring):
@@ -194,7 +242,7 @@ def generate_non_linear_relationship(
         random_seed: int = None,
         instrument_is_the_last_covariate: bool = False,
         return_relationship_types: bool = False
-    ):
+    ) -> Union[np.ndarray, tuple]:
     """
     Creates a non-linear relationship between covariates X and a target.
 
@@ -217,6 +265,7 @@ def generate_non_linear_relationship(
         selected_transform_names = np.random.choice(list(NON_LINEAR_TRANSFORMATIONS.keys()), size=n_features)
         selected_transforms = [NON_LINEAR_TRANSFORMATIONS[name] for name in selected_transform_names]
     elif relationship_type in NON_LINEAR_TRANSFORMATIONS:
+        selected_transform_names = [relationship_type] * n_features
         selected_transforms = [NON_LINEAR_TRANSFORMATIONS[relationship_type]] * n_features
     else:
         raise ValueError(
@@ -235,6 +284,7 @@ def generate_non_linear_relationship(
     y = transformed_features @ weights
 
     if return_relationship_types:
+        selected_transform_names = [name.item() if isinstance(name, np.str_) else name for name in selected_transform_names]
         return y, tuple(selected_transform_names)
     return y
 
@@ -346,8 +396,8 @@ class CausalScenario:
             noise_level_treatment: float,
             noise_level_target: float,
             alpha_corr_covariates: float,
-            l_model: str,
-            m_model: str,
+            l_model: str = None,
+            m_model: str = None,
             cv_loss_regression: str = CV_DEFAULT_LOSS_REGRESSION,
             cv_loss_classification: str = CV_DEFAULT_LOSS_CLASSIFICATION,
             target_covariates_relationship_type = "random",
@@ -356,6 +406,9 @@ class CausalScenario:
             constant_ite: bool = False,
             seed_data: int = 42,
         ):
+        self._is_model_built = False
+        if n_samples < MIN_N_SAMPLES:
+            raise ValueError(f"n_samples must be at least {MIN_N_SAMPLES}")
         self.n_samples = n_samples
         self.d_c = d_c
         self.d_a = d_a
@@ -375,7 +428,9 @@ class CausalScenario:
         self.cv_loss_regression = cv_loss_regression
         self.cv_loss_classification = cv_loss_classification
         self.specification = specification
+        self.initial_target_covariates_relationship_type = target_covariates_relationship_type
         self.target_covariates_relationship_type = target_covariates_relationship_type
+        self.initial_treatment_covariates_relationship_type = treatment_covariates_relationship_type
         self.treatment_covariates_relationship_type = treatment_covariates_relationship_type
         self.summary = None
         self.seed_data = seed_data
@@ -394,11 +449,24 @@ class CausalScenario:
         cls.db_path = "database/causal_scenarios.db"
         return True
     
+    def _validate_new_model_name(self, new_model_name):
+        if new_model_name not in get_all_pipeline_names():
+            raise ValueError(f"Invalid model name '{new_model_name}'. Must be one of {get_all_pipeline_names()}")
+    
     def _get_db_path(self):
         return self.__class__.db_path
-        # if self.__class__ == CausalScenario:
-        # else:
-        #     return self.super().__class__.db_path
+    
+    def set_l_model(self, new_l_model: str) -> bool:
+        self._validate_new_model_name(new_l_model)
+        self.l_model = new_l_model
+        self._is_model_built = False
+        return True
+    
+    def set_m_model(self, new_m_model: str) -> bool:
+        self._validate_new_model_name(new_m_model)
+        self.m_model = new_m_model
+        self._is_model_built = False
+        return True
     
     def _generate_X(self):
         self._set_generate_data_timestamp()
@@ -418,14 +486,20 @@ class CausalScenario:
         noise_treatment = np.random.normal(scale=self.noise_level_treatment, size=self.n_samples)
         noise_target = np.random.normal(scale=self.noise_level_target, size=self.n_samples)
 
-        logits = generate_non_linear_relationship(self.X_c, relationship_type="random") + noise_treatment
-        prob_treatment = 1 / (1 + np.exp(-logits))
+        logits = (
+            generate_non_linear_relationship(
+                self.X_c, relationship_type=self.initial_treatment_covariates_relationship_type
+            )
+            + noise_treatment
+        )
+        logits_standardized = (logits - logits.mean()) / logits.std()
+        prob_treatment = 1 / (1 + np.exp(-logits_standardized))
         self.treatment = np.random.binomial(1, p=prob_treatment)
 
         treatment_effect, self.true_ate, self.treatment_covariates_relationship_type = (
             modify_treatment_effect_and_compute_ate(
                 treatment=self.treatment,
-                relationship_type=self.treatment_covariates_relationship_type,
+                relationship_type=self.initial_treatment_covariates_relationship_type,
                 X_c=self.X_c,
                 constant_ite=self.constant_ite,
                 random_seed=self.seed_data
@@ -433,15 +507,15 @@ class CausalScenario:
         )
 
         y0 = generate_non_linear_relationship(
-            self.X_c, relationship_type=self.target_covariates_relationship_type
+            self.X_c, relationship_type=self.initial_target_covariates_relationship_type
         )
         
         self.target = y0 + treatment_effect + noise_target
 
 
     def set_specification(self, new_specification):
-        if new_specification not in DATA_GENERATION_SPECIFICATION:
-            data_generation_spec = [f"({n}) {s}" for n, s in enumerate(DATA_GENERATION_SPECIFICATION)]
+        if new_specification not in get_all_data_generation_specifications():
+            data_generation_spec = [f"({n}) {s}" for n, s in enumerate(get_all_data_generation_specifications())]
             raise ValueError(
                 f"Invalid specification '{new_specification}'. "
                 + f"Specification must be one of the following: {", ".join(data_generation_spec)}"
@@ -496,12 +570,13 @@ class CausalScenario:
         self._build_summary()
         return self.summary
     
-    def _convert_relationships_to_str(self):
+    def _convert_relationships_to_str(self) -> bool:
         for relationship in VARIABLES_RELATIONSHIP:
             if not hasattr(self, relationship):
                 continue
             if isinstance(getattr(self, relationship), tuple):
                 setattr(self, relationship, json.dumps(getattr(self, relationship)))
+        return True
     
     def save_summary(self) -> bool:
         """
@@ -509,6 +584,10 @@ class CausalScenario:
         """
         self._build_summary()
         self.summary["scenario_name"] = self.__class__.__name__
+        if self.specification != 'Unobserved Confounders':
+            self.summary["pct_unobserved"] = None
+        if self.specification != "Extra Unobserved Confounders":
+            self.summary["pct_extra_unobserved"] = None
         with sqlite3.connect(self._get_db_path()) as conn:
             self.summary.to_sql(
                 name="scenario_simulations",
@@ -516,6 +595,12 @@ class CausalScenario:
                 if_exists='append',
                 index=False
             )
+        return True
+    
+    def fit_model(self) -> bool:
+        if self._is_model_built is False:
+            raise ValueError("Model is not built, call build_model() first")
+        self.dml.fit()
         return True
 
 
@@ -528,14 +613,14 @@ class BackdoorAdjustmentScenario(CausalScenario):
             noise_level_treatment: float,
             noise_level_target: float,
             alpha_corr_covariates: float,
-            l_model: str,
-            m_model: str,
+            l_model: str = None,
+            m_model: str = None,
             cv_loss_regression: str = CV_DEFAULT_LOSS_REGRESSION,
             cv_loss_classification: str = CV_DEFAULT_LOSS_CLASSIFICATION,
             target_covariates_relationship_type = "random",
             treatment_covariates_relationship_type = "random",
             specification: str = 'Correct',
-            pct_unobserved: float = 0.25,
+            pct_unobserved: float = .25,
             constant_ite: bool = False,
             seed_data: int = 42,
     ):
@@ -556,13 +641,15 @@ class BackdoorAdjustmentScenario(CausalScenario):
             constant_ite,
             seed_data
         )
-        self.pct_unobserved = pct_unobserved if specification == 'Unobserved Confounders' else None
+        self.pct_unobserved = pct_unobserved
 
-    def set_specification(self, new_specification):
+    def set_specification(self, new_specification: str) -> bool:
         result = super().set_specification(new_specification)
-        if new_specification != 'Unobserved Confounders':
-            self.pct_unobserved = None
         return result
+    
+    def set_pct_unobserved(self, new_pct_unobserved: float) -> bool:
+        self.pct_unobserved = new_pct_unobserved
+        return True
 
     def build_model(self) -> bool:
         if self.target is None:
@@ -589,10 +676,7 @@ class BackdoorAdjustmentScenario(CausalScenario):
 
         self.dml = DoubleMLPLR(dml_data, ml_l=ml_l, ml_m=ml_m, n_folds=5)
 
-        return True
-
-    def fit_model(self) -> bool:
-        self.dml.fit()
+        self._is_model_built = True
         return True
         
 
@@ -623,6 +707,7 @@ class InstrumentalVariableScenario(CausalScenario):
             cv_loss_classification: str = CV_DEFAULT_LOSS_CLASSIFICATION,
             target_covariates_relationship_type = "random",
             treatment_covariates_relationship_type = "random",
+            instrument_covariates_relationship_type = "random",
             specification: str = 'Correct',
             constant_ite: bool = False,
             pct_extra_unobserved: float = 0.25,
@@ -653,20 +738,31 @@ class InstrumentalVariableScenario(CausalScenario):
         self.X_c_ex_U_and_Z = None
         self.Z = None
         self.binary_instrument = binary_instrument
-        self.instrument_covariates_relationship_type = "random"
+        self.initial_instrument_covariates_relationship_type = instrument_covariates_relationship_type
+        self.instrument_covariates_relationship_type = instrument_covariates_relationship_type
         self.pct_extra_unobserved = pct_extra_unobserved
         
-
         if d_u > d_c:
             raise ValueError(
                 "The number of unobserved covariates must be less or equal to the number of total causal covariates"
             )
         
-    def set_specification(self, new_specification):
+    def set_pct_extra_unobserved(self, new_pct_extra_unobserved: float) -> bool:
+        self.pct_extra_unobserved = new_pct_extra_unobserved
+        return True
+    
+    def get_pct_extra_unobserved(self) -> float:
+        return self.pct_extra_unobserved
+        
+    def set_specification(self, new_specification: str) -> bool:
         result = super().set_specification(new_specification)
-        if new_specification != "Extra Unobserved Confounders":
-            self.pct_extra_unobserved = None
         return result
+    
+    def set_r_model(self, new_r_model: str) -> bool:
+        self._validate_new_model_name(new_r_model)
+        self.r_model = new_r_model
+        self._is_model_built = False
+        return True
 
     def generate_data(self):
         self._generate_X()
@@ -683,15 +779,16 @@ class InstrumentalVariableScenario(CausalScenario):
         logits = (
             generate_non_linear_relationship(
                 self.X_c_ex_U,
-                relationship_type=self.instrument_covariates_relationship_type
+                relationship_type=self.initial_instrument_covariates_relationship_type
             )
             + noise_instrument
         )
         if self.binary_instrument:
-            prob_instrument = 1 / (1 + np.exp(-logits))
-            self.Z = np.random.binomial(1, p=prob_instrument)
+            logits_standardized = (logits - logits.mean()) / logits.std()
+            prob_instrument = 1 / (1 + np.exp(-logits_standardized))
+            self.Z = np.random.binomial(1, p=prob_instrument).reshape(-1, 1)
         else:
-            self.Z = logits
+            self.Z = logits.reshape(-1, 1)
 
         self.X_c_ex_U_and_Z = np.column_stack((self.X_c_ex_U, self.Z))
         self.X_c_and_Z = np.column_stack((self.X_c, self.Z))
@@ -699,17 +796,18 @@ class InstrumentalVariableScenario(CausalScenario):
         logits = (
             generate_non_linear_relationship(
                 self.X_c_and_Z,
-                relationship_type=self.treatment_covariates_relationship_type
+                relationship_type=self.initial_treatment_covariates_relationship_type
             )
             + noise_treatment
         )
-        prob_treatment = 1 / (1 + np.exp(-logits))
+        logits_standardized = (logits - logits.mean()) / logits.std()
+        prob_treatment = 1 / (1 + np.exp(-logits_standardized))
         self.treatment = np.random.binomial(1, p=prob_treatment)
 
         treatment_effect, self.true_ate, self.treatment_covariates_relationship_type = (
             modify_treatment_effect_and_compute_ate(
                 treatment=self.treatment,
-                relationship_type=self.treatment_covariates_relationship_type,
+                relationship_type=self.initial_treatment_covariates_relationship_type,
                 X_c=self.X_c,
                 constant_ite=self.constant_ite,
                 random_seed=self.seed_data
@@ -717,7 +815,7 @@ class InstrumentalVariableScenario(CausalScenario):
         )
 
         y0 = generate_non_linear_relationship(
-            self.X_c, relationship_type=self.target_covariates_relationship_type
+            self.X_c, relationship_type=self.initial_target_covariates_relationship_type
         )
         
         self.target = y0 + treatment_effect + noise_target
@@ -751,6 +849,8 @@ class InstrumentalVariableScenario(CausalScenario):
             ml_m = add_grid_search(pipeline=pipeline_m, model=self.m_model, scoring=self.cv_loss_classification)
 
             self.dml = DoubleMLPLR(dml_data, ml_l=ml_l, ml_m=ml_m, n_folds=5)
+
+            self._is_model_built = True
             return True
         else:
             dml_data = DoubleMLData.from_arrays(x=X, y=self.target, d=self.treatment, z=self.Z)
@@ -770,6 +870,8 @@ class InstrumentalVariableScenario(CausalScenario):
                 self.dml = DoubleMLIIVM(dml_data, ml_g=ml_l, ml_m=ml_m, ml_r=ml_r, n_folds=5)
             else:
                 raise NotImplementedError("Continuous instrument not yet implemented")
+            
+            self._is_model_built = True
             return True
         
     def delete_in_memory(self):

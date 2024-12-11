@@ -94,13 +94,66 @@ def test_backdoor_adjustment_with_regenerated_data():
 
     second_estimated_ate = scenario.get_summary()['estimated_ate'].iloc[0]
     assert abs(first_estimated_ate - second_estimated_ate) < .01
-    assert first_true_ate - scenario.true_ate
 
     scenario.generate_data()
     scenario.build_model()
 
     assert first_true_ate != scenario.true_ate
 
+
+def test_fit_two_models_with_same_data_backdoor_scenario():
+    scenario = BackdoorAdjustmentScenario(
+        n_samples=200,
+        d_c=3,
+        d_a=5,
+        noise_level_treatment=1,
+        noise_level_target=1,
+        alpha_corr_covariates=1,
+        l_model='LASSO',
+        m_model='RF',
+        specification='Unobserved Confounders',
+        seed_data=123,
+        pct_unobserved=.7
+    )
+    scenario.generate_data()
+    scenario.build_model()
+    scenario.fit_model()
+    estimated_ate = scenario.get_summary()['estimated_ate'].iloc[0]
+    scenario.set_l_model('DNN')
+    scenario.set_m_model('DNN')
+    scenario.build_model()
+    scenario.fit_model()
+    new_estimated_ate = scenario.get_summary()['estimated_ate'].iloc[0]
+    assert estimated_ate != new_estimated_ate
+
+
+def test_fit_two_models_with_same_data_iv_scenario():
+    scenario = InstrumentalVariableScenario(
+        n_samples=1000,
+        d_c=6,
+        d_a=3,
+        d_u=3,
+        noise_level_instrument=1,
+        noise_level_target=1,
+        noise_level_treatment=1,
+        alpha_corr_covariates=1,
+        l_model="RF",
+        m_model="RF",
+        r_model="RF",
+        seed_data=42,
+        specification='Extra Unobserved Confounders'
+    )
+    scenario.generate_data()
+    scenario.build_model()
+    scenario.fit_model()
+    estimated_ate = scenario.get_summary()['estimated_ate'].iloc[0]
+    scenario.set_l_model('DNN')
+    scenario.set_m_model('DNN')
+    scenario.set_r_model('DNN')
+    scenario.build_model()
+    scenario.fit_model()
+    new_estimated_ate = scenario.get_summary()['estimated_ate'].iloc[0]
+    assert estimated_ate != new_estimated_ate
 
 def test_backdoor_adjustment_inclusion_non_causal_cofounders():
     """
@@ -241,8 +294,8 @@ def test_backdoor_adjustment_bootstrap():
 
 
 if __name__ == "__main__":
-    test_backdoor_adjustment_with_regenerated_data()
     test_backdoor_adjustment_correct_spec_no_noise()
+    test_backdoor_adjustment_with_regenerated_data()
     test_backdoor_adjustment_correct_spec()
     test_backdoor_adjustment_inclusion_non_causal_cofounders()
     test_backdoor_adjustment_unobserved_confounders()

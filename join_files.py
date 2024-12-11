@@ -50,9 +50,11 @@ def scripts_to_file(directory, extension, initial_text, filename, filter_files=N
     text_to_file(script_text, filename)
 
 if __name__ == "__main__":
-    if not os.path.exists("scripts"):
-        os.mkdir("scripts")
+
+    if os.path.exists("scripts"):
+        os.system("rm -r scripts")
+    os.mkdir("scripts")
     scripts_to_file("tests", "py", "Test files:", "scripts/tests", ignore_files=["__init__.py"])
     scripts_to_file("scenarios", "py", "Causal Scenario file:", "scripts/scenarios", ignore_files=["__init__.py"])
     scripts_to_file("database/init", ["py", "sql"], "Database initialization:", "scripts/database", ignore_files=["__init__.py"])
-    scripts_to_file("scripts", "txt", "All files", "scripts/script_all")
+    scripts_to_file("scripts", "txt", "All files", "scripts/all")

@@ -30,7 +30,7 @@ def test_generate_non_linear_relationship():
     assert isinstance(transforms, tuple)
     assert len(transforms) == 5
     for func in transforms:
-        assert func in NON_LINEAR_TRANSFORMATIONS.values()
+        assert func in list(NON_LINEAR_TRANSFORMATIONS.keys())
 
 
 def test_modify_treatment_effect_and_compute_ate_constant_ite():
@@ -187,3 +187,6 @@ def test_calc_true_ite_non_random_fixed_relationship():
     assert len(relationships) == 2
     for rel in relationships:
         assert rel == "cos"
+
+if __name__ == "__main__":
+    test_generate_non_linear_relationship()
