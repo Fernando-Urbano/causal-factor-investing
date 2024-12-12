@@ -11,3 +11,5 @@ test/__pycache__
 __pycache__
 scripts
 simulations/plans/*
+analysis.ipynb
+analysis/plots/*
