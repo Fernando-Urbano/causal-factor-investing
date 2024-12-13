@@ -1,0 +1,63 @@
+\begin{thebibliography}{}
+
+\bibitem[Bang \& Robins, 2005]{BangRobins2005}
+Bang, H. \& Robins, J.~M. (2005).
+\newblock Doubly robust estimation in missing data and causal inference models.
+\newblock {\em Biometrics}, 61(4), 962--973.
+
+\bibitem[Belloni et~al., 2014]{BelloniChernozhukovHansen2014}
+Belloni, A., Chernozhukov, V., \& Hansen, C. (2014).
+\newblock High-dimensional methods and inference on structural and treatment effects.
+\newblock {\em Journal of Economic Perspectives}, 28(2), 29--50.
+
+\bibitem[Chernozhukov et~al., 2018a]{Chernozhukov2018}
+Chernozhukov, V., Chetverikov, D., Demirer, M., Duflo, E., Hansen, C., \& Newey, W. (2018a).
+\newblock Double/debiased machine learning for treatment and structural parameters.
+\newblock {\em The Econometrics Journal}, 21(1), C1--C68.
+
+\bibitem[Chernozhukov et~al., 2018b]{ChernozhukovChetverikovDemireretal2018}
+Chernozhukov, V., Chetverikov, D., Demirer, P., Duflo, E., Hansen, C., \& Newey, W. (2018b).
+\newblock Double machine learning for treatment and causal parameters.
+\newblock {\em arXiv preprint arXiv:1608.00060}.
+
+\bibitem[Glynn \& Quinn, 2010]{GlynnQuinn2010}
+Glynn, A.~N. \& Quinn, K.~M. (2010).
+\newblock An introduction to the augmented inverse propensity weighted estimator.
+\newblock {\em Political Analysis}, 18(1), 36--56.
+
+\bibitem[Imbens \& Rubin, 2015]{ImbensRubin2015}
+Imbens, G.~W. \& Rubin, D.~B. (2015).
+\newblock {\em Causal Inference for Statistics, Social, and Biomedical Sciences: An Introduction}.
+\newblock Cambridge, UK: Cambridge University Press.
+
+\bibitem[Newey, 1990]{Newey1990}
+Newey, W.~K. (1990).
+\newblock Semiparametric efficiency bounds.
+\newblock {\em Journal of Applied Econometrics}, 5(2), 99--135.
+
+\bibitem[Pearl, 1995]{Pearl1995}
+Pearl, J. (1995).
+\newblock Causal diagrams for empirical research.
+\newblock {\em Biometrika}, 82(4), 669--688.
+
+\bibitem[Pearl, 2009]{Pearl2009}
+Pearl, J. (2009).
+\newblock {\em Causality: Models, Reasoning, and Inference}.
+\newblock Cambridge, UK: Cambridge University Press, 2nd edition.
+
+\bibitem[Pearl, 2012]{Pearl2012}
+Pearl, J. (2012).
+\newblock The front-door criterion for confounding control.
+\newblock In J. Pearl \& M. Glymour (Eds.), {\em Causal Inference}  chapter~4, (pp.\ 245--257). Cambridge, UK: Cambridge University Press.
+
+\bibitem[Robins et~al., 1994]{RobinsRotnitzkyZhao1994}
+Robins, J.~M., Rotnitzky, A., \& Zhao, L.~P. (1994).
+\newblock Estimation of regression coefficients when some regressors are not always observed.
+\newblock {\em Journal of the American Statistical Association}, 89(427), 846--866.
+
+\bibitem[Rubin, 1974]{Rubin1974}
+Rubin, D.~B. (1974).
+\newblock Estimating causal effects of treatments in randomized and nonrandomized studies.
+\newblock {\em Journal of Educational Psychology}, 66(5), 688--701.
+
+\end{thebibliography}

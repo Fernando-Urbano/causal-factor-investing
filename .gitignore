@@ -13,3 +13,4 @@ scripts
 simulations/plans/*
 analysis.ipynb
 analysis/plots/*
+analysis/tables/*

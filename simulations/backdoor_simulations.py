@@ -59,7 +59,7 @@ if __name__ == "__main__":
         scenario.generate_data()
         for specification in DATA_GENERATION_SPECIFICATION['BackdoorAdjustmentScenario']:
             scenario.set_specification(specification)
-            for model in get_all_pipeline_names("RF"):
+            for model in get_all_pipeline_names():
                 time_stamp = pd.Timestamp.now().strftime("%Y-%m-%d %H:%M:%S")
                 print(
                     f"{time_stamp} BackdoorAdjustmentScenario S{external_id:.0f}: "

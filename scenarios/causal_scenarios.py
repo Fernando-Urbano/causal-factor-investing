@@ -39,6 +39,12 @@ DATA_GENERATION_SPECIFICATION = {
         "Extra Unobserved Confounders",
         "Instrument treated as Cofounder",
         "Instrument treated as Cofounder and Inclusion of Non-Causal Cofounders"
+    ],
+    "FrontdoorAdjustmentScenario": [
+        "Correct",
+        "Inclusion of Non-Causal Cofounders"
+        "Ignoring the Mediator",
+        "Considering the Mediator as a Normal Covariate"
     ]
 }
 
@@ -73,8 +79,8 @@ VARIABLES_RELATIONSHIP = [
 
 NON_LINEAR_TRANSFORMATIONS = {
     "linear": lambda t: t,
-    "sin": lambda t: np.sin(t) + 1,
-    "cos": lambda t: np.cos(t) + 1,
+    "sin": lambda t: np.sin(t),
+    "cos": lambda t: np.cos(t),
     "square": lambda t: t**2,
     "cubic": lambda t: t**3,
     "step": lambda t: np.where(t > 0, 1, 0),
@@ -89,7 +95,7 @@ NON_LINEAR_TRANSFORMATIONS = {
 
 PARAM_GRID = {
     "RF": {
-        'model__n_estimators': [100, 500],
+        'model__n_estimators': [50, 100, 200, 500],
         'model__max_depth': [2, 3, 5, 10]
     },
     "DNN": {
@@ -119,16 +125,6 @@ NORMAL_PIPELINES = {
                 max_iter=MAX_ITER_OLS
             ))
         ],
-        # "LGBM": [
-        #     ('scaler', StandardScaler()),  
-        #     ('model', LGBMClassifier(
-        #         boosting_type='gbdt',  
-        #         n_estimators=100,      
-        #         max_depth=-1,          
-        #         learning_rate=0.1,     
-        #         random_state=SEED_MODEL
-        #     ))
-        # ],
         "FS": [
             ('poly_features', PolynomialFeatures(degree=2, include_bias=False)),
             ('scaler', StandardScaler()),
@@ -166,16 +162,6 @@ NORMAL_PIPELINES = {
             ('scaler', StandardScaler()),
             ('model', LassoCV(cv=5, random_state=SEED_MODEL, max_iter=MAX_ITER_OLS))
         ],
-        # "LGBM": [
-        #     ('scaler', StandardScaler()),  
-        #     ('model', LGBMRegressor(
-        #         boosting_type='gbdt',  
-        #         n_estimators=100,      
-        #         max_depth=-1,          
-        #         learning_rate=0.1,     
-        #         random_state=SEED_MODEL
-        #     ))
-        # ],
         "FS": [
             ('poly_features', PolynomialFeatures(degree=2, include_bias=False)),
             ('scaler', StandardScaler()),
