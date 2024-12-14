@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.9.20)  13 DEC 2024 13:12
+This is pdfTeX, Version 3.141592653-2.6-1.40.26 (TeX Live 2024) (preloaded format=pdflatex 2024.9.20)  14 DEC 2024 12:07
 entering extended mode
  restricted \write18 enabled.
  file:line:error style messages enabled.
@@ -651,354 +651,340 @@ LaTeX Font Info:    Trying to load font information for U+msb on input line 99.
 File: umsb.fd 2013/01/14 v3.01 AMS symbols B
 ) [1
 
-{/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}] (./report.toc [2])
+{/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map}{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] [2] (./report.toc [3])
 \tf@toc=\write5
 \openout5 = `report.toc'.
 
- [3] [4] [5] [6] [7{/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc}] [8
+ [4] [5] [6] [7] [8] [9
 pdfTeX warning (ext4): destination with the same identifier (name{figure.1}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.334     \item N
-                 o variable in the adjustment set $C$ is a descendant of the...] [9
+l.338 \end{enumerate}
+                     ] [10
 pdfTeX warning (ext4): destination with the same identifier (name{figure.2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.402 \end{align}
-                 ]
+l.408 \subsection
+                 {Frontdoor Adjustment}]
 
-LaTeX Warning: Command \textquoteright invalid in math mode on input line 413.
-
-
-LaTeX Warning: Command \textquoteright invalid in math mode on input line 413.
+LaTeX Warning: Command \textquoteright invalid in math mode on input line 415.
 
 
-LaTeX Warning: Command \textquoteright invalid in math mode on input line 413.
+LaTeX Warning: Command \textquoteright invalid in math mode on input line 415.
 
-[10]
 
-LaTeX Warning: Reference `subsec:appendix_orthogonal_score_function_frontdoor_adjustment' on page 11 undefined on input line 503.
+LaTeX Warning: Command \textquoteright invalid in math mode on input line 415.
 
-[11
+[11]
+
+LaTeX Warning: Reference `subsec:appendix_orthogonal_score_function_frontdoor_adjustment' on page 12 undefined on input line 505.
+
+[12
 pdfTeX warning (ext4): destination with the same identifier (name{figure.3}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.507 \paragraph
-                {Inclusion of $C_i$ and $X_{a, i}$ on every nuisance function}] [12] [13
+l.509 \paragraph
+                {Inclusion of $C_i$ and $X_{a, i}$ on every nuisance function}] [13] [14
 pdfTeX warning (ext4): destination with the same identifier (name{figure.4}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.609 \end{equation}
-                    ] [14] [15]
+l.611 \end{equation}
+                    ] [15] [16]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 753.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 753.
+(hyperref)                removing `math shift' on input line 755.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 753.
+(hyperref)                removing `subscript' on input line 755.
 
-[16] [17] [18] [19] [20] [21] [22] [23] [24]
-LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 1109.
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 755.
+
+[17] [18] [19] [20] [21] [22] [23] [24] [25]
+LaTeX Font Info:    Trying to load font information for OMS+cmr on input line 1111.
  (/usr/local/texlive/2024/texmf-dist/tex/latex/base/omscmr.fd
 File: omscmr.fd 2023/04/13 v2.5m Standard LaTeX font definitions
 )
 LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <8> not available
-(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 1109.
- [25]
-<../analysis/plots/fixed_box_plot_error_by_n_div_d_and_specification.png, id=687, 867.24pt x 433.62pt>
-File: ../analysis/plots/fixed_box_plot_error_by_n_div_d_and_specification.png Graphic file (type png)
-<use ../analysis/plots/fixed_box_plot_error_by_n_div_d_and_specification.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_error_by_n_div_d_and_specification.png  used on input line 1173.
-(pdftex.def)             Requested size: 303.53267pt x 151.76927pt.
- [26
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 1111.
+ [26]
+<../analysis/plots/fixed_line_plot_error_by_n_div_d_for_ratio_bigger_than_25.png, id=692, 867.24pt x 433.62pt>
+File: ../analysis/plots/fixed_line_plot_error_by_n_div_d_for_ratio_bigger_than_25.png Graphic file (type png)
+<use ../analysis/plots/fixed_line_plot_error_by_n_div_d_for_ratio_bigger_than_25.png>
+Package pdftex.def Info: ../analysis/plots/fixed_line_plot_error_by_n_div_d_for_ratio_bigger_than_25.png  used on input line 1158.
+(pdftex.def)             Requested size: 390.25534pt x 195.1272pt.
+ [27
 pdfTeX warning (ext4): destination with the same identifier (name{table.1}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1176 
+l.1162 
        
 pdfTeX warning (ext4): destination with the same identifier (name{table.2}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1176 
-       
-pdfTeX warning (ext4): destination with the same identifier (name{table.3}) has been already used, duplicate ignored
-<argument> ...shipout:D \box_use:N \l_shipout_box 
-                                                  \__shipout_drop_firstpage_...
-l.1176 
+l.1162 
        ]
-<../analysis/plots/fixed_line_plot_error_by_n_div_d_for_ratio_bigger_than_25.png, id=696, 867.24pt x 433.62pt>
-File: ../analysis/plots/fixed_line_plot_error_by_n_div_d_for_ratio_bigger_than_25.png Graphic file (type png)
-<use ../analysis/plots/fixed_line_plot_error_by_n_div_d_for_ratio_bigger_than_25.png>
-Package pdftex.def Info: ../analysis/plots/fixed_line_plot_error_by_n_div_d_for_ratio_bigger_than_25.png  used on input line 1179.
-(pdftex.def)             Requested size: 303.53267pt x 151.76927pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_10.png, id=697, 867.24pt x 433.62pt>
-File: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_10.png Graphic file (type png)
-<use ../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_10.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_10.png  used on input line 1199.
-(pdftex.def)             Requested size: 303.53267pt x 151.76927pt.
- [27
+<../analysis/plots/fixed_box_plot_error_by_n_div_d_and_specification.png, id=701, 867.24pt x 433.62pt>
+File: ../analysis/plots/fixed_box_plot_error_by_n_div_d_and_specification.png Graphic file (type png)
+<use ../analysis/plots/fixed_box_plot_error_by_n_div_d_and_specification.png>
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_error_by_n_div_d_and_specification.png  used on input line 1167.
+(pdftex.def)             Requested size: 390.25534pt x 195.1272pt.
+ [28
 pdfTeX warning (ext4): destination with the same identifier (name{figure.5}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1202 
+l.1190 
        
 pdfTeX warning (ext4): destination with the same identifier (name{figure.6}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1202 
+l.1190 
+        <../analysis/plots/fixed_line_plot_error_by_n_div_d_for_ratio_bigger_than_25.png> <../analysis/plots/fixed_box_plot_error_by_n_div_d_and_specification.png>] [29
+pdfTeX warning (ext4): destination with the same identifier (name{table.3}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1230 
        
 pdfTeX warning (ext4): destination with the same identifier (name{table.4}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1202 
-        <../analysis/plots/fixed_box_plot_error_by_n_div_d_and_specification.png> <../analysis/plots/fixed_line_plot_error_by_n_div_d_for_ratio_bigger_than_25.png>]
-<../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_3.png, id=707, 867.24pt x 433.62pt>
-File: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_3.png Graphic file (type png)
-<use ../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_3.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_3.png  used on input line 1205.
-(pdftex.def)             Requested size: 303.53267pt x 151.76927pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_c_minimum_n_div_d_10.png, id=708, 867.24pt x 433.62pt>
+l.1230 
+       ]
+<../analysis/plots/fixed_box_plot_ate_error_by_d_c_minimum_n_div_d_10.png, id=716, 867.24pt x 433.62pt>
 File: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_minimum_n_div_d_10.png Graphic file (type png)
 <use ../analysis/plots/fixed_box_plot_ate_error_by_d_c_minimum_n_div_d_10.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_minimum_n_div_d_10.png  used on input line 1211.
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_minimum_n_div_d_10.png  used on input line 1235.
 (pdftex.def)             Requested size: 303.53267pt x 151.76927pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_c_minimum_n_div_d_3.png, id=709, 867.24pt x 433.62pt>
+<../analysis/plots/fixed_box_plot_ate_error_by_d_c_minimum_n_div_d_3.png, id=717, 867.24pt x 433.62pt>
 File: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_minimum_n_div_d_3.png Graphic file (type png)
 <use ../analysis/plots/fixed_box_plot_ate_error_by_d_c_minimum_n_div_d_3.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_minimum_n_div_d_3.png  used on input line 1217.
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_minimum_n_div_d_3.png  used on input line 1241.
 (pdftex.def)             Requested size: 303.53267pt x 151.76927pt.
- [28
+ [30
+pdfTeX warning (ext4): destination with the same identifier (name{table.5}) has been already used, duplicate ignored
+<argument> ...shipout:D \box_use:N \l_shipout_box 
+                                                  \__shipout_drop_firstpage_...
+l.1248 
+       
 pdfTeX warning (ext4): destination with the same identifier (name{figure.7}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1220 
+l.1248 
        
 pdfTeX warning (ext4): destination with the same identifier (name{figure.8}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1220 
-       
+l.1248 
+        <../analysis/plots/fixed_box_plot_ate_error_by_d_c_minimum_n_div_d_10.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_c_minimum_n_div_d_3.png>]
+<../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_10.png, id=728, 867.24pt x 433.62pt>
+File: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_10.png Graphic file (type png)
+<use ../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_10.png>
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_10.png  used on input line 1251.
+(pdftex.def)             Requested size: 303.53267pt x 151.76927pt.
+<../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_3.png, id=729, 867.24pt x 433.62pt>
+File: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_3.png Graphic file (type png)
+<use ../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_3.png>
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_3.png  used on input line 1257.
+(pdftex.def)             Requested size: 303.53267pt x 151.76927pt.
+ [31
 pdfTeX warning (ext4): destination with the same identifier (name{figure.9}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1220 
-        <../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_10.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_3.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_c_minimum_n_div_d_10.png>] [29
+l.1263 \newpage
+               
 pdfTeX warning (ext4): destination with the same identifier (name{figure.10}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1221 \newpage
-                <../analysis/plots/fixed_box_plot_ate_error_by_d_c_minimum_n_div_d_3.png>] (./report.bbl) [30] [31]
-Overfull \hbox (7.74142pt too wide) in paragraph at lines 1263--1264
+l.1263 \newpage
+                <../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_10.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_3.png>] (./report.bbl) [32] [33]
+Overfull \hbox (7.74142pt too wide) in paragraph at lines 1305--1306
 []\OT1/cmr/m/n/10 The sim-u-la-tion plans and au-to-mated run-ning of mul-ti-ple sim-u-la-tion con-fig-u-ra-tions (\OT1/cmtt/m/n/10 simulations
  []
 
-[32
+[34
 pdfTeX warning (ext4): destination with the same identifier (name{figure.11}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1344 
-       ] [33
+l.1386 
+       ] [35
 pdfTeX warning (ext4): destination with the same identifier (name{figure.12}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1415 
-       ] [34
+l.1457 
+       ] [36
 pdfTeX warning (ext4): destination with the same identifier (name{figure.13}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1459 
+l.1501 
        
 pdfTeX warning (ext4): destination with the same identifier (name{figure.14}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1459 
-       ] [35
+l.1501 
+       ] [37
 pdfTeX warning (ext4): destination with the same identifier (name{figure.15}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1550 
+l.1592 
        
 pdfTeX warning (ext4): destination with the same identifier (name{figure.16}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1550 
-       ] [36
+l.1592 
+       ] [38
 pdfTeX warning (ext4): destination with the same identifier (name{figure.17}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1591 \end{enumerate}
+l.1633 \end{enumerate}
                       
 pdfTeX warning (ext4): destination with the same identifier (name{figure.18}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1591 \end{enumerate}
-                      ] [37
+l.1633 \end{enumerate}
+                      ] [39
 pdfTeX warning (ext4): destination with the same identifier (name{figure.19}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1661 
+l.1703 
        
 pdfTeX warning (ext4): destination with the same identifier (name{figure.20}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1661 
-       ] [38
+l.1703 
+       ] [40
 pdfTeX warning (ext4): destination with the same identifier (name{figure.21}) has been already used, duplicate ignored
 <argument> ...shipout:D \box_use:N \l_shipout_box 
                                                   \__shipout_drop_firstpage_...
-l.1662 \newpage
+l.1704 \newpage
                ]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 1666.
+(hyperref)                removing `math shift' on input line 1709.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 1666.
+(hyperref)                removing `subscript' on input line 1709.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 1666.
+(hyperref)                removing `math shift' on input line 1709.
 
-<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_3.png, id=1077, 578.16pt x 361.35pt>
+<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_3.png, id=1090, 578.16pt x 361.35pt>
 File: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_3.png Graphic file (type png)
 <use ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_3.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_3.png  used on input line 1670.
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_3.png  used on input line 1713.
 (pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_5.png, id=1078, 578.16pt x 361.35pt>
+<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_5.png, id=1091, 578.16pt x 361.35pt>
 File: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_5.png Graphic file (type png)
 <use ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_5.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_5.png  used on input line 1671.
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_5.png  used on input line 1714.
 (pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_10.png, id=1079, 578.16pt x 361.35pt>
+<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_10.png, id=1092, 578.16pt x 361.35pt>
 File: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_10.png Graphic file (type png)
 <use ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_10.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_10.png  used on input line 1672.
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_10.png  used on input line 1715.
 (pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_50.png, id=1080, 578.16pt x 361.35pt>
+<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_50.png, id=1093, 578.16pt x 361.35pt>
 File: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_50.png Graphic file (type png)
 <use ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_50.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_50.png  used on input line 1673.
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_50.png  used on input line 1716.
 (pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_3.png, id=1081, 578.16pt x 361.35pt>
+<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_3.png, id=1094, 578.16pt x 361.35pt>
 File: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_3.png Graphic file (type png)
 <use ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_3.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_3.png  used on input line 1677.
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_3.png  used on input line 1720.
 (pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_5.png, id=1082, 578.16pt x 361.35pt>
+<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_5.png, id=1095, 578.16pt x 361.35pt>
 File: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_5.png Graphic file (type png)
 <use ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_5.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_5.png  used on input line 1678.
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_5.png  used on input line 1721.
 (pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_10.png, id=1083, 578.16pt x 361.35pt>
+<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_10.png, id=1096, 578.16pt x 361.35pt>
 File: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_10.png Graphic file (type png)
 <use ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_10.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_10.png  used on input line 1679.
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_10.png  used on input line 1722.
 (pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_50.png, id=1084, 578.16pt x 361.35pt>
+<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_50.png, id=1097, 578.16pt x 361.35pt>
 File: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_50.png Graphic file (type png)
 <use ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_50.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_50.png  used on input line 1680.
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_50.png  used on input line 1723.
 (pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_3.png, id=1085, 578.16pt x 361.35pt>
+<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_3.png, id=1098, 578.16pt x 361.35pt>
 File: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_3.png Graphic file (type png)
 <use ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_3.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_3.png  used on input line 1684.
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_3.png  used on input line 1727.
 (pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_5.png, id=1086, 578.16pt x 361.35pt>
+<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_5.png, id=1099, 578.16pt x 361.35pt>
 File: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_5.png Graphic file (type png)
 <use ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_5.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_5.png  used on input line 1685.
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_5.png  used on input line 1728.
 (pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_10.png, id=1087, 578.16pt x 361.35pt>
+<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_10.png, id=1100, 578.16pt x 361.35pt>
 File: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_10.png Graphic file (type png)
 <use ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_10.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_10.png  used on input line 1686.
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_10.png  used on input line 1729.
 (pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_50.png, id=1088, 578.16pt x 361.35pt>
+<../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_50.png, id=1101, 578.16pt x 361.35pt>
 File: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_50.png Graphic file (type png)
 <use ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_50.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_50.png  used on input line 1687.
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_50.png  used on input line 1730.
 (pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-[39 <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_3.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_5.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_10.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_50.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_3.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_5.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_10.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_50.png>]
+[41 <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_3.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_5.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_10.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_correct_minimum_n_div_d_50.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_3.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_5.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_10.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_50.png>]
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 1690.
-
-
-Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `subscript' on input line 1690.
+(hyperref)                removing `math shift' on input line 1733.
 
 
 Package hyperref Warning: Token not allowed in a PDF string (Unicode):
-(hyperref)                removing `math shift' on input line 1690.
+(hyperref)                removing `subscript' on input line 1733.
 
-<../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_3.png, id=1101, 578.16pt x 361.35pt>
-File: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_3.png Graphic file (type png)
-<use ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_3.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_3.png  used on input line 1694.
-(pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_5.png, id=1102, 578.16pt x 361.35pt>
-File: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_5.png Graphic file (type png)
-<use ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_5.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_5.png  used on input line 1695.
-(pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_10.png, id=1103, 578.16pt x 361.35pt>
-File: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_10.png Graphic file (type png)
-<use ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_10.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_10.png  used on input line 1696.
-(pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_50.png, id=1104, 578.16pt x 361.35pt>
-File: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_50.png Graphic file (type png)
-<use ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_50.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_50.png  used on input line 1697.
-(pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_3.png, id=1105, 578.16pt x 361.35pt>
+
+Package hyperref Warning: Token not allowed in a PDF string (Unicode):
+(hyperref)                removing `math shift' on input line 1733.
+
+<../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_3.png, id=1114, 578.16pt x 361.35pt>
 File: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_3.png Graphic file (type png)
 <use ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_3.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_3.png  used on input line 1701.
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_3.png  used on input line 1737.
 (pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_5.png, id=1106, 578.16pt x 361.35pt>
+<../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_5.png, id=1115, 578.16pt x 361.35pt>
 File: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_5.png Graphic file (type png)
 <use ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_5.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_5.png  used on input line 1702.
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_5.png  used on input line 1738.
 (pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_10.png, id=1107, 578.16pt x 361.35pt>
+<../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_10.png, id=1116, 578.16pt x 361.35pt>
 File: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_10.png Graphic file (type png)
 <use ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_10.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_10.png  used on input line 1703.
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_10.png  used on input line 1739.
 (pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_50.png, id=1108, 578.16pt x 361.35pt>
+<../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_50.png, id=1117, 578.16pt x 361.35pt>
 File: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_50.png Graphic file (type png)
 <use ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_50.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_50.png  used on input line 1704.
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_50.png  used on input line 1740.
 (pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_3.png, id=1109, 578.16pt x 361.35pt>
+<../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_3.png, id=1118, 578.16pt x 361.35pt>
 File: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_3.png Graphic file (type png)
 <use ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_3.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_3.png  used on input line 1708.
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_3.png  used on input line 1744.
 (pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_5.png, id=1110, 578.16pt x 361.35pt>
+<../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_5.png, id=1119, 578.16pt x 361.35pt>
 File: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_5.png Graphic file (type png)
 <use ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_5.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_5.png  used on input line 1709.
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_5.png  used on input line 1745.
 (pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_10.png, id=1111, 578.16pt x 361.35pt>
+<../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_10.png, id=1120, 578.16pt x 361.35pt>
 File: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_10.png Graphic file (type png)
 <use ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_10.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_10.png  used on input line 1710.
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_10.png  used on input line 1746.
 (pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-<../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_50.png, id=1112, 578.16pt x 361.35pt>
+<../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_50.png, id=1121, 578.16pt x 361.35pt>
 File: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_50.png Graphic file (type png)
 <use ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_50.png>
-Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_50.png  used on input line 1711.
+Package pdftex.def Info: ../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_50.png  used on input line 1747.
 (pdftex.def)             Requested size: 200.75073pt x 125.46538pt.
-[40 <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_3.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_5.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_10.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_50.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_3.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_5.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_10.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_50.png>] [41 <../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_3.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_5.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_10.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_50.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_3.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_5.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_10.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_50.png>] (./report.aux)
+[42 <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_3.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_5.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_10.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_50.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_3.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_5.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_10.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_50.png>] [43 <../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_3.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_5.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_10.png> <../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_50.png>] (./report.aux)
  ***********
 LaTeX2e <2023-11-01> patch level 1
 L3 programming layer <2024-02-20>
@@ -1014,18 +1000,18 @@ Package rerunfilecheck Info: File `report.out' has not changed.
 (rerunfilecheck)             Checksum: 784C5B04298C06B6A0603D00B87F9C3A;11809.
  ) 
 Here is how much of TeX's memory you used:
- 25807 strings out of 474116
- 482879 string characters out of 5743682
+ 25789 strings out of 474116
+ 480218 string characters out of 5743682
  2405187 words of memory out of 5000000
- 47214 multiletter control sequences out of 15000+600000
- 570019 words of font info for 81 fonts, out of 8000000 for 9000
+ 47191 multiletter control sequences out of 15000+600000
+ 570696 words of font info for 83 fonts, out of 8000000 for 9000
  1141 hyphenation exceptions out of 8191
  102i,21n,107p,895b,1492s stack positions out of 10000i,1000n,20000p,200000b,200000s
-</usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
-Output written on report.pdf (41 pages, 1441872 bytes).
+</usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi5.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmmib10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr17.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr5.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr6.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy5.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/cm/cmtt8.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm10.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/amsfonts/symbols/msbm7.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm0600.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm0800.pfb></usr/local/texlive/2024/texmf-dist/fonts/type1/public/cm-super/sfrm1000.pfb>
+Output written on report.pdf (43 pages, 1330574 bytes).
 PDF statistics:
- 1359 PDF objects out of 1440 (max. 8388607)
- 1194 compressed objects within 12 object streams
- 547 named destinations out of 1000 (max. 500000)
- 603 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 1374 PDF objects out of 1440 (max. 8388607)
+ 1210 compressed objects within 13 object streams
+ 550 named destinations out of 1000 (max. 500000)
+ 583 words of extra memory for PDF output out of 10000 (max. 10000000)
 

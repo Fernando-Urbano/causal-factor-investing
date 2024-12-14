@@ -1,64 +1,64 @@
 \contentsline {section}{\numberline {1}Abstract}{1}{section.1}%
-\contentsline {section}{\numberline {2}Double Machine Learning}{4}{section.2}%
-\contentsline {subsection}{\numberline {2.1}Problem Setup}{4}{subsection.2.1}%
-\contentsline {subsection}{\numberline {2.2}From Linear Estimator to Double Robust Methods}{4}{subsection.2.2}%
-\contentsline {subsection}{\numberline {2.3}DML Estimator}{5}{subsection.2.3}%
-\contentsline {subsubsection}{\numberline {2.3.1}Nuisance Parameter Estimation}{5}{subsubsection.2.3.1}%
-\contentsline {subsubsection}{\numberline {2.3.2}Orthogonal Score Function}{6}{subsubsection.2.3.2}%
-\contentsline {subsubsection}{\numberline {2.3.3}Estimation Procedure}{6}{subsubsection.2.3.3}%
-\contentsline {subsubsection}{\numberline {2.3.4}Cross-Fitting}{7}{subsubsection.2.3.4}%
-\contentsline {section}{\numberline {3}Causal Inference Scenarios}{7}{section.3}%
-\contentsline {subsection}{\numberline {3.1}DAG (Directed Acyclic Graph)}{8}{subsection.3.1}%
-\contentsline {subsection}{\numberline {3.2}Backdoor Adjustment}{8}{subsection.3.2}%
-\contentsline {subsubsection}{\numberline {3.2.1}Backdoor Adjustment Scenario in DML}{9}{subsubsection.3.2.1}%
-\contentsline {paragraph}{Inclusion of $C_i$ and $X_{a, i}$ on every nuisance function}{9}{section*.2}%
+\contentsline {section}{\numberline {2}Double Machine Learning}{5}{section.2}%
+\contentsline {subsection}{\numberline {2.1}Problem Setup}{5}{subsection.2.1}%
+\contentsline {subsection}{\numberline {2.2}From Linear Estimator to Double Robust Methods}{5}{subsection.2.2}%
+\contentsline {subsection}{\numberline {2.3}DML Estimator}{6}{subsection.2.3}%
+\contentsline {subsubsection}{\numberline {2.3.1}Nuisance Parameter Estimation}{6}{subsubsection.2.3.1}%
+\contentsline {subsubsection}{\numberline {2.3.2}Orthogonal Score Function}{7}{subsubsection.2.3.2}%
+\contentsline {subsubsection}{\numberline {2.3.3}Estimation Procedure}{7}{subsubsection.2.3.3}%
+\contentsline {subsubsection}{\numberline {2.3.4}Cross-Fitting}{8}{subsubsection.2.3.4}%
+\contentsline {section}{\numberline {3}Causal Inference Scenarios}{8}{section.3}%
+\contentsline {subsection}{\numberline {3.1}DAG (Directed Acyclic Graph)}{9}{subsection.3.1}%
+\contentsline {subsection}{\numberline {3.2}Backdoor Adjustment}{9}{subsection.3.2}%
+\contentsline {subsubsection}{\numberline {3.2.1}Backdoor Adjustment Scenario in DML}{10}{subsubsection.3.2.1}%
+\contentsline {paragraph}{Inclusion of $C_i$ and $X_{a, i}$ on every nuisance function}{10}{section*.2}%
 \contentsline {paragraph}{Only partial inclusion of $C_i$ and inclusion of $X_{a, i}$ on every nuisance function}{10}{section*.3}%
-\contentsline {subsection}{\numberline {3.3}Frontdoor Adjustment}{10}{subsection.3.3}%
-\contentsline {subsubsection}{\numberline {3.3.1}Frontdoor Adjustment Scenario in DML}{11}{subsubsection.3.3.1}%
-\contentsline {paragraph}{Inclusion of $C_i$ and $X_{a, i}$ on every nuisance function}{12}{section*.4}%
-\contentsline {paragraph}{Ignoring the mediator $M_i$}{12}{section*.5}%
-\contentsline {paragraph}{Considering the mediator $M_i$ as a normal covariate}{12}{section*.6}%
-\contentsline {subsection}{\numberline {3.4}Instrumental Variable}{12}{subsection.3.4}%
-\contentsline {subsubsection}{\numberline {3.4.1}Instrumental Variable Scenario in DML}{13}{subsubsection.3.4.1}%
-\contentsline {paragraph}{Inclusion of $C_i$ and $X_{a, i}$ on every nuisance function}{14}{section*.7}%
-\contentsline {paragraph}{Only partial inclusion of $C_i$ and inclusion of $X_{a, i}$ on every nuisance function}{14}{section*.8}%
-\contentsline {paragraph}{$Z_i$ is treated as a normal cofounder}{14}{section*.9}%
-\contentsline {paragraph}{$Z_i$ is treated as a normal cofounder and inclusion of $X_{a, i}$ on every nuisance function}{14}{section*.10}%
-\contentsline {section}{\numberline {4}Simulation Methodology}{15}{section.4}%
-\contentsline {subsection}{\numberline {4.1}Data Generating Process}{15}{subsection.4.1}%
-\contentsline {subsubsection}{\numberline {4.1.1}Cofounders}{15}{subsubsection.4.1.1}%
-\contentsline {subsubsection}{\numberline {4.1.2}Treatment}{15}{subsubsection.4.1.2}%
-\contentsline {subsubsection}{\numberline {4.1.3}Treatment Effect}{16}{subsubsection.4.1.3}%
-\contentsline {subsubsection}{\numberline {4.1.4}Outcome}{16}{subsubsection.4.1.4}%
-\contentsline {subsubsection}{\numberline {4.1.5}$f(C_i)$ Non-Linear Transformation}{16}{subsubsection.4.1.5}%
-\contentsline {subsubsection}{\numberline {4.1.6}Parameter Tuning in the Data Generating Process}{17}{subsubsection.4.1.6}%
-\contentsline {subsection}{\numberline {4.2}Differences in Data Generating Process for Frontdoor Scenario}{18}{subsection.4.2}%
-\contentsline {subsubsection}{\numberline {4.2.1}Cofounders}{18}{subsubsection.4.2.1}%
-\contentsline {subsubsection}{\numberline {4.2.2}Mediator}{18}{subsubsection.4.2.2}%
-\contentsline {subsubsection}{\numberline {4.2.3}Treatment}{18}{subsubsection.4.2.3}%
-\contentsline {subsubsection}{\numberline {4.2.4}Outcome}{19}{subsubsection.4.2.4}%
-\contentsline {subsubsection}{\numberline {4.2.5}Parameter Tuning in the Data Generating Process for Frontdoor Scenario}{19}{subsubsection.4.2.5}%
-\contentsline {subsection}{\numberline {4.3}Differences in Data Generating Process for Instrumental Variable Scenario}{19}{subsection.4.3}%
-\contentsline {subsubsection}{\numberline {4.3.1}Cofounders}{20}{subsubsection.4.3.1}%
-\contentsline {subsubsection}{\numberline {4.3.2}Instrument}{20}{subsubsection.4.3.2}%
-\contentsline {subsubsection}{\numberline {4.3.3}Treatment}{20}{subsubsection.4.3.3}%
-\contentsline {subsubsection}{\numberline {4.3.4}Outcome}{20}{subsubsection.4.3.4}%
-\contentsline {subsubsection}{\numberline {4.3.5}Parameter Tuning in the Data Generating Process for Instrumental Variable Scenario}{21}{subsubsection.4.3.5}%
-\contentsline {section}{\numberline {5}Orthogonal Score Function Derivation for Different Causal Scenarios}{21}{section.5}%
-\contentsline {subsection}{\numberline {5.1}Orthogonal Score Function Derivation for the Backdoor Adjustment Scenario}{21}{subsection.5.1}%
-\contentsline {subsection}{\numberline {5.2}Orthogonal Score Function Derivation for the Frontdoor Adjustment Scenario}{23}{subsection.5.2}%
-\contentsline {subsection}{\numberline {5.3}Orthogonal Score Function Derivation for Instrumental Variable}{24}{subsection.5.3}%
-\contentsline {section}{\numberline {6}Simulations}{24}{section.6}%
-\contentsline {subsection}{\numberline {6.1}Simulation Plans}{25}{subsection.6.1}%
-\contentsline {subsection}{\numberline {6.2}Simulation Results}{26}{subsection.6.2}%
-\contentsline {section}{\numberline {7}Bibliography}{30}{section.7}%
-\contentsline {section}{\numberline {8}Appendix}{31}{section.8}%
-\contentsline {subsection}{\numberline {8.1}Mild Regularity Conditions for Double Machine Learning}{31}{subsection.8.1}%
-\contentsline {subsection}{\numberline {8.2}Computational System}{32}{subsection.8.2}%
-\contentsline {subsubsection}{\numberline {8.2.1}Database Initialization and Schema Definition}{32}{subsubsection.8.2.1}%
-\contentsline {subsubsection}{\numberline {8.2.2}Causal Scenario Classes}{33}{subsubsection.8.2.2}%
-\contentsline {subsubsection}{\numberline {8.2.3}Testing and Validation Routines}{36}{subsubsection.8.2.3}%
-\contentsline {subsubsection}{\numberline {8.2.4}Simulation Plans and Automated Execution}{37}{subsubsection.8.2.4}%
-\contentsline {subsection}{\numberline {8.3}Other Simulations Results}{39}{subsection.8.3}%
-\contentsline {subsubsection}{\numberline {8.3.1}ATE Estimation Error by $d_c$ and Specification}{39}{subsubsection.8.3.1}%
-\contentsline {subsubsection}{\numberline {8.3.2}ATE Estimation Error by $d_a$ and Specification}{40}{subsubsection.8.3.2}%
+\contentsline {subsection}{\numberline {3.3}Frontdoor Adjustment}{11}{subsection.3.3}%
+\contentsline {subsubsection}{\numberline {3.3.1}Frontdoor Adjustment Scenario in DML}{12}{subsubsection.3.3.1}%
+\contentsline {paragraph}{Inclusion of $C_i$ and $X_{a, i}$ on every nuisance function}{13}{section*.4}%
+\contentsline {paragraph}{Ignoring the mediator $M_i$}{13}{section*.5}%
+\contentsline {paragraph}{Considering the mediator $M_i$ as a normal covariate}{13}{section*.6}%
+\contentsline {subsection}{\numberline {3.4}Instrumental Variable}{13}{subsection.3.4}%
+\contentsline {subsubsection}{\numberline {3.4.1}Instrumental Variable Scenario in DML}{14}{subsubsection.3.4.1}%
+\contentsline {paragraph}{Inclusion of $C_i$ and $X_{a, i}$ on every nuisance function}{15}{section*.7}%
+\contentsline {paragraph}{Only partial inclusion of $C_i$ and inclusion of $X_{a, i}$ on every nuisance function}{15}{section*.8}%
+\contentsline {paragraph}{$Z_i$ is treated as a normal cofounder}{15}{section*.9}%
+\contentsline {paragraph}{$Z_i$ is treated as a normal cofounder and inclusion of $X_{a, i}$ on every nuisance function}{15}{section*.10}%
+\contentsline {section}{\numberline {4}Simulation Methodology}{16}{section.4}%
+\contentsline {subsection}{\numberline {4.1}Data Generating Process}{16}{subsection.4.1}%
+\contentsline {subsubsection}{\numberline {4.1.1}Cofounders}{16}{subsubsection.4.1.1}%
+\contentsline {subsubsection}{\numberline {4.1.2}Treatment}{16}{subsubsection.4.1.2}%
+\contentsline {subsubsection}{\numberline {4.1.3}Treatment Effect}{17}{subsubsection.4.1.3}%
+\contentsline {subsubsection}{\numberline {4.1.4}Outcome}{17}{subsubsection.4.1.4}%
+\contentsline {subsubsection}{\numberline {4.1.5}$f(C_i)$ Non-Linear Transformation}{17}{subsubsection.4.1.5}%
+\contentsline {subsubsection}{\numberline {4.1.6}Parameter Tuning in the Data Generating Process}{18}{subsubsection.4.1.6}%
+\contentsline {subsection}{\numberline {4.2}Differences in Data Generating Process for Frontdoor Scenario}{19}{subsection.4.2}%
+\contentsline {subsubsection}{\numberline {4.2.1}Cofounders}{19}{subsubsection.4.2.1}%
+\contentsline {subsubsection}{\numberline {4.2.2}Mediator}{19}{subsubsection.4.2.2}%
+\contentsline {subsubsection}{\numberline {4.2.3}Treatment}{19}{subsubsection.4.2.3}%
+\contentsline {subsubsection}{\numberline {4.2.4}Outcome}{20}{subsubsection.4.2.4}%
+\contentsline {subsubsection}{\numberline {4.2.5}Parameter Tuning in the Data Generating Process for Frontdoor Scenario}{20}{subsubsection.4.2.5}%
+\contentsline {subsection}{\numberline {4.3}Differences in Data Generating Process for Instrumental Variable Scenario}{20}{subsection.4.3}%
+\contentsline {subsubsection}{\numberline {4.3.1}Cofounders}{21}{subsubsection.4.3.1}%
+\contentsline {subsubsection}{\numberline {4.3.2}Instrument}{21}{subsubsection.4.3.2}%
+\contentsline {subsubsection}{\numberline {4.3.3}Treatment}{21}{subsubsection.4.3.3}%
+\contentsline {subsubsection}{\numberline {4.3.4}Outcome}{21}{subsubsection.4.3.4}%
+\contentsline {subsubsection}{\numberline {4.3.5}Parameter Tuning in the Data Generating Process for Instrumental Variable Scenario}{22}{subsubsection.4.3.5}%
+\contentsline {section}{\numberline {5}Orthogonal Score Function Derivation for Different Causal Scenarios}{22}{section.5}%
+\contentsline {subsection}{\numberline {5.1}Orthogonal Score Function Derivation for the Backdoor Adjustment Scenario}{22}{subsection.5.1}%
+\contentsline {subsection}{\numberline {5.2}Orthogonal Score Function Derivation for the Frontdoor Adjustment Scenario}{24}{subsection.5.2}%
+\contentsline {subsection}{\numberline {5.3}Orthogonal Score Function Derivation for Instrumental Variable}{25}{subsection.5.3}%
+\contentsline {section}{\numberline {6}Simulations}{25}{section.6}%
+\contentsline {subsection}{\numberline {6.1}Simulation Plans}{26}{subsection.6.1}%
+\contentsline {subsection}{\numberline {6.2}Simulation Results}{27}{subsection.6.2}%
+\contentsline {section}{\numberline {7}Bibliography}{32}{section.7}%
+\contentsline {section}{\numberline {8}Appendix}{33}{section.8}%
+\contentsline {subsection}{\numberline {8.1}Mild Regularity Conditions for Double Machine Learning}{33}{subsection.8.1}%
+\contentsline {subsection}{\numberline {8.2}Computational System}{34}{subsection.8.2}%
+\contentsline {subsubsection}{\numberline {8.2.1}Database Initialization and Schema Definition}{34}{subsubsection.8.2.1}%
+\contentsline {subsubsection}{\numberline {8.2.2}Causal Scenario Classes}{35}{subsubsection.8.2.2}%
+\contentsline {subsubsection}{\numberline {8.2.3}Testing and Validation Routines}{38}{subsubsection.8.2.3}%
+\contentsline {subsubsection}{\numberline {8.2.4}Simulation Plans and Automated Execution}{39}{subsubsection.8.2.4}%
+\contentsline {subsection}{\numberline {8.3}Other Simulations Results}{41}{subsection.8.3}%
+\contentsline {subsubsection}{\numberline {8.3.1}ATE Estimation Error by $d_c$ and Specification}{41}{subsubsection.8.3.1}%
+\contentsline {subsubsection}{\numberline {8.3.2}ATE Estimation Error by $d_a$ and Specification}{42}{subsubsection.8.3.2}%

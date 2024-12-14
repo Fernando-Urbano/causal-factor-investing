@@ -46,7 +46,7 @@
 \definecolor{tacolor}{RGB}{200, 0, 0}
 
 \title{Comparative Analysis of Double Machine Learning Methods and Data Generating Processes for Average Treatment Effect Estimation in Diverse Causal Scenarios}
-\author{Fernando Rocha Urbano}
+\author{Fernando Rocha Urbano\footnote{fernandourbano@uchicago.edu}}
 \date{Autumn 2024}
 
 \lstset{
@@ -99,13 +99,15 @@
 
 \section{Abstract}
 
-This paper aims to establish and showcase theoretical background and practical implementation through simulations of data generating processes (DGPs) and the application of Double Machine Learning (DML) methods across various causal inference scenarios, including Backdoor Adjustment, Frontdoor Adjustment, and Instrumental Variables, especially in the context and goal of estimating the Average Treatment Effect (ATE).
+This paper establishes a comprehensive theoretical foundation and demonstrates the practical implementation of Double Machine Learning (DML) methods for causal inference, with a particular focus on estimating the Average Treatment Effect (ATE) in IV, Frontdoor and Backdoor Path scenarios. We achieve that through extensive literature review, analytical derivations, creation of system of simulations with particular attention for the different data generating process (DGP) in those causal scenarios, and empirical simulation results.
 
-We start by reviewing the literature and theoretical context of Double Machine Learning and dive into double robust estimation in the presence of instrumental variables, unobserved confounders, and mediators, showcasing differences in orthogonal score functions and implications of misspecification. We follow by reviewing the DGP under each of these causal scenarios, including the assumptions of each, the role of the nuisance functions in the estimation of the Average Treatment Effect (ATE), and the range of parameters that can be defined in simulations.
+We begin by examining the theoretical context and existing literature on Double Machine Learning, delving into double robust estimation in settings involving instrumental variables, unobserved confounders, and mediators. This analysis highlights the differences in orthogonal score functions and explores the implications of model misspecification. We continue with a review the data generating processes (DGPs) for each causal scenario, detailing the underlying assumptions, the role of nuisance functions in ATE estimation, and the range of parameters relevant for simulations.
 
 Finally, we develop a robust simulation framework capable of generating data under diverse causal settings, accommodating linear and nonlinear relationships, varying dimensions and sparsity of causal and non-causal covariates, and differing noise structures. The system serves as the building block of a long-term project that can evaluate the performance of DML methods in recovering the ATE across different causal scenarios.
 
-We present a vast range of results for the Backdoor Adjustment scenario, exploring how various DML estimators perform in recovering the ATE. Here we provide actionable recommendations of which model between DNN, Random Forest, LASSO, Elastic Net, and OLS performs better under different conditions, highlighting differences in convergence rate, noise, nuisance function specification/misspecification, sample size, sparsity of covariates, and types of causal relationship between the target, treatment, and covariates (linear and non-linear).
+We end by presenting a vast range of results for Backdoor Adjustment scenario, exploring how various DML estimators perform in recovering the ATE. Among the models tested, we see better performance from Deep Neural Networks (DNN) followed by Random Forest (RF). The results hold true for different dimensionalities of causal cofounders. Nonetheless, when dimensionality of non-causal cofounders increase the performance of DNN decreases and RF provides more robust estimates. In this section, we highlight other interesting takeaways, such as the role of sample size, misspecification, problems with dimensionality and the type of causal relationship between the target, treatment, and covariates.
+
+The paper creates a solid basis for further simulations. We aim to proceed with further simulation estimation with the goal of providing a benchmark for DML methods in causal inference, giving practical actionable recommendations for researchers in the field.
 
 \newpage
 \tableofcontents
@@ -126,7 +128,7 @@ Our goal is to estimate the Average Treatment Effect (ATE), defined as:
 
 where $Y_i(t)$ denotes the potential outcome for unit $i$ under treatment $T_i = t$
 
-The potential outcomes framework, introduced by \cite{Rubin1974} and continuously developed \cite{ImbensRubin2015}, conceptualizes the causal effect of a binary treatment \(T_i \in \{0,1\}\) on an outcome \(Y_i\) through the unobservable pair \((Y_i(0), Y_i(1))\).
+The potential outcomes framework, introduced by \cite{Rubin1974} and continuously developed [e.g. by \cite{ImbensRubin2015}], conceptualizes the causal effect of a binary treatment \(T_i \in \{0,1\}\) on an outcome \(Y_i\) through the unobservable pair \((Y_i(0), Y_i(1))\).
 
 In an ideal randomized experiment, the treatment assignment \(T_i\) is independent of these potential outcomes, ensuring unbiased estimates of the Average Treatment Effect (ATE). However, in observational data, the process that assigns treatment is rarely random, and \(T_i\) often depends on observed and possibly high-dimensional covariates \(X_i \in \mathbb{R}^d\).
 
@@ -143,7 +145,7 @@ where \(\mu_t(X_i) = \mathbb{E}[Y_i \mid T_i = t, X_i]\). Nonetheless, consisten
 
 First, any violations of CIA, including omitted confounders, wrong model specification, or measurement error in \(X_i\), will bias the estimates. Second, even if CIA holds, correct specification of the functional forms for \(\mu_0(X)\) and \(\mu_1(X)\) is difficult.
 
-In modern settings, \(X_i\) is often high-dimensional, making parametric assumptions too restrictive and prone to model misspecification. Thus, an unbiased estimation of the ATE is often challenging \cite{Chernozhukov2018} and requires flexible, data-driven methods that can accommodate complex relationships between \(Y_i\), \(T_i\), and \(X_i\).
+In modern settings, \(X_i\) is often high-dimensional, making parametric assumptions too restrictive and prone to model misspecification. Thus, an unbiased estimation of the ATE is often challenging [\cite{Chernozhukov2018}] and requires flexible, data-driven methods that can accommodate complex relationships between \(Y_i\), \(T_i\), and \(X_i\).
 
 \subsection{From Linear Estimator to Double Robust Methods}
 \label{subsec:from_linear_estimator_to_double_robust_methods}
@@ -155,11 +157,11 @@ Early approaches to estimating the ATE under the CIA often began with simple lin
 \label{eq:linear_assumption_example}
 \end{equation}
 
-Such linear estimators assume that \(\mu_t(X_i)\) and \(\pi(X_i)=\mathbb{P}(T_i=1 \mid X_i)\) can be captured by low-dimensional linear functions of \(X_i\). However, any deviation from linearity or additivity, or the presence of omitted interactions, can result in substantial bias and inconsistent estimates of \(\tau\) \cite{ImbensRubin2015}.
+Such linear estimators assume that \(\mu_t(X_i)\) and \(\pi(X_i)=\mathbb{P}(T_i=1 \mid X_i)\) can be captured by low-dimensional linear functions of \(X_i\). However, any deviation from linearity or additivity, or the presence of omitted interactions, can result in substantial bias and inconsistent estimates of \(\tau\) [\cite{ImbensRubin2015}].
 
-To mitigate these issues, the literature has developed estimators that maintain consistency under weaker conditions. Chief among these are doubly robust estimators, which combine an outcome model and a propensity score model in such a way that if either one is correctly specified, the resulting ATE estimate remains consistent \cite{RobinsRotnitzkyZhao1994, BangRobins2005}. In other words, double robustness relaxes the strong reliance on fully correct functional specification of the data-generating process. This property becomes particularly appealing in high-dimensional settings, where even flexible parametric models may fail to capture all relevant nonlinearities and interactions \cite{Chernozhukov2018}.
+To mitigate these issues, the literature has developed estimators that maintain consistency under weaker conditions. Chief among these are doubly robust estimators, which combine an outcome model and a propensity score model in such a way that if either one is correctly specified, the resulting ATE estimate remains consistent [\cite{RobinsRotnitzkyZhao1994, BangRobins2005}]. In other words, double robustness relaxes the strong reliance on fully correct functional specification of the data-generating process. This property becomes particularly appealing in high-dimensional settings, where even flexible parametric models may fail to capture all relevant nonlinearities and interactions [\cite{Chernozhukov2018}].
 
-By exploiting both an outcome regression model \(\mu_t(X_i)\) and a propensity score model \(\pi(X_i)\), doubly robust estimators attain unbiasedness under weaker conditions than either model alone would require. Specifically, if at least one of these models is correctly specified, the doubly robust estimator remains consistent for \(\tau\) \cite{RobinsRotnitzkyZhao1994, BangRobins2005}. A canonical example is the Augmented Inverse Probability Weighting (AIPW) estimator \cite{GlynnQuinn2010}:
+By exploiting both an outcome regression model \(\mu_t(X_i)\) and a propensity score model \(\pi(X_i)\), doubly robust estimators obtain unbiasedness under weaker conditions than either model alone would require. Specifically, if at least one of these models is correctly specified, the doubly robust estimator remains consistent for \(\tau\) [\cite{RobinsRotnitzkyZhao1994, BangRobins2005}]. An important example is the Augmented Inverse Probability Weighting (AIPW) estimator [\cite{GlynnQuinn2010}]:
 
 \begin{equation}
     \hat{\tau}_{\text{DR}} = \frac{1}{n}\sum_{i=1}^n \left[
@@ -169,13 +171,13 @@ By exploiting both an outcome regression model \(\mu_t(X_i)\) and a propensity s
 \label{eq:dr_estimator}
 \end{equation}
 
-In this construction, consistency does not hinge on both models being perfectly specified: correct specification of either \(\hat{\mu}_t(X_i)\) or \(\hat{\pi}(X_i)\) suffices to ensure unbiased estimation of \(\tau\).
+In this construction, consistency does not rely on both models being perfectly specified: correct specification of either \(\hat{\mu}_t(X_i)\) or \(\hat{\pi}(X_i)\) suffices to ensure unbiased estimation of \(\tau\).
 
 While traditional doubly robust estimators often use parametric models for $\mu_t(X_i)$ and $\pi(X_i)$, DML explicitly incorporates machine learning techniques often able to capture complex relationships between $Y_i$, $T_i$, and $X_i$ without imposing strong parametric assumptions.
 
 \subsection{DML Estimator}
 
-The DML framework aims to estimate $\tau$ while controlling for high-dimensional or complex relationships between $Y_i$, $T_i$, and $X_i$. The key idea is to use machine learning methods to estimate the nuisance parameters and then construct an estimator for $\tau$ that is robust to estimation errors in these nuisance parameters.
+The DML framework aims to estimate $\tau$ while controlling for high-dimensional or complex relationships. The key idea is to use machine learning methods to estimate the nuisance parameters and then construct an estimator for $\tau$ that is robust to estimation errors in these nuisance parameters.
 
 \subsubsection{Nuisance Parameter Estimation}
 
@@ -191,11 +193,11 @@ We define the following nuisance functions:
 \label{eq:pi_x_for_treatment}
 \end{align}
 
-Such functions \(\{m(X_i), g(X_i), \pi(X_i)\}\) are called nuisance parameters because, while they characterize key components of the data-generating process, they are not directly of inferential interest for \(\tau\). Instead, they serve as building blocks that allow one to express the ATE through moment equations whose solutions return consistent and asymptotically normal estimators when these functions are known or well-estimated \cite{Chernozhukov2018, Newey1990, RobinsRotnitzkyZhao1994}.
+Such functions \(\{m(X_i), g(X_i), \pi(X_i)\}\) are called nuisance parameters because, while they characterize key components of the data-generating process, they are not directly of inferential interest for \(\tau\). Instead, they serve as building blocks that allow one to express the ATE through moment equations whose solutions return consistent and asymptotically normal estimators when these functions are known or well-estimated [\cite{Chernozhukov2018, Newey1990, RobinsRotnitzkyZhao1994}].
 
 In practice, \(\pi(X_i)\), the propensity score, controls for confounding by accounting for how units self-select into treatment based on their covariates. The functions \(m(X_i) = \mathbb{E}[Y_i \mid X_i]\) and \(g(X_i) = \mathbb{E}[T_i \mid X_i]\) capture the marginal relationships of the outcome and treatment with the covariates.
 
-This property is achieved through Neyman-orthogonalization, ensuring that small perturbations in \(\hat{m}(X_i), \hat{g}(X_i), \hat{\pi}(X_i)\) do not accumulate into large biases in \(\hat{\tau}\) \cite{Chernozhukov2018, BelloniChernozhukovHansen2014}.
+This property is achieved through Neyman-orthogonalization, ensuring that small perturbations in \(\hat{m}(X_i), \hat{g}(X_i), \hat{\pi}(X_i)\) do not accumulate into large biases in \(\hat{\tau}\) [\cite{Chernozhukov2018, BelloniChernozhukovHansen2014}].
 
 These functions can be estimated using flexible machine learning methods such as LASSO, Random Forests, or Neural Networks. Under mild regularity conditions and appropriate rates of convergence for the nuisance estimators, the DML estimator is root-n consistent and asymptotically normal (we make the regularity conditions explicity in Appendix~\ref{subsec:appendix_mild_regularity_conditions_for_dml}).
 
@@ -209,7 +211,7 @@ A common choice for the orthogonal score is for $T_i \in \{0,1\}$ and $Y_i \in \
 \label{eq:orthogonal_score}
 \end{equation}
 
-We derive the orthogonal score function in Section~\ref{subsec:appendix_orthogonal_score_function_backdoor_adjustment} (\cite{ChernozhukovChetverikovDemireretal2018}).
+We derive the orthogonal score function in Section~\ref{subsec:appendix_orthogonal_score_function_backdoor_adjustment} [\cite{ChernozhukovChetverikovDemireretal2018}].
 
 where $g(X_i) = \pi(X_i)$ and $m_t(X_i) = \mathbb{E}[Y_i | T_i = t, X_i]$ for $t \in \{0,1\}$.
 
@@ -284,7 +286,7 @@ In the specified notation, CIA \eqref{subsec:from_linear_estimator_to_double_rob
     Y_i(0), Y_i(1) \perp T_i \mid C_i, U_i
 \end{equation}
 
-A common way to represent the causal relation in the three scenarios previously mentioned is through the use of DAGs \cite{Pearl1995}.
+A common way to represent the causal relation in the three scenarios previously mentioned is through the use of DAGs [\cite{Pearl1995}].
 
 \subsection{DAG (Directed Acyclic Graph)}
 
@@ -413,7 +415,7 @@ The causal effect of $T$ on $Y$ can be expressed using the frontdoor adjustment 
 \mathbb{P}[Y(t)] = \sum_M \mathbb{P}[M \mid T=t] \sum_{t’} \mathbb{P}[Y \mid M, T=t’] \mathbb{P}[T=t’].
 \end{equation}
 
-$t'$ acts as a dummy variable of integration (or summation) which, in our case, assumes values in $\{0, 1\}$. The $\mathbb{P}[Y(t)]$ is computed by marginalizing over both the mediator $M$ and any variation in the treatment $T$ \cite{Pearl2012}
+$t'$ acts as a dummy variable of integration (or summation) which, in our case, assumes values in $\{0, 1\}$. The $\mathbb{P}[Y(t)]$ is computed by marginalizing over both the mediator $M$ and any variation in the treatment $T$ [\cite{Pearl2012}].
 
 For instance, the average treatment effect in case $M, T \in \{0, 1\}$:
 
@@ -476,7 +478,7 @@ The ideal nuisance functions for DML in this scenario are:
 
 Here $h_{\text{FA}}(M_i, T_i, C_i)$ is the mediator model, representing the probability of the mediator given treatment.
 
-To adapt the orthogonal score function in the presence of the mediator, we modify Equation~\eqref{eq:orthogonal_score} to incorporate the mediator's effect ((\cite{ChernozhukovChetverikovDemireretal2018})). The adapted orthogonal score function is:
+To adapt the orthogonal score function in the presence of the mediator, we modify Equation~\eqref{eq:orthogonal_score} to incorporate the mediator's effect [\cite{ChernozhukovChetverikovDemireretal2018}]. The adapted orthogonal score function is:
 
 \begin{equation}
     \begin{split}
@@ -601,7 +603,7 @@ The ideal nuisance functions in this scenario are:
 
 Where $m_{\text{IV}}(C_i)$ is the outcome model, capturing the expected outcome given covariates, $q_{\text{IV}}(C_i)$ is the instrument propensity score, representing the expected treatment given the instrument and covariates, and $g_{\text{IV}}(C_i)$ is the treatment model, representing the expected treatment given covariates.
 
-The orthogonal score function for the IV scenario is different from the standard DML orthogonal score function (\cite{BelloniChernozhukovHansen2014, ChernozhukovChetverikovDemireretal2018}). An appropriate orthogonal score function in the linear IV context is:
+The orthogonal score function for the IV scenario is different from the standard DML orthogonal score function [\cite{BelloniChernozhukovHansen2014, ChernozhukovChetverikovDemireretal2018}]. An appropriate orthogonal score function in the linear IV context is:
 
 \begin{equation}
     \psi(Y_i, T_i, Z_i, C_i; \tau, \eta) = \left( Y_i - m_{\text{IV}}(C_i) - \tau [T_i - g_{\text{IV}}(C_i)] \right) \left( Z_i - q_{\text{IV}}(C_i) \right),
@@ -952,7 +954,7 @@ In the instrumental variable scenario, we have the possibility to tune all the p
 \subsection{Orthogonal Score Function Derivation for the Backdoor Adjustment Scenario}
 \label{subsec:appendix_orthogonal_score_function_backdoor_adjustment}
 
-In this appendix, we derive the orthogonal score function presented in equation \eqref{eq:orthogonal_score} for the backdoor adjustment scenario \cite{ChernozhukovChetverikovDemireretal2018, Pearl2009}.
+In this appendix, we derive the orthogonal score function presented in equation \eqref{eq:orthogonal_score} for the backdoor adjustment scenario [\cite{ChernozhukovChetverikovDemireretal2018, Pearl2009}].
 
 We begin with the target parameter of interest, the Average Treatment Effect (ATE):
 \[
@@ -992,7 +994,7 @@ At the true parameter values and correctly specified nuisances, this score has e
 \subsection{Orthogonal Score Function Derivation for the Frontdoor Adjustment Scenario}
 \label{subsec:appendix_orthogonal_score_function_frontdoor_adjustment_reformatted}
 
-In this appendix, we derive the orthogonal score function presented in equation \eqref{eq:orthogonal_score_frontdoor} for the frontdoor adjustment scenario \cite{ChernozhukovChetverikovDemireretal2018, Pearl2009}.
+In this appendix, we derive the orthogonal score function presented in equation \eqref{eq:orthogonal_score_frontdoor} for the frontdoor adjustment scenario [\cite{ChernozhukovChetverikovDemireretal2018, Pearl2009}].
 
 The frontdoor formula for the ATE is:
 \[
@@ -1030,7 +1032,7 @@ At the true parameter and correctly specified nuisances, this score has zero exp
 \subsection{Orthogonal Score Function Derivation for Instrumental Variable}
 \label{subsec:appendix_orthogonal_score_function_instrumental_variable}
 
-In this appendix, we derive the orthogonal score function presented in equation \eqref{eq:orthogonal_score_iv} for the instrumental variable scenario \cite{BelloniChernozhukovHansen2014, ChernozhukovChetverikovDemireretal2018, Pearl2009}.
+In this appendix, we derive the orthogonal score function presented in equation \eqref{eq:orthogonal_score_iv} for the instrumental variable scenario [\cite{BelloniChernozhukovHansen2014, ChernozhukovChetverikovDemireretal2018, Pearl2009}].
 
 The main target parameter is the average treatment effect \(\tau\) identified via an instrument \(Z\). Define the nuisance functions:
 \[
@@ -1077,7 +1079,7 @@ By construction, \(\mathbb{E}[\psi(Y, T, Z, C; \tau, \eta)] = 0\) at the true pa
 
 We build a simulation framework able for the outlined causal scenarios, tuning the parameters of the data generating process in accordance with the specifications outlined in Sections \ref{subsubsec:parameter_tuning_in_the_data_generating_process_instrumental_variable}, \ref{subsubsec:parameter_tuning_in_the_data_generating_process_backdoor}, and \ref{subsubsec:parameter_tuning_in_the_data_generating_process_frontdoor}.
 
-The system is built using Python and SQLite, as detailed in the Appendix \ref{subsec:appendix_computational_system}, and relies \texttt{DoubleML} package for the estimation of the causal effects. It works on generating by generating a simulation plan, in which each line refers to one scenario. Multiple processes read from the plan and run the simulations in parallel, storing the results in a SQLite database.
+The system is built using Python and SQLite, as detailed in the Appendix~\ref{subsec:appendix_computational_system}, and relies \texttt{DoubleML} package for the estimation of the causal effects. It works on generating by generating a simulation plan, in which each line refers to one scenario. Multiple processes read from the plan and run the simulations in parallel, storing the results in a SQLite database.
 
 The scenarios use all the parameters specified in the Tuning section.
 
@@ -1099,7 +1101,7 @@ The parameters of the data generating process vary accordingly
     \item Different relationships between covariates and treatment.
 \end{itemize}
 
-For each combination, we run 100 simulations, totaling 12 thousand. We run DML using the three different kinds of specification outlined: Correct, Inclusion of Non-Causal Confounders, and Partial Omission of Causal Cofounders with Inclusion of Non-Causal Confounders. For simplification, we run the equal propensity score and outcome models for DML. The chosen models are:
+For each combination, we run 100 simulations, totaling 12 thousand. We run DML using the three different kinds of specification outlined: Correct, Inclusion of Non-Causal Confounders, and Partial Omission of Causal Cofounders (25\% of $d_c$) with Inclusion of Non-Causal Confounders. For simplification, we run the equal propensity score and outcome models for DML. The chosen models are:
 
 \begin{itemize}
     \item LASSO (with polinomial features, cross-validation for regularization tuning)
@@ -1117,6 +1119,9 @@ The combinations lead to 15 models for each simulation scenario, training 180 th
 
 \subsection{Simulation Results}
 
+The simulation results show agreement with the theoretical foundations.
+
+First, we check the percentage of true ATE which rely inside the 95\% confidence interval, separating by model and by specification. The results for the general simulation rely below the expected 95\% CI coverage due to simulations in which the number of covariate dimensions is simmilar to the number of samples ($n \approx d_c + d_a$) and $n$ is small (e.g. sample size of 100, 200). In those cases specifically, the ATE estimation error is relevant. On scenarios in which $n \gg d_c + d_a$, the CI coverage closely aligns with theoretical expectations.
 
 \begin{table}[H]
     \centering
@@ -1124,29 +1129,44 @@ The combinations lead to 15 models for each simulation scenario, training 180 th
         \toprule
         Specification & Inside CI \\
         \midrule
-        Correct & 82.6\% \\
-        Inclusion of Non-Causal Cofounders & 76.6\% \\
-        Unobserved Confounders & 63.3\% \\
+        Correct & 72.1\% \\
+        Inclusion of Non-Causal Cofounders & 66.4\% \\
+        Unobserved Confounders & 56.3\% \\
         \bottomrule
     \end{tabular}
     \caption{Percentage of Simulations where the true ATE is inside the 95\% CI}
 \end{table}
 
+Given the reasons specified above, the average error is high even with correct specification due to the dimensionality problem. As we see below in the boxplot of the ATE error by $n / (d_c + d_a)$, the error is considerably smaller when the ratio between samples and dimensions increase, allowing for the assymptotic properties of the estimators to hold.
+
 \begin{table}[H]
     \centering
     \begin{tabular}{lccc}
         \toprule
-        $d_c$ & Correct & Inclusion of Non-Causal Cofounders & Unobserved Confounders \\
+        Specification & Mean Absolute Error & Standard Deviaton of MAE \\
         \midrule
-        5 & 0.062 & 0.098 & 0.127 \\
-        10 & 0.248 & 0.387 & 0.503 \\
-        20 & 1.548 & 2.338 & 3.039 \\
-        50 & 4.494 & 6.803 & 8.843 \\
-        100 & 21.060 & 30.083 & 39.108 \\
+        Correct & 4.195484 & 8.312652 \\
+        Inclusion of Non-Causal Cofounders & 5.209074 & 8.589783 \\
+        Unobserved Confounders & 5.547834 & 8.679951 \\
         \bottomrule
     \end{tabular}
-    \caption{Mean Absolute Error per Specification and $d_c$}
+    \caption{Mean Absolute Error per Specification}
 \end{table}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{../analysis/plots/fixed_line_plot_error_by_n_div_d_for_ratio_bigger_than_25.png}
+    \caption{Boxplot of ATE Error by $n / (d_c + d_a)$ (filtering samples in which $\frac{n}{d} > 25$)}
+    \label{fig:ate_error_by_n_div_d}
+\end{figure}
+
+Furthermore, we highlight that the inclusion of non-causal cofounders in the specification (model estimated with all $C$ and $X_a$) leads to considerably worst result (Figure~\ref{fig:ate_error_by_n_div_d}). Once non-causal cofounders are included, the negative effect of removing $C$ (adding unobserved causal cofounders $U$) is not as relevant as the one of including the non causal cofounders. This holds true for different ratios of $n / d_a + d_c$. It highlights the importance of correctly specifying the model, which can proof to be more important than continuously searching for new causal cofounders.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.9\textwidth]{../analysis/plots/fixed_box_plot_error_by_n_div_d_and_specification.png}
+    \caption{Boxplot of ATE Error by $n / (d_c + d_a)$}
+\end{figure}
 
 \begin{table}[H]
     \centering
@@ -1168,43 +1188,47 @@ The combinations lead to 15 models for each simulation scenario, training 180 th
     \caption{Mean Absolute Error per Specification and $n / (d_a + d_c)$}
 \end{table}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\textwidth]{../analysis/plots/fixed_box_plot_error_by_n_div_d_and_specification.png}
-    \caption{Boxplot of ATE Error by $d_a$ (filtering samples in which $\frac{n}{d} > 10$)}
-\end{figure}
+Under big ratio of $n / (d_a + d_c)$, the ATE estimation error is considerably smaller, as expected. The inclusion of non-causal cofounders in the model leads to a higher error, but the effect is not as strong as in the case of small $n / (d_a + d_c)$.
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\textwidth]{../analysis/plots/fixed_line_plot_error_by_n_div_d_for_ratio_bigger_than_25.png}
-    \caption{Boxplot of ATE Error by $d_a$ (filtering samples in which $\frac{n}{d} > 10$)}
-\end{figure}
+From a different perspective, with an increase in $d_c$, we see that inclusion of non-causal cofounders have an effect of the estimation error similar in magnitude to, once we have non-causal cofounders, the inclusion of unobserved confounders. The effect in the increase of the ratio ($n$ to $d$) differs from the latter due to a bigger importance in the first effect in the ratio analysis (compared to addition of unobserved).
+
+To be more specific, there is on average a 21\% increase in the ATE estimation error when including non-causal cofounders in the model for different $n / (d_a + d_c)$. Once non causal cofounders are included, removing a percentage of the causal cofounders (adding unobserved) increases on average only more 6\% the original estimation error. When dealing with different $d_c$, the increases are on average 52\% and 45\% respectively. 
 
 \begin{table}[H]
     \centering
     \begin{tabular}{lccc}
         \toprule
-        Specification & Mean Absolute Error & Standard Deviaton of MAE \\
+        $d_c$ & Correct & Inclusion of Non-Causal Cofounders & Unobserved Confounders \\
         \midrule
-        Correct & 4.195484 & 8.312652 \\
-        Inclusion of Non-Causal Cofounders & 5.209074 & 8.589783 \\
-        Unobserved Confounders & 5.547834 & 8.679951 \\
+        5 & 0.062 & 0.098 & 0.127 \\
+        10 & 0.248 & 0.387 & 0.503 \\
+        20 & 1.548 & 2.338 & 3.039 \\
+        50 & 4.494 & 6.803 & 8.843 \\
+        100 & 21.060 & 30.083 & 39.108 \\
         \bottomrule
     \end{tabular}
-    \caption{Mean Absolute Error per Specification}
+    \caption{Mean Absolute Error per Specification and $d_c$}
 \end{table}
-    
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=0.7\textwidth]{../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_10.png}
-    \caption{Boxplot of ATE Error by $d_a$ (filtering samples in which $\frac{n}{d} > 10$)}
-\end{figure}
 
-\begin{figure}[H]
+Analysing the models, we find that Deep Neural Networks (DNN) perform the best, followed by Random Forests (RF), LASSO, OLS with Stepwise (OLS) and finally Elastic Net (EN). The difference is significant in the average ATE estimation error which is inflated due to the inclusion of high-dimensional low-sample experiments. The CI coverage is extremely similar for DNN and RF in almost 76\% (lowered by the scenarios where assymptotic properties are not met). The same is true for LASSO and OLS with Stepwise (63\%). The average error estimate grows more gradually, but is almost equal for OLS with Stepwise and LASSO, giving low confidence that one is preferable to the other.
+
+\begin{table}[H]
     \centering
-    \includegraphics[width=0.7\textwidth]{../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_3.png}
-    \caption{Boxplot of ATE Error by $d_a$ (filtering samples in which $\frac{n}{d} > 3$)}
-\end{figure}
+    \begin{tabular}{lcc}
+        \toprule
+        Model & CI Coverage & Mean Absolute Estimation Error \\
+        \midrule
+        DNN     & 75.99\% & 4.4399 \\
+        RF      & 79.92\% & 4.6792 \\
+        LASSO   & 63.32\% & 4.8383 \\
+        OLS     & 63.28\% & 4.8483 \\
+        EN      & 59.63\% & 4.9636 \\
+        \bottomrule
+    \end{tabular}
+    \caption{ATE Mean Absolute Error \& CI Coverage per Model}
+\end{table}
+
+The order holds consistent for different number of causal cofounders $d_c$, highlighting DNN performance even when dimensionality is high.
 
 \begin{figure}[H]
     \centering
@@ -1217,6 +1241,24 @@ The combinations lead to 15 models for each simulation scenario, training 180 th
     \includegraphics[width=0.7\textwidth]{../analysis/plots/fixed_box_plot_ate_error_by_d_c_minimum_n_div_d_3.png}
     \caption{Boxplot of ATE Error by $d_c$ (filtering samples in which $\frac{n}{d} > 3$)}
 \end{figure}
+
+More results for different models specifications and different $d_c$ are present in Appendix~\ref{subsec:appendix_simulation_results}.
+
+Nonetheless, when the number of non-causal cofounders increases considerably, Random Forest outperforms Deep Neural Networks. The finding highlights that in scenarios in which one is uncertain about causality of the used cofounders, Random Forest might be a better choice.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_10.png}
+    \caption{Boxplot of ATE Error by $d_a$ (filtering samples in which $\frac{n}{d} > 10$)}
+\end{figure}
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.7\textwidth]{../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_3.png}
+    \caption{Boxplot of ATE Error by $d_a$ (filtering samples in which $\frac{n}{d} > 3$)}
+\end{figure}
+
+More results for different models specifications and different $d_a$ are present in Appendix~\ref{subsec:appendix_simulation_results}.
 
 \newpage
 
@@ -1662,6 +1704,7 @@ scenario.save_summary()
 \newpage
 
 \subsection{Other Simulations Results}
+\label{subsec:appendix_simulation_results}
 
 \subsubsection{ATE Estimation Error by $d_c$ and Specification}
 
@@ -1689,13 +1732,6 @@ scenario.save_summary()
 
 \subsubsection{ATE Estimation Error by $d_a$ and Specification}
 
-\begin{figure}[H]
-    \centering
-    \includegraphics[width=200px]{../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_3.png}
-    \includegraphics[width=200px]{../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_5.png}
-    \includegraphics[width=200px]{../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_10.png}
-    \includegraphics[width=200px]{../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_correct_minimum_n_div_d_50.png}
-\end{figure}
 \begin{figure}[H]
     \centering
     \includegraphics[width=200px]{../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_3.png}
