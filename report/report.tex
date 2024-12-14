@@ -47,7 +47,9 @@
 
 \title{Comparative Analysis of Double Machine Learning Methods and Data Generating Processes for Average Treatment Effect Estimation in Diverse Causal Scenarios}
 \author{Fernando Rocha Urbano\footnote{fernandourbano@uchicago.edu}}
-\date{Autumn 2024}
+\date{
+    ECMA 31380 - Causal Machine Learning \\ \vspace{.5cm} December 2024
+}
 
 \lstset{
     language=python,              
@@ -95,11 +97,15 @@
 
 \begin{document}
 
-\maketitle
+\begin{titlepage}
+    \vfill
+    \maketitle
+    \vfill
+\end{titlepage}
 
 \section{Abstract}
 
-This paper establishes a comprehensive theoretical foundation and demonstrates the practical implementation of Double Machine Learning (DML) methods for causal inference, with a particular focus on estimating the Average Treatment Effect (ATE) in IV, Frontdoor and Backdoor Path scenarios. We achieve that through extensive literature review, analytical derivations, creation of system of simulations with particular attention for the different data generating process (DGP) in those causal scenarios, and empirical simulation results.
+This paper establishes a comprehensive theoretical foundation and demonstrates the practical implementation of Double Machine Learning (DML) methods for causal inference, with a particular focus on estimating the Average Treatment Effect (ATE) in Instrumental Variable (IV), Frontdoor Path, and Backdoor Path scenarios. We achieve this through extensive literature review, analytical derivations, creation of system of simulations with particular attention for the different data generating process (DGP) in those causal scenarios, and empirical simulation results.
 
 We begin by examining the theoretical context and existing literature on Double Machine Learning, delving into double robust estimation in settings involving instrumental variables, unobserved confounders, and mediators. This analysis highlights the differences in orthogonal score functions and explores the implications of model misspecification. We continue with a review the data generating processes (DGPs) for each causal scenario, detailing the underlying assumptions, the role of nuisance functions in ATE estimation, and the range of parameters relevant for simulations.
 
@@ -107,7 +113,9 @@ Finally, we develop a robust simulation framework capable of generating data und
 
 We end by presenting a vast range of results for Backdoor Adjustment scenario, exploring how various DML estimators perform in recovering the ATE. Among the models tested, we see better performance from Deep Neural Networks (DNN) followed by Random Forest (RF). The results hold true for different dimensionalities of causal cofounders. Nonetheless, when dimensionality of non-causal cofounders increase the performance of DNN decreases and RF provides more robust estimates. In this section, we highlight other interesting takeaways, such as the role of sample size, misspecification, problems with dimensionality and the type of causal relationship between the target, treatment, and covariates.
 
-The paper creates a solid basis for further simulations. We aim to proceed with further simulation estimation with the goal of providing a benchmark for DML methods in causal inference, giving practical actionable recommendations for researchers in the field.
+The paper creates a solid basis for further simulations, which we have already started with th goal of more giving practical actionable recommendations for researchers in the field.
+
+The causal simulation system is entirely available at: \url{https://github.com/Fernando-Urbano/dml-causal-inference}
 
 \newpage
 \tableofcontents
@@ -159,7 +167,7 @@ Early approaches to estimating the ATE under the CIA often began with simple lin
 
 Such linear estimators assume that \(\mu_t(X_i)\) and \(\pi(X_i)=\mathbb{P}(T_i=1 \mid X_i)\) can be captured by low-dimensional linear functions of \(X_i\). However, any deviation from linearity or additivity, or the presence of omitted interactions, can result in substantial bias and inconsistent estimates of \(\tau\) [\cite{ImbensRubin2015}].
 
-To mitigate these issues, the literature has developed estimators that maintain consistency under weaker conditions. Chief among these are doubly robust estimators, which combine an outcome model and a propensity score model in such a way that if either one is correctly specified, the resulting ATE estimate remains consistent [\cite{RobinsRotnitzkyZhao1994, BangRobins2005}]. In other words, double robustness relaxes the strong reliance on fully correct functional specification of the data-generating process. This property becomes particularly appealing in high-dimensional settings, where even flexible parametric models may fail to capture all relevant nonlinearities and interactions [\cite{Chernozhukov2018}].
+To mitigate these issues, the literature has developed estimators that maintain consistency under weaker conditions. Among these, one of the most important are the doubly robust estimators, which combine an outcome model and a propensity score model in such a way that if either one is correctly specified, the resulting ATE estimate remains consistent [\cite{RobinsRotnitzkyZhao1994, BangRobins2005}]. In other words, double robustness relaxes the strong reliance on fully correct functional specification of the data-generating process. This property becomes particularly appealing in high-dimensional settings, where even flexible parametric models may fail to capture all relevant nonlinearities and interactions [\cite{Chernozhukov2018}].
 
 By exploiting both an outcome regression model \(\mu_t(X_i)\) and a propensity score model \(\pi(X_i)\), doubly robust estimators obtain unbiasedness under weaker conditions than either model alone would require. Specifically, if at least one of these models is correctly specified, the doubly robust estimator remains consistent for \(\tau\) [\cite{RobinsRotnitzkyZhao1994, BangRobins2005}]. An important example is the Augmented Inverse Probability Weighting (AIPW) estimator [\cite{GlynnQuinn2010}]:
 
@@ -273,7 +281,7 @@ to estimate $\hat{m}^{(-k)}(X_i)$ and $\hat{g}^{(-k)}(X_i)$.
 
 The three most relevant scenarios of causal inference are the ones that require Instrumental Variables, Backdoor Adjustment, or Front Door Adjustment.
 
-To facilitate the understandig of the causal scenarios, we present the following notation, separating covariates in three different groups:
+To facilitate the understandig of the causal scenarios, we present the following notation, separating covariates (previously defined as $X_i$) in three different groups:
 \begin{itemize}
     \item $C_i \in \mathbb{R}^{d_c}$: Confounders, variables that affect both the treatment $T_i$ and the outcome $Y_i$.
     \item $X_a \in \mathbb{R}^{d_a}$: Non-causal covariates, variables that do not affect the treatment $T_i$ or the outcome $Y_i$, but are correlated with the confounders $C_i$ and lead to misspecification when included in the model.
@@ -378,7 +386,7 @@ In Backdoor Adjustment with DML, the ideal $m(X_i) = \mathbb{E}[Y_i | X_i]$ and 
     \label{eq:g_x_for_treatment_backdoor_adjustment}
 \end{align}
 
-In our simulations we also test the habilit of the ML models to estimate ATE under the following scenarios. In these scenarios, the superscript $\text{w}_i$ on the nuisance functions denotes the i-th scenario which involves misspecifications of the nuisance functions.
+In our simulations we provide tests for the habilit of the ML models to estimate ATE under the following scenarios. In these scenarios, the superscript $\text{w}_i$ on the nuisance functions denotes the i-th scenario which involves misspecifications of the nuisance functions.
 
 \paragraph{Inclusion of $C_i$ and $X_{a, i}$ on every nuisance function}
 
@@ -431,7 +439,7 @@ For the frontdoor adjustment to be valid, the following conditions must be satis
 \item All backdoor paths from $M$ to $Y$ are blocked by $T$ (i.e., there are no unmeasured confounders between $M$ and $Y$ that are not affected by $T$).
 \end{enumerate}
 
-DAG~\ref{fig:dag_frontdoor_path} illustrates the frontdoor adjustment involving the treatment $T$, mediator $M$, outcome $Y$, observed confounders $C$ and features with no causal association $X_a$. $C$ and $X_a$ would not be present in a typical frontdoor adjustment DAG, but are included due to their relevance in the proposed simulations.
+DAG~\ref{fig:dag_frontdoor_path} illustrates the frontdoor adjustment involving the treatment $T$, mediator $M$, outcome $Y$, observed confounders $C$ and features with no causal association $X_a$. $C$ and $X_a$ would not be present in a typical frontdoor adjustment DAG\footnote{Frontdoor adjustment can also be represented in a situation in which the treatment affects the mediator and the target. In such case, the orthogonal score function would be different and the total treatment effect would generally be the sum of the direct causation in the target and the causation through the mediator - which must be controlled, since the variability in the mediator can also be caused by other cofounders}, but are included due to their relevance in the proposed simulations.
 
 \begin{figure}[H]
     \centering
@@ -461,7 +469,7 @@ DAG~\ref{fig:dag_frontdoor_path} illustrates the frontdoor adjustment involving 
 
 \subsubsection{Frontdoor Adjustment Scenario in DML}
 
-In our simulations, we use a binary mediator $M_i \in \{0, 1\}$, similar to the binary treatment $T_i$.
+In our simulations, we give preference to testing a binary mediator $M_i \in \{0, 1\}$, similar to the binary treatment $T_i$.
 
 In the Frontdoor Adjustment scenario with DML, we need to account for the mediator $M_i$ when estimating the ATE. The identification of the causal effect involves modeling the relationships between $T_i$, $M_i$, and $Y_i$.
 
@@ -504,7 +512,7 @@ In this score function:
 
 We derive the orthogonal score function for Frontdoor Adjustment in Section~\ref{subsec:appendix_orthogonal_score_function_frontdoor_adjustment}.
 
-In our simulations we also test the hability of the ML models to estimate ATE under the following scenario.
+In our simulations we also give the opportunity to test the hability of the ML models to estimate ATE under the following scenario. Again, the superscript $\text{w}_i$ on the nuisance functions denotes the i-th scenario which involves misspecifications of the nuisance functions.
 
 \paragraph{Inclusion of $C_i$ and $X_{a, i}$ on every nuisance function}
 
@@ -543,7 +551,7 @@ Equations \eqref{eq:m_x_for_target_frontdoor_adjustment_wrong_3} to \eqref{eq:g_
 
 \subsection{Instrumental Variable}
 
-Instrumental variable (IV) estimation is a method used to estimate the causal effect of a treatment $T_i$ on an outcome $Y_i$ when there is unmeasured confounding $U_i$ that cannot be addressed using backdoor or frontdoor adjustments. This method leverages an instrument $Z_i$, which influences the treatment $T_i$ but has no direct effect on the outcome $Y_i$  except through $T_i$, and is independent of any unmeasured confounders $U_i$ affecting both $T_i$ and $Y_i$.
+Instrumental variable (IV) estimation is a method used to estimate the causal effect of a treatment $T_i$ on an outcome $Y_i$ when there is unmeasured confounding $U_i$ that cannot be addressed using backdoor or frontdoor adjustments. This method leverages an instrument $Z_i$, which influences the treatment $T_i$ but has no direct effect on the outcome $Y_i$ except through $T_i$, and is independent of any unmeasured confounders $U_i$ affecting both $T_i$ and $Y_i$.
 
 For the instrumental variable method to be valid, the following conditions must be satisfied:
 
@@ -610,9 +618,9 @@ The orthogonal score function for the IV scenario is different from the standard
     \label{eq:orthogonal_score_iv}
 \end{equation}
 
-We derive the orthogonal score function for Frontdoor Adjustment in Section~\ref{subsec:appendix_orthogonal_score_function_instrumental_variable}.
+We derive the orthogonal score function for Instrumental Variable Scenario in Section~\ref{subsec:appendix_orthogonal_score_function_instrumental_variable}.
 
-In our simulations we also test the habilit of the ML models to estimate ATE under the following scenarios. In these scenarios, the superscript $\text{w}_i$ on the nuisance functions denotes the i-th scenario which involves misspecifications of the nuisance functions.
+In our simulations we also give the opportunity to test the hability of the ML models to estimate ATE under the following scenarios. Once more, in these scenarios, the superscript $\text{w}_i$ on the nuisance functions denotes the i-th scenario which involves misspecifications of the nuisance functions.
 
 \paragraph{Inclusion of $C_i$ and $X_{a, i}$ on every nuisance function}
 
@@ -681,7 +689,7 @@ $\Sigma_d \in \mathbb{R}^{d \times d}$, where $d := d_a + d_c$. $d_a$ is the num
     X \sim \mathcal{N}_d(\boldsymbol{\mu}_d, \Sigma_d)
 \end{equation}
 
-The sparsity of the covariance matrix of the cofounders $\Sigma_d$ is determined by $\alpha_d$, which represents the probability that any covariance coefficient is zero. Larger $\alpha_d$'s result in sparser covariance matrices. To provide intuition on it, we report the average absolute correlation ${|\rho_d|}$ in the matrix.
+The sparsity of the covariance matrix of the cofounders $\Sigma_d$ is determined by $\alpha_d$, which represents the probability that any covariance coefficient is zero. Larger $\alpha_d$'s result in sparser covariance matrices. To provide intuition on it, we report the average correlation ${\rho_d}$ in the matrix.
 
 After generating the data from the multivariate normal distribution defined as $X \in \mathbb{R}^{n \times d}$ we randomly separate the features of $X$ in $X_a$ and $C$. Following the logic specified above, $X_a \in \mathbb{R}^{n \times d_a}$ and $C \in \mathbb{R}^{n \times d_c}$.
 
@@ -781,7 +789,7 @@ Where $C_{j}$ is the the vector of the $j$-th causal confounder, $\beta_j$ is a 
 
 For each simulation, $f(C)$ is calculated with some of the specified transformation sets and $\beta$'s three times: one for the calculation of $Y_{i, 0}$, one for the calculation of $\mathbb{P}[T_i]$, and one for the calculation of $\tau_i(C_i)$.
 
-For some simulations, we only allow for linear transformations in $f(C)$, aiming to compare performance of the DML models in a simpler setting.
+We also give the possibility to allow only for linear transformations in $f(C)$, aiming to compare performance of the DML models in a simpler setting.
 
 \subsubsection{Parameter Tuning in the Data Generating Process}
 \label{subsubsec:parameter_tuning_in_the_data_generating_process_backdoor}
@@ -822,7 +830,7 @@ In the frontdoor scenario, the mediator $M_i$ lies on the causal path from the t
     \label{eq:probability_of_mediator_frontdoor}
 \end{equation}
 
-where $f(T_i)$ is a function of the treatment. For binary mediators, $M_i$ can be drawn from a Bernoulli distribution with probability \eqref{eq:probability_of_mediator_frontdoor}:
+where $f(T_i)$ is a function of the treatment. For binary mediators, $M_i$ can be drawn from a Bernoulli distribution with probability defined from Equation~\eqref{eq:probability_of_mediator_frontdoor}:
 
 \begin{equation}
     M_i \sim Bernoulli(\mathbb{P}[M_i])
@@ -951,10 +959,12 @@ In the instrumental variable scenario, we have the possibility to tune all the p
 
 \section{Orthogonal Score Function Derivation for Different Causal Scenarios}
 
+In this section, we derive the orthogonal score function presented in backdoor, frontdoor, and instrumental variable scenarios.
+
 \subsection{Orthogonal Score Function Derivation for the Backdoor Adjustment Scenario}
 \label{subsec:appendix_orthogonal_score_function_backdoor_adjustment}
 
-In this appendix, we derive the orthogonal score function presented in equation \eqref{eq:orthogonal_score} for the backdoor adjustment scenario [\cite{ChernozhukovChetverikovDemireretal2018, Pearl2009}].
+The orthogonal score function presented in equation \eqref{eq:orthogonal_score} for the backdoor adjustment scenario [\cite{ChernozhukovChetverikovDemireretal2018, Pearl2009}] can be derived as specified below.
 
 We begin with the target parameter of interest, the Average Treatment Effect (ATE):
 \[
@@ -994,7 +1004,7 @@ At the true parameter values and correctly specified nuisances, this score has e
 \subsection{Orthogonal Score Function Derivation for the Frontdoor Adjustment Scenario}
 \label{subsec:appendix_orthogonal_score_function_frontdoor_adjustment_reformatted}
 
-In this appendix, we derive the orthogonal score function presented in equation \eqref{eq:orthogonal_score_frontdoor} for the frontdoor adjustment scenario [\cite{ChernozhukovChetverikovDemireretal2018, Pearl2009}].
+We now derive the orthogonal score function presented in equation \eqref{eq:orthogonal_score_frontdoor} for the frontdoor adjustment scenario [\cite{ChernozhukovChetverikovDemireretal2018, Pearl2009}].
 
 The frontdoor formula for the ATE is:
 \[
@@ -1032,7 +1042,7 @@ At the true parameter and correctly specified nuisances, this score has zero exp
 \subsection{Orthogonal Score Function Derivation for Instrumental Variable}
 \label{subsec:appendix_orthogonal_score_function_instrumental_variable}
 
-In this appendix, we derive the orthogonal score function presented in equation \eqref{eq:orthogonal_score_iv} for the instrumental variable scenario [\cite{BelloniChernozhukovHansen2014, ChernozhukovChetverikovDemireretal2018, Pearl2009}].
+Finally, we derive the orthogonal score function presented in equation \eqref{eq:orthogonal_score_iv} for the instrumental variable scenario [\cite{BelloniChernozhukovHansen2014, ChernozhukovChetverikovDemireretal2018, Pearl2009}].
 
 The main target parameter is the average treatment effect \(\tau\) identified via an instrument \(Z\). Define the nuisance functions:
 \[
@@ -1077,19 +1087,17 @@ By construction, \(\mathbb{E}[\psi(Y, T, Z, C; \tau, \eta)] = 0\) at the true pa
 
 \section{Simulations}
 
-We build a simulation framework able for the outlined causal scenarios, tuning the parameters of the data generating process in accordance with the specifications outlined in Sections \ref{subsubsec:parameter_tuning_in_the_data_generating_process_instrumental_variable}, \ref{subsubsec:parameter_tuning_in_the_data_generating_process_backdoor}, and \ref{subsubsec:parameter_tuning_in_the_data_generating_process_frontdoor}.
+We build a simulation framework for the outlined causal scenarios, tuning the parameters of the data generating process in accordance with the specifications outlined in Sections \ref{subsubsec:parameter_tuning_in_the_data_generating_process_instrumental_variable}, \ref{subsubsec:parameter_tuning_in_the_data_generating_process_backdoor}, and \ref{subsubsec:parameter_tuning_in_the_data_generating_process_frontdoor}.
 
-The system is built using Python and SQLite, as detailed in the Appendix~\ref{subsec:appendix_computational_system}, and relies \texttt{DoubleML} package for the estimation of the causal effects. It works on generating by generating a simulation plan, in which each line refers to one scenario. Multiple processes read from the plan and run the simulations in parallel, storing the results in a SQLite database.
+The system is built using Python and SQLite, as detailed in the Appendix~\ref{subsec:appendix_computational_system}, and relies on \texttt{DoubleML} package for the estimation of the causal effects. It works by generating a simulation plan, in which each line refers to one scenario. Multiple processes read from the plan and run the simulations in parallel, storing the results in a SQLite database.
 
-The scenarios use all the parameters specified in the Tuning section.
+The scenarios use all the parameters specified in the Tuning Section (\ref{subsubsec:parameter_tuning_in_the_data_generating_process_backdoor}, \ref{subsubsec:parameter_tuning_in_the_data_generating_process_frontdoor}, \ref{subsubsec:parameter_tuning_in_the_data_generating_process_instrumental_variable}).
 
-As a consequence of the use of cross-fitting and the generation of multiple scenarios, the simulation process is computationally intensive. \footnote{In order to generate considerable amounts of results for Backdoor Adjustment, we ran for the duration of 5 days simulations in 4 different computers, each with 8-12 processes in parallel}
-
-The results are a sample of the multiple possibilies of DGP and provide interesting takeaways.
+As a consequence of the use of cross-fitting and the generation of multiple scenarios, the simulation process is computationally intensive. \footnote{In order to generate considerable amounts of results for Backdoor Adjustment, we ran for the duration of 5 days simulations in 4 different computers, each with 8-12 processes in parallel} Thus, the results are a large sample of the multiple possibilies of DGPs and provide interesting takeaways.
 
 \subsection{Simulation Plans}
 
-The parameters of the data generating process vary accordingly
+In our calculated simulation, the parameters of the data generating process vary accordingly:
 \begin{itemize}
     \item Treatment Noise Level: $\sigma_t = 0.1, 0.2, 0.5$
     \item Outcome Noise Level: $\sigma_y = 0.1, 0.2, 0.5$
@@ -1101,7 +1109,7 @@ The parameters of the data generating process vary accordingly
     \item Different relationships between covariates and treatment.
 \end{itemize}
 
-For each combination, we run 100 simulations, totaling 12 thousand. We run DML using the three different kinds of specification outlined: Correct, Inclusion of Non-Causal Confounders, and Partial Omission of Causal Cofounders (25\% of $d_c$) with Inclusion of Non-Causal Confounders. For simplification, we run the equal propensity score and outcome models for DML. The chosen models are:
+For each combination, we run 100 simulations, totaling 6.5 thousand different data generating processes. We run DML using the three different kinds of specification outlined: Correct, Inclusion of Non-Causal Confounders, and Partial Omission of Causal Cofounders (25\% of $d_c$) with Inclusion of Non-Causal Confounders. For simplification, we run the equal propensity score and outcome models for DML. The chosen models are:
 
 \begin{itemize}
     \item LASSO (with polinomial features, cross-validation for regularization tuning)
@@ -1115,13 +1123,13 @@ For each combination, we run 100 simulations, totaling 12 thousand. We run DML u
     )
 \end{itemize}
 
-The combinations lead to 15 models for each simulation scenario, training 180 thousand models in total.
+The combinations requires 15 calculations for each simulation scenario (3 for each ML model), leading to the training and cross-fitting of ~195 thousand models.
 
 \subsection{Simulation Results}
 
-The simulation results show agreement with the theoretical foundations.
+The simulation results show agreement with the theoretical foundations. Overall, we see the expected overperformance of models with correct specification and problems in ATE estimation with models in which ratio between sample size ($n$) and dimensionality ($d_c + d_a$) is small. To assess performance, we choose to look at the confidence interval (CI) coverage and the absolute estimation error of the ATE.
 
-First, we check the percentage of true ATE which rely inside the 95\% confidence interval, separating by model and by specification. The results for the general simulation rely below the expected 95\% CI coverage due to simulations in which the number of covariate dimensions is simmilar to the number of samples ($n \approx d_c + d_a$) and $n$ is small (e.g. sample size of 100, 200). In those cases specifically, the ATE estimation error is relevant. On scenarios in which $n \gg d_c + d_a$, the CI coverage closely aligns with theoretical expectations.
+First, we check the percentage of true ATE which rely inside the 95\% confidence interval, separating by model and by specification. The results for the general simulation rely below the expected 95\% CI coverage due to simulations in which the number of covariate dimensions is similar to the number of samples ($n \approx d_c + d_a$) and $n$ is small (e.g. sample size of 100, 200 with covariates dimension of 50, 100). In those cases specifically, the ATE estimation error is relevant. On scenarios in which $n \gg d_c + d_a$, the CI coverage closely aligns with theoretical expectations.
 
 \begin{table}[H]
     \centering
@@ -1188,7 +1196,7 @@ Furthermore, we highlight that the inclusion of non-causal cofounders in the spe
     \caption{Mean Absolute Error per Specification and $n / (d_a + d_c)$}
 \end{table}
 
-Under big ratio of $n / (d_a + d_c)$, the ATE estimation error is considerably smaller, as expected. The inclusion of non-causal cofounders in the model leads to a higher error, but the effect is not as strong as in the case of small $n / (d_a + d_c)$.
+Under big ratio of $n / (d_a + d_c)$, the ATE estimation error is considerably smaller, as expected. The inclusion of non-causal cofounders in the model leads to a higher error, but the effect is not as strong in absolute value as in the case of small $n / (d_a + d_c)$ (the percentage increase remains fairly constant for different ratio values).
 
 From a different perspective, with an increase in $d_c$, we see that inclusion of non-causal cofounders have an effect of the estimation error similar in magnitude to, once we have non-causal cofounders, the inclusion of unobserved confounders. The effect in the increase of the ratio ($n$ to $d$) differs from the latter due to a bigger importance in the first effect in the ratio analysis (compared to addition of unobserved).
 
@@ -1210,7 +1218,7 @@ To be more specific, there is on average a 21\% increase in the ATE estimation e
     \caption{Mean Absolute Error per Specification and $d_c$}
 \end{table}
 
-Analysing the models, we find that Deep Neural Networks (DNN) perform the best, followed by Random Forests (RF), LASSO, OLS with Stepwise (OLS) and finally Elastic Net (EN). The difference is significant in the average ATE estimation error which is inflated due to the inclusion of high-dimensional low-sample experiments. The CI coverage is extremely similar for DNN and RF in almost 76\% (lowered by the scenarios where assymptotic properties are not met). The same is true for LASSO and OLS with Stepwise (63\%). The average error estimate grows more gradually, but is almost equal for OLS with Stepwise and LASSO, giving low confidence that one is preferable to the other.
+Analysing the models, we find that Deep Neural Networks (DNN) perform the best, followed by Random Forests (RF), LASSO, OLS with Stepwise (OLS) and finally Elastic Net (EN). The difference is significant in the average ATE estimation error which is inflated due to the inclusion of high-dimensional low-sample experiments. The CI coverage is extremely similar for DNN and RF with almost 76\% (lowered by the scenarios where assymptotic properties are not met). The same is true for LASSO and OLS with Stepwise (63\%). The average error estimate grows more gradually, but is almost equal for OLS with Stepwise and LASSO, giving low confidence that one is preferable to the other.
 
 \begin{table}[H]
     \centering
@@ -1261,6 +1269,15 @@ Nonetheless, when the number of non-causal cofounders increases considerably, Ra
 More results for different models specifications and different $d_a$ are present in Appendix~\ref{subsec:appendix_simulation_results}.
 
 \newpage
+\section{Conclusion}
+
+In conclusion, the literature review and simulations agree in the importance of correctly specifying the data generating process. The problem of causal inference is challenging in its nature and with more modern applications in which $X_i$ presents high dimensionality, DML will keep increasing its importance.
+
+The simulations give practioners an extra advice regarding model specification: most of the times, the backdoor scenario estimation error of the ATE increased considerably more when with the addition of non-causal cofounders than, once non-causal cofounders where already present in the specification, with the addition of unobserved cofounders. Practioners should understand the relevant weight of model specification, being careful to not wrongly add covariates that might not have a causal effect on the target. The negative effect of doing the latter has shown to be greater then the effect of not including variables which might have a causal relation to the target. In the modern scenarios of high dimensionality, non-causal cofounders are plenty and its correlation to the causal cofounders mislead the estimation. Furthermore, when practioners aim to include many covariates of which they are not sure if they have a causal relationship to the target or to the treatment, Random Forest is shown to be a preferred model, differently from most of the scenarios, which present better ATE estimates under Deep Neural Network model.
+
+Finally, we would like to continue the process of running more simulations. We have started working on processing those in AWS Cloud computing, allowing for a considerably vaster range of possible scenarios to be tested. With the literature review, theoretical background and more estimates, we hope to provide other insights to practioners.
+
+\newpage
 
 \section{Bibliography}
 
@@ -1296,7 +1313,7 @@ More results for different models specifications and different $d_a$ are present
 \subsection{Computational System}
 \label{subsec:appendix_computational_system}
 
-An important part of the theoretical review and the simulation study is the computational system used to run the simulations. The system was built to provide robustness and reproducibility to the results. It is composed of the following components:
+An important part of the theoretical review and the simulation study is the computational system created to run the simulations. The system was built to provide robustness and reproducibility of the results. It is composed of the following parts:
 
 \begin{enumerate}[label=\roman*.]
     \item The database initialization and schema definition (\texttt{database} folder).
@@ -1309,16 +1326,15 @@ The code is entirely present in the following GitHub repository:
 
 \begin{figure}[H]
     \centering
-    \url{https://github.com/Fernando-Urbano/causal-factor-investing}
+    \url{https://github.com/Fernando-Urbano/dml-causal-inference}
 \end{figure}
 
 \subsubsection{Database Initialization and Schema Definition}
 
 \begin{figure}[H]
     \centering
-    \url{https://github.com/Fernando-Urbano/causal-factor-investing/database}
+    \url{https://github.com/Fernando-Urbano/dml-causal-inference/database}
 \end{figure}
-
 
 The database-related code initializes an SQLite database and defines a schema for storing simulation results.
 
@@ -1388,14 +1404,14 @@ CREATE TABLE IF NOT EXISTS scenario_simulations (
 
 \begin{figure}[H]
     \centering
-    \url{https://github.com/Fernando-Urbano/causal-factor-investing/scenarios}
+    \url{https://github.com/Fernando-Urbano/dml-causal-inference/scenarios}
 \end{figure}
 
 Under \texttt{scenarios/causal\_scenarios.py}, we define classes that represent different causal settings: backdoor adjustment, frontdoor adjustment, and instrumental variables. Each class:
 
 \begin{itemize}
     \item Generates synthetic data with specified relationships and noise levels.
-    \item Builds a DoubleML model to estimate the average treatment effect.
+    \item Builds a \texttt{DoubleML} model to estimate the average treatment effect.
     \item Saves results into the database.
 \end{itemize}
 
@@ -1620,7 +1636,7 @@ DATA_GENERATION_SPECIFICATION = {
 
 \begin{figure}[H]
     \centering
-    \url{https://github.com/Fernando-Urbano/causal-factor-investing/tests}
+    \url{https://github.com/Fernando-Urbano/dml-causal-inference/tests}
 \end{figure}
 
 Under the \texttt{tests} folder, we have test scripts that:
@@ -1678,7 +1694,7 @@ tests/test_generate_data.py::test_causal_scenario_generate_data PASSED          
 
 \begin{figure}[H]
     \centering
-    \url{https://github.com/Fernando-Urbano/causal-factor-investing/simulations}
+    \url{https://github.com/Fernando-Urbano/dml-causal-inference/simulations}
 \end{figure}
 
 The \texttt{simulations} folder contains scripts that define plans to run simulations. Those plans define different parameters for each causal scenario, specification, noise level, relationship between variables, etc... The plan for each scenario is saved as a txt file and line by line read by the simulation script.
@@ -1703,7 +1719,7 @@ scenario.save_summary()
 
 \newpage
 
-\subsection{Other Simulations Results}
+\subsection{Other Simulation Results}
 \label{subsec:appendix_simulation_results}
 
 \subsubsection{ATE Estimation Error by $d_c$ and Specification}
@@ -1736,15 +1752,11 @@ scenario.save_summary()
     \centering
     \includegraphics[width=200px]{../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_3.png}
     \includegraphics[width=200px]{../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_5.png}
-    \includegraphics[width=200px]{../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_10.png}
-    \includegraphics[width=200px]{../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_50.png}
 \end{figure}
 \begin{figure}[H]
     \centering
     \includegraphics[width=200px]{../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_3.png}
     \includegraphics[width=200px]{../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_5.png}
-    \includegraphics[width=200px]{../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_10.png}
-    \includegraphics[width=200px]{../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_unobserved_confounders_minimum_n_div_d_50.png}
 \end{figure}
 
 \end{document}
