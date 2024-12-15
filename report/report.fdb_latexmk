@@ -1,13 +1,13 @@
 # Fdb version 4
-["bibtex report"] 1734216150.96156 "report.aux" "report.bbl" "report" 1734216153.22279 0
+["bibtex report"] 1734216150.96156 "report.aux" "report.bbl" "report" 1734225634.92058 0
   "./bibliography.bib" 1734057619.83495 4415 6f9785fb926587e8fa69f20ae31bdb9e ""
   "/usr/local/texlive/2024/texmf-dist/bibtex/bst/apalike2/apalike2.bst" 1242948958 26644 77647ad43a99e9d8b2661f2ca815cba7 ""
-  "report.aux" 1734216152.95297 24108 37f9293e998e979cc8752ff593dcfd3a "pdflatex"
+  "report.aux" 1734225634.61553 24108 37f9293e998e979cc8752ff593dcfd3a "pdflatex"
   (generated)
   "report.bbl"
   "report.blg"
   (rewritten before read)
-["pdflatex"] 1734216151.07184 "/Users/fernandorochacorreaurbano/Desktop/causal-machine-learning/causal-factor-investing/report/report.tex" "report.pdf" "report" 1734216153.22296 0
+["pdflatex"] 1734225632.74345 "/Users/fernandorochacorreaurbano/Desktop/causal-machine-learning/causal-factor-investing/report/report.tex" "report.pdf" "report" 1734225634.92076 0
   "../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_10.png" 1734113772.07351 58131 119078dd3f27f75f6d21b12342852f00 ""
   "../analysis/plots/fixed_box_plot_ate_error_by_d_a_minimum_n_div_d_3.png" 1734113771.70029 48485 cb1b195424043017e1b17106c74f9aca ""
   "../analysis/plots/fixed_box_plot_ate_error_by_d_a_specification_inclusion_of_non_causal_cofounders_minimum_n_div_d_3.png" 1734113816.7847 48484 d3c39de20d590d4227a3f849b314264c ""
@@ -30,7 +30,7 @@
   "../analysis/plots/fixed_box_plot_ate_error_by_d_c_specification_unobserved_confounders_minimum_n_div_d_50.png" 1734113672.55287 43479 6922539f1430db517739fbf2a2aa6bfa ""
   "../analysis/plots/fixed_box_plot_error_by_n_div_d_and_specification.png" 1734114523.5555 67129 f26ea1f5167c036e7c72090d1e49cbb7 ""
   "../analysis/plots/fixed_line_plot_error_by_n_div_d_for_ratio_bigger_than_25.png" 1734114515.07919 65072 bc0e7d7191d35219a06bac8a6026ff0e ""
-  "/Users/fernandorochacorreaurbano/Desktop/causal-machine-learning/causal-factor-investing/report/report.tex" 1734216148.37391 96604 55e023a3a096078f3d62a4169f78162d ""
+  "/Users/fernandorochacorreaurbano/Desktop/causal-machine-learning/causal-factor-investing/report/report.tex" 1734225632.52238 96623 fe6ece4cfc6e13f255abe2e11d989fa8 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc" 1136849721 2900 1537cc8184ad1792082cd229ecc269f4 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/map/fontname/texfonts.map" 1577235249 3524 cb3e574dea2d1052e39280babc910dc8 ""
   "/usr/local/texlive/2024/texmf-dist/fonts/tfm/jknappen/ec/tcrm0600.tfm" 1136768653 1536 12e8c510d3e158fdd0e9a42e75118bd9 ""
@@ -236,11 +236,11 @@
   "/usr/local/texlive/2024/texmf-var/fonts/map/pdftex/updmap/pdftex.map" 1726838998.69877 5467645 128b85b7cde5f5edc5cb7f1dd7ff8736 ""
   "/usr/local/texlive/2024/texmf-var/web2c/pdftex/pdflatex.fmt" 1726838976 8221424 454b2c53fe337be275f410895c638726 ""
   "/usr/local/texlive/2024/texmf.cnf" 1710266656 577 e590dabc9e28c5b61546e15f63eebcdf ""
-  "report.aux" 1734216152.95297 24108 37f9293e998e979cc8752ff593dcfd3a "pdflatex"
+  "report.aux" 1734225634.61553 24108 37f9293e998e979cc8752ff593dcfd3a "pdflatex"
   "report.bbl" 1734216151.06867 2804 30da215c0a82e20122174d9ddb029a86 "bibtex report"
-  "report.out" 1734216152.95487 11898 4760b3e859987c58283135b63e45f52c "pdflatex"
-  "report.tex" 1734216148.37391 96604 55e023a3a096078f3d62a4169f78162d ""
-  "report.toc" 1734216152.95525 6523 70cadb1da77c8fa2346555416369a0f7 "pdflatex"
+  "report.out" 1734225634.61752 11898 4760b3e859987c58283135b63e45f52c "pdflatex"
+  "report.tex" 1734225632.52238 96623 fe6ece4cfc6e13f255abe2e11d989fa8 ""
+  "report.toc" 1734225634.6178 6523 70cadb1da77c8fa2346555416369a0f7 "pdflatex"
   (generated)
   "report.aux"
   "report.log"

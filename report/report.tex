@@ -105,13 +105,13 @@
 
 \section{Abstract}
 
-This paper establishes a comprehensive theoretical foundation and demonstrates the practical implementation of Double Machine Learning (DML) methods for causal inference, with a particular focus on estimating the Average Treatment Effect (ATE) in Instrumental Variable (IV), Frontdoor Path, and Backdoor Path scenarios. We achieve this through extensive literature review, analytical derivations, creation of system of simulations with particular attention for the different data generating process (DGP) in those causal scenarios, and empirical simulation results.
+This paper establishes a comprehensive theoretical foundation and demonstrates the practical implementation of Double Machine Learning (DML) methods for causal inference, with a particular focus on estimating the Average Treatment Effect (ATE) in Instrumental Variable (IV), Frontdoor Path, and Backdoor Path scenarios. We achieve this through extensive literature review, analytical derivations, creation of system of simulations with particular attention to the different data generating processes (DGP) in those causal scenarios, and empirical simulation results.
 
 We begin by examining the theoretical context and existing literature on Double Machine Learning, delving into double robust estimation in settings involving instrumental variables, unobserved confounders, and mediators. This analysis highlights the differences in orthogonal score functions and explores the implications of model misspecification. We continue with a review the data generating processes (DGPs) for each causal scenario, detailing the underlying assumptions, the role of nuisance functions in ATE estimation, and the range of parameters relevant for simulations.
 
 Finally, we develop a robust simulation framework capable of generating data under diverse causal settings, accommodating linear and nonlinear relationships, varying dimensions and sparsity of causal and non-causal covariates, and differing noise structures. The system serves as the building block of a long-term project that can evaluate the performance of DML methods in recovering the ATE across different causal scenarios.
 
-We end by presenting a vast range of results for Backdoor Adjustment scenario, exploring how various DML estimators perform in recovering the ATE. Among the models tested, we see better performance from Deep Neural Networks (DNN) followed by Random Forest (RF). The results hold true for different dimensionalities of causal cofounders. Nonetheless, when dimensionality of non-causal cofounders increase the performance of DNN decreases and RF provides more robust estimates. In this section, we highlight other interesting takeaways, such as the role of sample size, misspecification, problems with dimensionality and the type of causal relationship between the target, treatment, and covariates.
+We end by presenting a vast range of results for Backdoor Adjustment scenario, exploring how various DML estimators perform in recovering the ATE. Among the models tested, we see better performance from Deep Neural Networks (DNN) followed by Random Forest (RF). The results hold true for different dimensionalities of causal cofounders. Nonetheless, when dimensionality of non-causal cofounders increases the performance of DNN decreases and RF provides more robust estimates. In this section, we highlight other interesting takeaways, such as the role of sample size, misspecification, problems with dimensionality and the type of causal relationship between the target, treatment, and covariates.
 
 The paper creates a solid basis for further simulations, which we have already started with th goal of more giving practical actionable recommendations for researchers in the field.
 
@@ -697,7 +697,7 @@ In \eqref{eq:m_x_for_target_backdoor_adjustment_wrong_2} and \eqref{eq:g_x_for_t
 
 \subsubsection{Treatment}
 
-The probability of treatment is generated from a logic:
+The probability of treatment is generated from a logistic function:
 
 \begin{equation}
     \mathbb{P}[T_i] = \frac{1}{1 + e^{(-f(C_i) + \varepsilon_{t, i})}}
@@ -1271,11 +1271,13 @@ More results for different models specifications and different $d_a$ are present
 \newpage
 \section{Conclusion}
 
-In conclusion, the literature review and simulations agree in the importance of correctly specifying the data generating process. The problem of causal inference is challenging in its nature and with more modern applications in which $X_i$ presents high dimensionality, DML will keep increasing its importance.
+In conclusion, the literature review and simulations agree on the importance of correctly specifying the data generating process. The problem of causal inference is challenging in its nature and with more modern applications in which $X_i$ presents high dimensionality, DML will keep increasing its importance.
 
-The simulations give practioners an extra advice regarding model specification: most of the times, the backdoor scenario estimation error of the ATE increased considerably more when with the addition of non-causal cofounders than, once non-causal cofounders where already present in the specification, with the addition of unobserved cofounders. Practioners should understand the relevant weight of model specification, being careful to not wrongly add covariates that might not have a causal effect on the target. The negative effect of doing the latter has shown to be greater then the effect of not including variables which might have a causal relation to the target. In the modern scenarios of high dimensionality, non-causal cofounders are plenty and its correlation to the causal cofounders mislead the estimation. Furthermore, when practioners aim to include many covariates of which they are not sure if they have a causal relationship to the target or to the treatment, Random Forest is shown to be a preferred model, differently from most of the scenarios, which present better ATE estimates under Deep Neural Network model.
+The simulations give practitioners an extra advice regarding model specification: most of the times, the backdoor scenario estimation error of the ATE increased considerably more with the addition of non-causal cofounders than, once non-causal cofounders where already present in the specification, with the addition of unobserved cofounders. Practitioners should understand the relevant weight of model specification, being careful to not wrongly add covariates that might not have a causal effect on the target. The negative effect of doing the latter has shown to be greater then the effect of not including variables which might have a causal relation to the target. In the modern scenarios of high dimensionality, non-causal cofounders are plenty and its correlation to the causal cofounders mislead the estimation. 
 
-Finally, we would like to continue the process of running more simulations. We have started working on processing those in AWS Cloud computing, allowing for a considerably vaster range of possible scenarios to be tested. With the literature review, theoretical background and more estimates, we hope to provide other insights to practioners.
+Furthermore, when practitioners aim to include many covariates of which they are not sure if they have a causal relationship to the target or to the treatment, Random Forest is shown to be a preferred model, differently from most of the scenarios, which present better ATE estimates under Deep Neural Network model.
+
+Finally, we would like to continue the process of running more simulations. We have started working on processing those in AWS Cloud computing, allowing for a considerably vaster range of possible scenarios to be tested. With the literature review, theoretical background and more estimates, we hope to provide other insights to practitioners.
 
 \newpage
 
